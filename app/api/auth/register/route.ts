@@ -27,6 +27,7 @@ export async function POST(req: NextRequest) {
 
     if (!response.ok) {
       const errorData = await response.json();
+      console.error('회원가입 실패:', errorData);
       return NextResponse.json(
         {
           errorCode: errorData.errorCode || 'BAD_REQUEST',
