@@ -1,3 +1,4 @@
+import Dropdown from '@/src/shared/ui/Dropdown';
 import Modal from '@/src/shared/ui/Modal';
 import Link from 'next/link';
 import React, { useState } from 'react';
@@ -10,10 +11,12 @@ const linkClassName =
   'flex items-center justify-center rounded-full p-2 hover:scale-110 hover:bg-gray-200 transition-transform transition-colors duration-200 ease-in-out';
 
 export default function BottomNavigateBar() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const toggleMenu = () => setIsOpen((prev) => !prev);
-  const closeModal = () => setIsOpen(false);
+  const handleModal = () => setIsModalOpen((prev) => !prev);
+  const closeModal = () => setIsModalOpen(false);
+  const handleMenu = () => setIsMenuOpen((prev) => !prev);
 
   return (
     <>
@@ -24,19 +27,28 @@ export default function BottomNavigateBar() {
         <Link href='/translate' className={linkClassName}>
           <MdGTranslate size={25} />
         </Link>
-        <button onClick={toggleMenu} className={linkClassName}>
+        <button onClick={handleModal} className={linkClassName}>
           <FaRegHospital size={25} />
         </button>
         <Link href='/ai' className={linkClassName}>
           <RiRobot3Line size={25} />
         </Link>
-        <div className={linkClassName}>
+        <button onClick={handleMenu} className={`relative ${linkClassName}`}>
           <TiThMenu size={25} />
-        </div>
+          {isMenuOpen && (
+            <Dropdown direction='top'>
+              <ul className='p-2'>
+                <li className='p-2 hover:bg-gray-100'>돋움말</li>
+                <li className='p-2 hover:bg-gray-100'>비상전화</li>
+                <li className='p-2 hover:bg-gray-100'>문의하기</li>
+              </ul>
+            </Dropdown>
+          )}
+        </button>
       </div>
-      {isOpen && (
+      {isModalOpen && (
         <Modal onClose={closeModal}>
-          <h2 className='mb-4 text-lg font-bold'>증상을 설명해주세요.</h2>
+          <h2 className='mb-4 text-center text-xl font-bold'>증상을 설명해주세요.</h2>
           <textarea
             className='mb-4 h-32 w-full resize-none rounded-md border border-gray-300 p-2 text-sm focus:ring-2 focus:ring-blue-400 focus:outline-none'
             placeholder='증상을 입력하세요...'
