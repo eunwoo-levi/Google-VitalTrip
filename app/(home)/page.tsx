@@ -9,7 +9,6 @@ export default function MapPage() {
   return (
     <div className='mx-auto min-h-screen w-full'>
       <GoogleMaps />
-      <BottomNavigateBar />
     </div>
   );
 }

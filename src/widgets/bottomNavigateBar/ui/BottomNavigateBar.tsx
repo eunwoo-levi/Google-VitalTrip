@@ -1,3 +1,5 @@
+'use client';
+
 import Dropdown from '@/src/shared/ui/Dropdown';
 import Modal from '@/src/shared/ui/Modal';
 import Link from 'next/link';
