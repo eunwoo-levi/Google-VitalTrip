@@ -1,7 +1,7 @@
 import { RegisterForm } from '@/src/features/auth';
 import Link from 'next/link';
 
-export default function RegistderPage() {
+export default function RegisterPage() {
   return (
     <div className='my-40 flex items-center justify-center'>
       <div className='w-full max-w-md rounded-lg bg-blue-50 px-8 py-10 shadow-lg'>
