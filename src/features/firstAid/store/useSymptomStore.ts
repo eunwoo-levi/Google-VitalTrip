@@ -1,15 +1,15 @@
 import { create } from 'zustand';
 
 interface SymptomState {
-  selectedSymptom: string;
-  detail: string;
-  setSymptomData: (symptom: string, detail: string) => void;
+  symptomType: string;
+  symptomDetail: string;
+  setSymptomData: (symptomType: string, symptomDetail: string) => void;
   resetSymptom: () => void;
 }
 
 export const useSymptomStore = create<SymptomState>((set) => ({
-  selectedSymptom: '',
-  detail: '',
-  setSymptomData: (selectedSymptom, detail) => set({ selectedSymptom, detail }),
-  resetSymptom: () => set({ selectedSymptom: '', detail: '' }),
+  symptomType: '',
+  symptomDetail: '',
+  setSymptomData: (symptomType, symptomDetail) => set({ symptomType, symptomDetail }),
+  resetSymptom: () => set({ symptomType: '', symptomDetail: '' }),
 }));
