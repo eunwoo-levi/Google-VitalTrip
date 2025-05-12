@@ -6,12 +6,14 @@ import Link from 'next/link';
 import React, { useState } from 'react';
 import { FaHome, FaRegHospital } from 'react-icons/fa';
 import { MdGTranslate } from 'react-icons/md';
-import { RiRobot3Line } from 'react-icons/ri';
 import { TiThMenu } from 'react-icons/ti';
 import { MENU_ITEMS, SYMPTOMS } from '../model/data';
 import { useSymptomStore } from '@/src/features/firstAid/store/useSymptomStore';
 import { useRouter } from 'next/navigation';
 import Chatbot from '@/src/features/chatbot/ui/Chatbot';
+import AboutUs from '../../aboutUs/ui/AboutUs';
+import EmergencyCall from '../../emergencyCall/ui/EmergencyCall';
+import Contact from '../../contact/ui/Contact';
 
 const linkClassName =
   'flex items-center cursor-pointer justify-center rounded-full p-2 hover:scale-110 hover:bg-gray-200 transition-transform transition-colors duration-200 ease-in-out';
@@ -21,6 +23,7 @@ export default function BottomNavigateBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [localSymptomType, setLocalSymptomType] = useState('');
   const [localSymptomDetail, setLocalSymptomDetail] = useState('');
+  const [infoModalCode, setInfoModalCode] = useState<string | null>(null);
 
   const { setSymptomData } = useSymptomStore();
   const router = useRouter();
@@ -29,7 +32,9 @@ export default function BottomNavigateBar() {
   const closeModal = () => {
     setIsModalOpen(false);
   };
-  const handleMenu = () => setIsMenuOpen((prev) => !prev);
+  const handleMenu = () => {
+    setIsMenuOpen((prev) => !prev);
+  };
 
   const handleSymptomChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setLocalSymptomType(e.target.value);
@@ -43,6 +48,14 @@ export default function BottomNavigateBar() {
     setSymptomData(localSymptomType, localSymptomDetail);
     closeModal();
     router.push('/first-aid');
+  };
+
+  const handleInfoModalOpen = (code: string) => {
+    setInfoModalCode(code);
+  };
+
+  const handleInfoModalClose = () => {
+    setInfoModalCode(null);
   };
 
   const isDisabled = !localSymptomType || !localSymptomDetail;
@@ -59,20 +72,43 @@ export default function BottomNavigateBar() {
         <button onClick={handleModal} className={linkClassName}>
           <FaRegHospital size={25} />
         </button>
-        <button onClick={handleMenu} className={`relative ${linkClassName}`}>
-          <TiThMenu size={25} />
+        <div className='relative'>
+          <button onClick={handleMenu} className={linkClassName}>
+            <TiThMenu size={25} />
+          </button>
+
           {isMenuOpen && (
             <Dropdown direction='top'>
               <ul className='p-2'>
                 {MENU_ITEMS.map((item) => (
-                  <li key={item.code} className='mb-2 hover:cursor-pointer hover:text-blue-500'>
-                    {item.label}
+                  <li key={item.code} className='flex flex-col items-center'>
+                    <button
+                      onClick={() => handleInfoModalOpen(item.code)}
+                      className='mb-2 hover:cursor-pointer hover:text-blue-500'
+                    >
+                      {item.label}
+                    </button>
+                    {infoModalCode === 'ABOUT_US' && (
+                      <Modal onClose={handleInfoModalClose}>
+                        <AboutUs />
+                      </Modal>
+                    )}
+                    {infoModalCode === 'EMERGENCY' && (
+                      <Modal onClose={handleInfoModalClose}>
+                        <EmergencyCall />
+                      </Modal>
+                    )}
+                    {infoModalCode === 'CONTACT' && (
+                      <Modal onClose={handleInfoModalClose}>
+                        <Contact />
+                      </Modal>
+                    )}
                   </li>
                 ))}
               </ul>
             </Dropdown>
           )}
-        </button>
+        </div>
         <Chatbot />
       </div>
 
