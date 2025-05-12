@@ -26,7 +26,7 @@ export default function Chatbot() {
     <>
       <button
         onClick={() => setIsOpen((prev) => !prev)}
-        className='fixed right-1 bottom-25 z-30 rounded-full bg-blue-600 p-3 text-white shadow-xl transition-all duration-200 hover:scale-110 hover:bg-blue-700 active:scale-95'
+        className='fixed right-1 bottom-25 z-30 cursor-pointer rounded-full bg-blue-600 p-3 text-white shadow-xl transition-all duration-200 hover:scale-110 hover:bg-blue-700 active:scale-95'
         aria-label='Open Chatbot'
       >
         <RiRobot3Line size={24} />

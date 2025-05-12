@@ -1,5 +1,5 @@
 export const MENU_ITEMS = [
-  { code: 'help', label: 'Help' },
+  { code: 'aboutus', label: 'About us' },
   { code: 'emergency', label: 'Emergency Call' },
   { code: 'contact', label: 'Contact Us' },
 ];
