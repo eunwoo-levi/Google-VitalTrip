@@ -58,7 +58,7 @@ export default function TranslatePage() {
         <textarea
           value={text}
           onChange={(e) => setText(e.target.value)}
-          placeholder='Type something to translate...'
+          placeholder='Type something to translate in your language...'
           className='w-full resize-y rounded-lg border border-gray-300 p-4 text-base focus:ring-2 focus:ring-indigo-400 focus:outline-none'
           rows={4}
         />
