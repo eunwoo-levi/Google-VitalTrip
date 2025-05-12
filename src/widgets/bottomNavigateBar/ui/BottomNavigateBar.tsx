@@ -11,6 +11,7 @@ import { TiThMenu } from 'react-icons/ti';
 import { MENU_ITEMS, SYMPTOMS } from '../model/data';
 import { useSymptomStore } from '@/src/features/firstAid/store/useSymptomStore';
 import { useRouter } from 'next/navigation';
+import Chatbot from '@/src/features/chatbot/ui/Chatbot';
 
 const linkClassName =
   'flex items-center cursor-pointer justify-center rounded-full p-2 hover:scale-110 hover:bg-gray-200 transition-transform transition-colors duration-200 ease-in-out';
@@ -58,9 +59,6 @@ export default function BottomNavigateBar() {
         <button onClick={handleModal} className={linkClassName}>
           <FaRegHospital size={25} />
         </button>
-        <Link href='/ai' className={linkClassName}>
-          <RiRobot3Line size={25} />
-        </Link>
         <button onClick={handleMenu} className={`relative ${linkClassName}`}>
           <TiThMenu size={25} />
           {isMenuOpen && (
@@ -75,6 +73,7 @@ export default function BottomNavigateBar() {
             </Dropdown>
           )}
         </button>
+        <Chatbot />
       </div>
 
       {isModalOpen && (
