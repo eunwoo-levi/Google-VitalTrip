@@ -1,7 +1,7 @@
 export const MENU_ITEMS = [
-  { code: 'aboutus', label: 'About us' },
-  { code: 'emergency', label: 'Emergency Call' },
-  { code: 'contact', label: 'Contact Us' },
+  { code: 'ABOUT_US', label: 'About us' },
+  { code: 'EMERGENCY', label: 'Emergency Call' },
+  { code: 'CONTACT', label: 'Contact Us' },
 ];
 
 export const SYMPTOMS = [
