@@ -8,17 +8,43 @@ import { FaHome, FaRegHospital } from 'react-icons/fa';
 import { MdGTranslate } from 'react-icons/md';
 import { RiRobot3Line } from 'react-icons/ri';
 import { TiThMenu } from 'react-icons/ti';
+import { MENU_ITEMS, SYMPTOMS } from '../model/data';
+import { useSymptomStore } from '@/src/features/firstAid/store/useSymptomStore';
+import { useRouter } from 'next/navigation';
 
 const linkClassName =
-  'flex items-center justify-center rounded-full p-2 hover:scale-110 hover:bg-gray-200 transition-transform transition-colors duration-200 ease-in-out';
+  'flex items-center cursor-pointer justify-center rounded-full p-2 hover:scale-110 hover:bg-gray-200 transition-transform transition-colors duration-200 ease-in-out';
 
 export default function BottomNavigateBar() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [localSymptomType, setLocalSymptomType] = useState('');
+  const [localSymptomDetail, setLocalSymptomDetail] = useState('');
+
+  const { setSymptomData } = useSymptomStore();
+  const router = useRouter();
 
   const handleModal = () => setIsModalOpen((prev) => !prev);
-  const closeModal = () => setIsModalOpen(false);
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
   const handleMenu = () => setIsMenuOpen((prev) => !prev);
+
+  const handleSymptomChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setLocalSymptomType(e.target.value);
+  };
+
+  const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setLocalSymptomDetail(e.target.value);
+  };
+
+  const handleSubmit = () => {
+    setSymptomData(localSymptomType, localSymptomDetail);
+    closeModal();
+    router.push('/first-aid');
+  };
+
+  const isDisabled = !localSymptomType || !localSymptomDetail;
 
   return (
     <>
@@ -40,26 +66,48 @@ export default function BottomNavigateBar() {
           {isMenuOpen && (
             <Dropdown direction='top'>
               <ul className='p-2'>
-                <li className='p-2 hover:bg-gray-100'>돋움말</li>
-                <li className='p-2 hover:bg-gray-100'>비상전화</li>
-                <li className='p-2 hover:bg-gray-100'>문의하기</li>
+                {MENU_ITEMS.map((item) => (
+                  <li key={item.code} className='mb-2 hover:cursor-pointer hover:text-blue-500'>
+                    {item.label}
+                  </li>
+                ))}
               </ul>
             </Dropdown>
           )}
         </button>
       </div>
+
       {isModalOpen && (
         <Modal onClose={closeModal}>
-          <h2 className='mb-4 text-center text-xl font-bold'>증상을 설명해주세요.</h2>
+          <h2 className='mb-4 text-center text-xl font-bold'>Describe your symptom</h2>
+          <select
+            className='mb-4 w-full rounded-md border border-gray-300 p-2 text-sm focus:ring-2 focus:ring-blue-400 focus:outline-none'
+            onChange={handleSymptomChange}
+            value={localSymptomType}
+          >
+            <option value='' disabled>
+              Select symptom
+            </option>
+            {SYMPTOMS.map((symptom) => (
+              <option key={symptom.code} value={symptom.code}>
+                {symptom.label}
+              </option>
+            ))}
+          </select>
           <textarea
             className='mb-4 h-32 w-full resize-none rounded-md border border-gray-300 p-2 text-sm focus:ring-2 focus:ring-blue-400 focus:outline-none'
-            placeholder='증상을 입력하세요...'
+            placeholder='Describe your symptoms in detail'
+            value={localSymptomDetail}
+            onChange={handleTextareaChange}
           />
           <button
-            onClick={closeModal}
-            className='w-full rounded-md bg-blue-500 px-4 py-2 text-white transition-colors duration-200 hover:bg-blue-600'
+            disabled={isDisabled}
+            onClick={handleSubmit}
+            className={`w-full rounded-md px-4 py-2 text-white transition-colors duration-200 ${
+              isDisabled ? 'cursor-not-allowed bg-gray-300' : 'bg-blue-500 hover:bg-blue-600'
+            }`}
           >
-            확인
+            Submit
           </button>
         </Modal>
       )}
