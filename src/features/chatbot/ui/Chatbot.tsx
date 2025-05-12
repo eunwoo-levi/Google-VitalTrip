@@ -33,7 +33,7 @@ export default function Chatbot() {
       </button>
 
       {isOpen && (
-        <div className='fixed right-15 bottom-24 z-30 flex h-96 w-75 flex-col rounded-2xl border border-gray-200 bg-white shadow-2xl md:w-80'>
+        <div className='animate-slideFadeUp fixed right-15 bottom-24 z-30 flex h-96 w-75 flex-col rounded-2xl border border-gray-200 bg-white shadow-2xl md:w-80'>
           <div className='flex items-center justify-between rounded-t-2xl border-b bg-blue-50 px-4 py-2'>
             <h2 className='text-sm font-semibold text-blue-700'>AI 챗봇</h2>
             <button
