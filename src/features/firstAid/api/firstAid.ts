@@ -1,11 +1,11 @@
 interface FirstAidRequest {
-  emergencyType: string;
-  userMessage: string;
+  symptomType: string;
+  symptomDetail: string;
 }
 
 export const postFirstAid = async (formData: FirstAidRequest) => {
   try {
-    const response = await fetch('/api/aiChat', {
+    const response = await fetch('/api/first-aid', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -15,10 +15,11 @@ export const postFirstAid = async (formData: FirstAidRequest) => {
 
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData.errorMessage || 'first aid POST 요청에 실패했습니다.');
+      throw new Error(errorData.error || 'first aid POST 요청에 실패했습니다.');
     }
 
-    return await response.json();
+    const data = await response.json();
+    return data;
   } catch (error: any) {
     throw new Error(error.message || 'first aid POST 요청에 실패했습니다.');
   }
