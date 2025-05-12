@@ -1,6 +1,5 @@
 'use client';
 
-import BottomNavigateBar from '@/src/widgets/bottomNavigateBar/ui/BottomNavigateBar';
 import dynamic from 'next/dynamic';
 
 const GoogleMaps = dynamic(() => import('@/src/features/googleMap/ui/GoogleMaps'), { ssr: false });

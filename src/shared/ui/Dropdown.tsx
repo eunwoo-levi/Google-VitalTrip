@@ -11,7 +11,7 @@ export default function Dropdown({ direction = 'bottom', children }: DropdownPro
 
   return (
     <div
-      className={`absolute left-1/2 -translate-x-1/2 ${positionClass} z-50 w-48 rounded-md border bg-white shadow-md ${animationClass} cursor-pointer`}
+      className={`absolute left-1/2 -translate-x-1/2 ${positionClass} w-33 rounded-md border bg-white shadow-md md:w-44 ${animationClass} z-[100] cursor-pointer`}
     >
       {children}
     </div>
