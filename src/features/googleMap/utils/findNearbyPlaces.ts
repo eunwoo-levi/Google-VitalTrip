@@ -73,7 +73,7 @@ export const findNearbyPlaces = (
                         border-radius: 4px;
                       "
                     >
-                      📍 Google 지도에서 보기
+                      📍 View on Google Maps
                     </a>
                   </div>
                 `,
