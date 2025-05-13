@@ -70,14 +70,14 @@ export default function FirstAidPage() {
 
               <div className='rounded-xl border border-green-200 bg-green-50 p-5'>
                 <h2 className='mb-4 text-center text-lg font-semibold text-green-800'>
-                  ✅ recommended action
+                  ✅ Recommended action
                 </h2>
                 <p className='font-medium text-green-900'>{result.recommendedAction}</p>
               </div>
 
               <div className='rounded-xl border border-gray-200 bg-gray-50 p-5'>
                 <h2 className='mb-4 text-center text-lg font-semibold text-gray-700'>
-                  📊 reliability
+                  📊 Reliability
                 </h2>
                 <div className='relative h-4 w-full rounded-full bg-gray-200'>
                   <div
@@ -92,7 +92,7 @@ export default function FirstAidPage() {
 
               <div className='rounded-xl border border-purple-200 bg-purple-50 p-5'>
                 <h2 className='mb-4 text-center text-lg font-semibold text-purple-800'>
-                  💬 AI recommended question phrases
+                  💬 AI Recommended Question Phrases
                 </h2>
                 <p className='text-purple-900 italic'>“{result.suggestedPhrase}”</p>
               </div>
