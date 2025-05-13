@@ -130,7 +130,7 @@ export default function FirstAidPage() {
             </div>
           )
         ) : (
-          <div className='animate-pulse text-gray-600'>AI 분석 중입니다...</div>
+          <div className='animate-pulse text-gray-600'>AI is analyzing...</div>
         )}
       </div>
     </div>
