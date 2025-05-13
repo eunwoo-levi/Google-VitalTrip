@@ -51,8 +51,8 @@ export default function TranslatePage() {
     languages.find((lang) => lang.language === target)?.name || 'Select language';
 
   return (
-    <main className='min-h-screen bg-gray-50 px-4 py-10 font-sans md:mb-20'>
-      <div className='mx-auto max-w-3xl rounded-xl bg-white p-8 shadow-lg'>
+    <main className='flex min-h-screen items-center justify-center bg-gray-50 px-4 py-10 pb-25'>
+      <div className='w-full max-w-3xl rounded-xl bg-white p-6 shadow-lg sm:p-8'>
         <h1 className='mb-6 text-center text-3xl font-bold text-indigo-700'>🌐 AI Translator</h1>
 
         <textarea
