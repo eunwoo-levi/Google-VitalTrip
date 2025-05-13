@@ -6,8 +6,8 @@ export default function AboutUs() {
       <section className='space-y-2'>
         <p>
           <strong>VitalTrip</strong> is a travel safety assistant app designed to help travelers
-          handle medical emergencies abroad — overcoming language barriers and quickly locating
-          nearby healthcare facilities.
+          handle medical emergencies abroad <br /> — overcoming language barriers and quickly
+          locating nearby healthcare facilities.
         </p>
       </section>
 

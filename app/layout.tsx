@@ -2,6 +2,14 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import BottomNavigateBar from '@/src/widgets/bottomNavigateBar/ui/BottomNavigateBar';
+import localFont from 'next/font/local';
+
+const iansui = localFont({
+  src: '../public/fonts/iansui.woff2',
+  weight: '500',
+  style: 'normal',
+  display: 'swap',
+});
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -25,7 +33,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body className={`${iansui.className} antialiased`}>
+        {' '}
         {children}
         <BottomNavigateBar />
       </body>

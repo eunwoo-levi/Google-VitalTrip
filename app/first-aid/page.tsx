@@ -9,6 +9,7 @@ interface FirstAidResult {
   content: string;
   recommendedAction: string;
   confidence: number;
+  suggestedPhrase: string;
 }
 
 export default function FirstAidPage() {
@@ -49,34 +50,51 @@ export default function FirstAidPage() {
   }
 
   return (
-    <div className='flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12'>
-      <div className='w-full max-w-xl space-y-6 rounded-2xl bg-white p-6 shadow-xl'>
-        <h1 className='text-2xl font-bold text-blue-700'>AI 응급처치 결과</h1>
+    <div className='flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 to-green-50 px-4 py-12'>
+      <div className='mb-20 w-full max-w-2xl space-y-6 rounded-2xl bg-white p-8 shadow-2xl transition-all'>
+        <h1 className='text-center text-3xl font-bold text-blue-700'>AI 응급처치 결과</h1>
 
         {result ? (
           typeof result === 'object' ? (
-            <div className='space-y-4'>
-              <div className='rounded-lg border bg-blue-50 p-4'>
-                <h2 className='mb-1 font-semibold text-gray-700'>내용</h2>
-                <p className='text-gray-800'>{result.content}</p>
+            <div className='space-y-6'>
+              <div className='rounded-xl border border-blue-200 bg-blue-50 p-5'>
+                <h2 className='mb-4 text-center text-lg font-semibold text-blue-800'>
+                  📋 First Aid Details
+                </h2>
+                <ul className='list-disc space-y-1 pl-5 text-gray-800'>
+                  {result.content.split(/(?<=[.!?])\s+/).map((sentence, idx) => (
+                    <li key={idx}>{sentence}</li>
+                  ))}
+                </ul>
               </div>
 
-              <div className='rounded-lg border bg-green-50 p-4'>
-                <h2 className='mb-1 font-semibold text-gray-700'>추천 행동</h2>
-                <p className='font-medium text-green-800'>{result.recommendedAction}</p>
+              <div className='rounded-xl border border-green-200 bg-green-50 p-5'>
+                <h2 className='mb-4 text-center text-lg font-semibold text-green-800'>
+                  ✅ recommended action
+                </h2>
+                <p className='font-medium text-green-900'>{result.recommendedAction}</p>
               </div>
 
-              <div>
-                <h2 className='mb-2 font-semibold text-gray-700'>신뢰도</h2>
-                <div className='h-3 w-full rounded-full bg-gray-200'>
+              <div className='rounded-xl border border-gray-200 bg-gray-50 p-5'>
+                <h2 className='mb-4 text-center text-lg font-semibold text-gray-700'>
+                  📊 reliability
+                </h2>
+                <div className='relative h-4 w-full rounded-full bg-gray-200'>
                   <div
-                    className='h-3 rounded-full bg-green-500'
+                    className='absolute top-0 left-0 h-4 rounded-full bg-green-500'
                     style={{ width: `${result.confidence * 100}%` }}
                   ></div>
                 </div>
-                <p className='mt-1 text-sm text-gray-600'>
+                <p className='mt-2 text-sm text-gray-600'>
                   {(result.confidence * 100).toFixed(1)}%
                 </p>
+              </div>
+
+              <div className='rounded-xl border border-purple-200 bg-purple-50 p-5'>
+                <h2 className='mb-4 text-center text-lg font-semibold text-purple-800'>
+                  💬 AI recommended question phrases
+                </h2>
+                <p className='text-purple-900 italic'>“{result.suggestedPhrase}”</p>
               </div>
             </div>
           ) : (

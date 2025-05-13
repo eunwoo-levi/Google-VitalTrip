@@ -44,7 +44,7 @@ export default function SearchBar({
   };
 
   return (
-    <div className='absolute top-15 left-1/2 z-10 w-[300px] -translate-x-1/2 transform rounded-md bg-white p-2 shadow-lg'>
+    <div className='absolute top-15 left-1/2 z-10 w-2/3 -translate-x-1/2 transform rounded-md bg-white p-2 shadow-lg lg:top-5'>
       <div className='flex'>
         <input
           type='text'
@@ -64,7 +64,6 @@ export default function SearchBar({
         </button>
       </div>
 
-      {/* 자동완성 추천어 리스트 */}
       {suggestions.length > 0 && (
         <ul className='mt-1 max-h-40 overflow-auto rounded-md border border-gray-200 bg-white text-sm shadow-md'>
           {suggestions.map((suggestion) => (
