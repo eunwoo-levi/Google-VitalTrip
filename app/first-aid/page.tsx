@@ -42,7 +42,7 @@ export default function FirstAidPage() {
   if (!hydrated) {
     return (
       <div className='flex min-h-screen items-center justify-center text-lg text-gray-600'>
-        로딩 중입니다...
+        Loading...
       </div>
     );
   }
@@ -50,7 +50,7 @@ export default function FirstAidPage() {
   if (!symptomType || !symptomDetail) {
     return (
       <div className='flex min-h-screen items-center justify-center px-4 text-center text-red-500'>
-        증상 정보가 없습니다. <br /> 처음부터 다시 입력해주세요.
+        There is no symptom information. <br /> Please re-enter from the beginning.
       </div>
     );
   }
@@ -58,7 +58,7 @@ export default function FirstAidPage() {
   return (
     <div className='flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 to-green-50 px-4 py-12'>
       <div className='mb-20 w-full max-w-2xl space-y-6 rounded-2xl bg-white p-8 shadow-2xl transition-all'>
-        <h1 className='text-center text-3xl font-bold text-blue-700'>AI 응급처치 결과</h1>
+        <h1 className='text-center text-3xl font-bold text-blue-700'>AI First Aid Results</h1>
 
         {result ? (
           typeof result === 'object' ? (
@@ -102,7 +102,7 @@ export default function FirstAidPage() {
               <div className='rounded-xl border border-purple-200 bg-purple-50 p-5'>
                 <h2 className='mb-4 flex items-center justify-center gap-2 text-lg font-semibold text-purple-800'>
                   <FaRegLightbulb className='text-xl' />
-                  도움되는 블로그 글 추천
+                  Recommended Helpful Blog Posts
                 </h2>
                 {result.blogLinks && result.blogLinks.length > 0 ? (
                   <ul className='space-y-2'>
