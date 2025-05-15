@@ -112,7 +112,7 @@ export default function FirstAidPage() {
                           href={link}
                           target='_blank'
                           rel='noopener noreferrer'
-                          className='block rounded-lg border border-purple-300 bg-white px-4 py-2 text-purple-700 transition hover:bg-purple-100 hover:underline'
+                          className='block rounded-lg border border-purple-300 bg-white px-4 py-2 break-words whitespace-pre-wrap text-purple-700 transition hover:bg-purple-100 hover:underline'
                         >
                           {decodeURIComponent(link).replace(/^https?:\/\//, '')}
                         </a>
