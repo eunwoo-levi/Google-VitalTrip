@@ -35,12 +35,12 @@ export default function Chatbot() {
       {isOpen && (
         <div className='animate-slideFadeUp fixed right-15 bottom-24 z-30 flex h-96 w-75 flex-col rounded-2xl border border-gray-200 bg-white shadow-2xl md:w-80'>
           <div className='flex items-center justify-between rounded-t-2xl border-b bg-blue-50 px-4 py-2'>
-            <h2 className='text-sm font-semibold text-blue-700'>AI 챗봇</h2>
+            <h2 className='text-sm font-semibold text-blue-700'>AI ChatBot</h2>
             <button
               className='text-xs text-gray-400 hover:text-gray-600'
               onClick={() => setIsOpen(false)}
             >
-              닫기
+              Close
             </button>
           </div>
 
@@ -61,19 +61,19 @@ export default function Chatbot() {
             ))}
           </div>
 
-          <div className='flex gap-2 border-t px-3 py-2'>
+          <div className='flex w-full gap-2 border-t px-3 py-2'>
             <input
-              className='flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:ring-2 focus:ring-blue-400 focus:outline-none'
+              className='min-w-0 flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:ring-2 focus:ring-blue-400 focus:outline-none'
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
-              placeholder='메시지 입력...'
+              placeholder='Type here...'
             />
             <button
               onClick={sendMessage}
-              className='rounded-lg bg-blue-500 px-4 py-2 text-sm text-white transition-all hover:bg-blue-600 active:bg-blue-700'
+              className='min-w-fit rounded-lg bg-blue-500 px-4 py-2 text-sm text-white transition-all hover:bg-blue-600 active:bg-blue-700'
             >
-              전송
+              Send
             </button>
           </div>
         </div>
