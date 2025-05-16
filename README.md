@@ -1,6 +1,10 @@
 # 🏥 VitalTrip
 
-VitalTrip is a smart travel guide service that helps travelers respond quickly and effectively in emergency situations abroad, especially when language and medical system barriers are present.
+VitalTrip is a smart travel guide service that helps travelers respond quickly and effectively in emergency situations abroad, especially when facing language barriers, unfamiliar medical systems, and cultural differences.
+
+This service is accessible both on web and mobile browsers, ensuring that users can get critical help anytime, anywhere, regardless of the device they're using. Whether you’re in a hotel room with Wi-Fi or on the go with mobile data, VitalTrip is optimized for responsive performance across devices.
+
+From real-time location-based hospital searches to multilingual communication and AI-powered first aid responses, VitalTrip is designed to protect travelers' lives during their journeys.
 
 ### Backend Repository: [VitalTrip BE](https://github.com/GDG-on-Campus-KNU/4th-SC-Team-5-BE)
 
@@ -44,12 +48,11 @@ GitHub (version control)
 Notion (documentation)
 Discord (team communication)
 
-# 👥 Team
-
-| Role     | Members                   |
-| -------- | ------------------------- |
-| Frontend | Eunwoo Sung, Seohyun Jung |
-| Backend  | Seyeon Park, Wooseok Yoo  |
+<table>
+  <tr>
+    <td align="center"><img src="https://github.com/user-attachments/assets/68e4e00c-2966-4d71-ae7a-6f84f788d25e" width="800"/><br/>Architecture</td>
+  </tr>
+</table>
 
 
 # 🚀 Core Features
@@ -65,6 +68,14 @@ Discord (team communication)
     <td align="center"><img src="https://github.com/user-attachments/assets/ff0b69c3-e8f8-4fa8-8a0a-5188d84cff5d" width="250"/><br/>Search Result</td>
   </tr>
 </table>
+
+
+<table>
+  <tr>
+    <td align="center"><img src="https://github.com/user-attachments/assets/60cc17ae-4b0a-45d6-96d3-d2ca0413f4d4" width="800"/><br/>Web Map View</td>
+  </tr>
+</table>
+
 
 ### 🌐 2. Real-Time Language Translation
 - Uses Google Translate API to automatically detect and translate any language.
@@ -118,3 +129,11 @@ Enter symptoms and receive AI-generated emergency response advice including:
     <td align="center"><img src="https://github.com/user-attachments/assets/2a4ce08e-5f25-42f1-a6a0-a482faaeb818" width="250"/><br/>Contact Us Modal</td>
   </tr>
 </table>
+
+
+# 👥 Team
+
+| Role     | Members                   |
+| -------- | ------------------------- |
+| Frontend | Eunwoo Sung, Seohyun Jung |
+| Backend  | Seyeon Park, Wooseok Yoo  |
