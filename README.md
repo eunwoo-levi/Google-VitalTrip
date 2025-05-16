@@ -1,36 +1,14 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
-
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+![map1](https://github.com/user-attachments/assets/7074eab0-edfa-4606-8385-418b9e561962)
+![map2](https://github.com/user-attachments/assets/06f3fa12-b251-4d7b-9ac2-11cc50eaa5c9)
+![map-search](https://github.com/user-attachments/assets/ff0b69c3-e8f8-4fa8-8a0a-5188d84cff5d)
+![translate1](https://github.com/user-attachments/assets/59da655b-a941-4e28-9ec6-447915b793ff)
+![translate2](https://github.com/user-attachments/assets/77dde59c-8198-419a-b156-48c3064e0a9e)
+![firstaid1](https://github.com/user-attachments/assets/06f8ab84-485a-407b-bff8-c977d95593b5)
+![firstaid2-loading](https://github.com/user-attachments/assets/778fcdef-815d-4ba2-ac70-3d89bee6e630)
+![firstaid3](https://github.com/user-attachments/assets/e2ca1f2f-b79b-4e91-9029-bbd3bf32df70)
+![firstaid4](https://github.com/user-attachments/assets/b7db07f5-9996-425a-a689-fb11ee9e3193)
+![chatbot-1](https://github.com/user-attachments/assets/eb6c8e1f-9c56-4aa2-b09e-3dd88e730e38)
+![chatbot-2](https://github.com/user-attachments/assets/77d9ffb3-5b29-4cc6-bfcd-a1a54f8b5c6f)
+![dropdown-about](https://github.com/user-attachments/assets/b7a5f6a8-a716-4270-a165-04777e5f0cca)
+![dropdown-contact](https://github.com/user-attachments/assets/2a4ce08e-5f25-42f1-a6a0-a482faaeb818)
+![dropdown-emergency](https://github.com/user-attachments/assets/ecb60938-da01-42ff-b355-9d77e63728bb)
