@@ -74,7 +74,7 @@ Discord (team communication)
 <table>
   <tr>
     <td align="center"><img src="https://github.com/user-attachments/assets/59da655b-a941-4e28-9ec6-447915b793ff" width="250"/><br/>AI translation page</td>
-    <td align="center"><img src="https://https://github.com/user-attachments/assets/77dde59c-8198-419a-b156-48c3064e0a9e" width="250"/><br/>AI translation results</td>
+    <td align="center"><img src="https://github.com/user-attachments/assets/77dde59c-8198-419a-b156-48c3064e0a9e" width="250"/><br/>AI translation results</td>
   </tr>
 </table>
 
