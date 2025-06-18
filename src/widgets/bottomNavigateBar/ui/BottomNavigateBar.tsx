@@ -7,13 +7,13 @@ import React, { useState } from 'react';
 import { FaHome, FaRegHospital } from 'react-icons/fa';
 import { MdGTranslate } from 'react-icons/md';
 import { TiThMenu } from 'react-icons/ti';
-import { MENU_ITEMS, SYMPTOMS } from '../model/data';
+import { MENU_ITEMS, SYMPTOMS } from '../data/BottomNavigateBarData';
 import { useSymptomStore } from '@/src/features/firstAid/store/useSymptomStore';
 import { useRouter } from 'next/navigation';
 import Chatbot from '@/src/features/chatbot/ui/Chatbot';
-import AboutUs from '../../aboutUs/ui/AboutUs';
-import EmergencyCall from '../../emergencyCall/ui/EmergencyCall';
-import Contact from '../../contact/ui/Contact';
+import AboutUs from './AboutUs';
+import Contact from './Contact';
+import EmergencyCall from './EmergencyCall';
 
 const linkClassName =
   'flex items-center cursor-pointer justify-center rounded-full p-2 hover:scale-110 hover:bg-gray-200 transition-transform transition-colors duration-200 ease-in-out';
