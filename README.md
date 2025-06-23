@@ -1,3 +1,5 @@
+![VitalTrip_logo 수정](https://github.com/user-attachments/assets/32c4648e-448d-41ba-8b5b-265b10a47ab4)
+
 # 🏥 VitalTrip
 
 VitalTrip is a smart travel guide service that helps travelers respond quickly and effectively in emergency situations abroad, especially when facing language barriers, unfamiliar medical systems, and cultural differences.
