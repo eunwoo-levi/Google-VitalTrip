@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { EMERGENCY_CALL_DB } from '../model/data';
+import { EMERGENCY_CALL_DB } from '../data/emergencyCallData';
 
 interface EmergencyNumbers {
   country: string;
@@ -52,21 +52,17 @@ export default function EmergencyCall() {
   return (
     <div className='mx-auto max-w-md space-y-4 p-6 text-gray-800 md:max-w-lg'>
       <h2 className='text-2xl font-bold text-red-600'>
-        {/* 🚨 Emergency Numbers in {emergencyInfo.country} */}
-        🚨 Emergency Numbers in South Korea
+        🚨 Emergency Numbers in {emergencyInfo.country}
       </h2>
       <ul className='list-inside list-disc space-y-1'>
         <li>
-          {/* <strong>Police:</strong> {emergencyInfo.police} */}
-          <strong>Police:</strong> 112
+          <strong>Police:</strong> {emergencyInfo.police}
         </li>
         <li>
-          {/* <strong>Ambulance:</strong> {emergencyInfo.ambulance} */}
-          <strong>Ambulance:</strong> 119
+          <strong>Ambulance:</strong> {emergencyInfo.ambulance}
         </li>
         <li>
-          {/* <strong>Fire Department:</strong> {emergencyInfo.fire} */}
-          <strong>Fire Department:</strong> 119
+          <strong>Fire Department:</strong> {emergencyInfo.fire}
         </li>
       </ul>
       <p className='text-sm text-gray-500'>
