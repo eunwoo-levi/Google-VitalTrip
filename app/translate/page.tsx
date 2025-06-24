@@ -91,7 +91,9 @@ export default function TranslatePage() {
   return (
     <main className='flex min-h-screen flex-col bg-gray-50 px-4 py-8'>
       <div className='mx-auto w-full max-w-7xl'>
-        <h1 className='mb-6 text-2xl font-bold text-gray-800'>Translation</h1>
+        <div className='mb-2 flex items-center gap-3'>
+          <img src='/VitalTrip.svg' alt='VitalTrip Logo' className='mt-1 ml-1 h-10 w-auto' />
+        </div>
 
         <div className='mt-10 mb-4 flex items-center rounded-lg bg-white p-3 shadow'>
           <div className='relative mr-2 flex-1' ref={sourceDropdownRef}>
