@@ -154,7 +154,9 @@ export default function BottomNavigateBar() {
             disabled={isDisabled}
             onClick={handleSubmit}
             className={`w-full rounded-md px-4 py-2 text-white transition-colors duration-200 ${
-              isDisabled ? 'cursor-not-allowed bg-gray-300' : 'bg-blue-500 hover:bg-blue-600'
+              isDisabled
+                ? 'cursor-not-allowed bg-gray-300'
+                : 'cursor-pointer bg-blue-500 hover:bg-blue-600'
             }`}
           >
             Submit

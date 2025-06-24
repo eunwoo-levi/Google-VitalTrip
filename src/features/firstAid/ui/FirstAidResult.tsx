@@ -7,13 +7,7 @@ import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { BsCheckCircle } from 'react-icons/bs';
 import { HiOutlineChartBar } from 'react-icons/hi';
 import { FaRegLightbulb } from 'react-icons/fa';
-import {
-  MdMedicalServices,
-  MdArrowBack,
-  MdCheckCircle,
-  MdErrorOutline,
-  MdArrowForward,
-} from 'react-icons/md';
+import { MdMedicalServices, MdArrowBack, MdErrorOutline, MdArrowForward } from 'react-icons/md';
 import useFirstAidResult from '../hooks/useFirstAidResult';
 import EmergencyCallBanner from '@/src/features/firstAid/ui/EmergencyCallBanner';
 

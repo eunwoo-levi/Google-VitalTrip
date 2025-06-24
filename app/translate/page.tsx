@@ -332,7 +332,7 @@ export default function TranslatePage() {
                   className={`rounded-lg bg-blue-600 px-5 py-2 text-sm font-medium text-white shadow-sm transition-all hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none ${
                     isTranslating || !sourceText.trim()
                       ? 'cursor-not-allowed opacity-50'
-                      : 'hover:shadow'
+                      : 'cursor-pointer hover:shadow'
                   }`}
                 >
                   {isTranslating ? (
