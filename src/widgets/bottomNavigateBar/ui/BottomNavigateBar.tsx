@@ -3,7 +3,7 @@
 import Dropdown from '@/src/shared/ui/Dropdown';
 import Modal from '@/src/shared/ui/Modal';
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { FaHome, FaRegHospital } from 'react-icons/fa';
 import { MdGTranslate } from 'react-icons/md';
 import { TiThMenu } from 'react-icons/ti';
@@ -19,33 +19,48 @@ const linkClassName =
   'flex items-center cursor-pointer justify-center rounded-full p-2 hover:scale-110 hover:bg-gray-200 transition-transform transition-colors duration-200 ease-in-out';
 
 export default function BottomNavigateBar() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSymptomModalOpen, setIsSymptomModalOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [localSymptomType, setLocalSymptomType] = useState('');
-  const [localSymptomDetail, setLocalSymptomDetail] = useState('');
+  const [symptomType, setSymptomType] = useState('');
+  const [symptomDetail, setSymptomDetail] = useState('');
   const [infoModalCode, setInfoModalCode] = useState<string | null>(null);
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleOutsideClick = (event: MouseEvent) => {
+      if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+        setIsMenuOpen(false);
+        setInfoModalCode(null);
+      }
+    };
+
+    document.addEventListener('mousedown', handleOutsideClick);
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideClick);
+    };
+  }, []);
 
   const { setSymptomData } = useSymptomStore();
   const router = useRouter();
 
-  const handleModal = () => setIsModalOpen((prev) => !prev);
+  const handleModal = () => setIsSymptomModalOpen((prev) => !prev);
   const closeModal = () => {
-    setIsModalOpen(false);
+    setIsSymptomModalOpen(false);
   };
   const handleMenu = () => {
     setIsMenuOpen((prev) => !prev);
   };
 
   const handleSymptomChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setLocalSymptomType(e.target.value);
+    setSymptomType(e.target.value);
   };
 
   const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setLocalSymptomDetail(e.target.value);
+    setSymptomDetail(e.target.value);
   };
 
   const handleSubmit = () => {
-    setSymptomData(localSymptomType, localSymptomDetail);
+    setSymptomData(symptomType, symptomDetail);
     closeModal();
     router.push('/first-aid');
   };
@@ -58,11 +73,11 @@ export default function BottomNavigateBar() {
     setInfoModalCode(null);
   };
 
-  const isDisabled = !localSymptomType || !localSymptomDetail;
+  const isDisabled = !symptomType || !symptomDetail;
 
   return (
     <>
-      <div className='fixed bottom-2 left-1/2 z-10 flex h-[80px] w-[98%] -translate-x-1/2 items-center justify-evenly gap-2 rounded-t-xl bg-white shadow-xl'>
+      <div className='fixed bottom-2 left-1/2 z-10 flex h-[60px] w-[98%] -translate-x-1/2 items-center justify-evenly gap-2 rounded-t-xl bg-white shadow-xl'>
         <Link href='/' className={linkClassName}>
           <FaHome size={25} />
         </Link>
@@ -78,7 +93,7 @@ export default function BottomNavigateBar() {
           </button>
 
           {isMenuOpen && (
-            <Dropdown direction='top'>
+            <Dropdown ref={modalRef} direction='top'>
               <ul className='p-2'>
                 {MENU_ITEMS.map((item) => (
                   <li key={item.code} className='flex flex-col items-center'>
@@ -112,13 +127,13 @@ export default function BottomNavigateBar() {
         <Chatbot />
       </div>
 
-      {isModalOpen && (
+      {isSymptomModalOpen && (
         <Modal onClose={closeModal}>
           <h2 className='mb-4 text-center text-xl font-bold'>Describe your symptom</h2>
           <select
             className='mb-4 w-full rounded-md border border-gray-300 p-2 text-sm focus:ring-2 focus:ring-blue-400 focus:outline-none'
             onChange={handleSymptomChange}
-            value={localSymptomType}
+            value={symptomType}
           >
             <option value='' disabled>
               Select symptom
@@ -132,7 +147,7 @@ export default function BottomNavigateBar() {
           <textarea
             className='mb-4 h-32 w-full resize-none rounded-md border border-gray-300 p-2 text-sm focus:ring-2 focus:ring-blue-400 focus:outline-none'
             placeholder='Describe your symptoms in detail'
-            value={localSymptomDetail}
+            value={symptomDetail}
             onChange={handleTextareaChange}
           />
           <button
