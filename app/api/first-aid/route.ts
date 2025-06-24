@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const response = await fetch('http://34.9.101.87:8080/first-aid/chat', {
+    const response = await fetch(`${process.env.API_BASE_URL}/first-aid/chat`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
