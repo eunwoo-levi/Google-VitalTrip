@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
 import { MdLocalPolice, MdLocalHospital, MdLocalFireDepartment, MdWarning } from 'react-icons/md';
 import { FaGlobeAmericas } from 'react-icons/fa';
-import { EMERGENCY_CALL_DB } from '@/src/widgets/bottomNavigateBar/data/emergencyCallData';
 
 interface EmergencyNumbers {
   country: string;
@@ -15,29 +14,15 @@ interface EmergencyNumbers {
 
 export default function EmergencyCallBanner() {
   const [emergencyInfo, setEmergencyInfo] = useState<EmergencyNumbers | null>(null);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    let called = false;
-    const detectCountry = async () => {
-      if (called) return;
-      called = true;
-      try {
-        const res = await fetch('/api/location');
-        if (!res.ok) throw new Error('Failed to fetch location data');
-        const data = await res.json();
-        const code = data.country_code?.toUpperCase();
-        const info = EMERGENCY_CALL_DB[code];
-        if (info) {
-          setEmergencyInfo(info);
-        } else {
-          setError('No emergency info for your country.');
-        }
-      } catch (e) {
-        setError('Location detection failed.');
-      }
-    };
-    detectCountry();
+    // 필리핀 정보 하드코딩
+    setEmergencyInfo({
+      country: 'Philippines',
+      police: '911',
+      ambulance: '911',
+      fire: '911',
+    });
   }, []);
 
   return (
@@ -60,10 +45,9 @@ export default function EmergencyCallBanner() {
           </span>
         )}
       </div>
+
       {/* 내용 */}
-      {error ? (
-        <div className='py-4 text-center font-semibold text-red-600'>{error}</div>
-      ) : !emergencyInfo ? (
+      {!emergencyInfo ? (
         <div className='py-4 text-center font-medium text-gray-400'>
           Loading emergency numbers...
         </div>
@@ -83,6 +67,7 @@ export default function EmergencyCallBanner() {
               Call
             </a>
           </div>
+
           {/* 구급차 */}
           <div className='flex items-center gap-4 rounded-xl bg-green-50 p-4'>
             <MdLocalHospital className='text-2xl text-green-600' />
@@ -97,6 +82,7 @@ export default function EmergencyCallBanner() {
               Call
             </a>
           </div>
+
           {/* 소방서 */}
           <div className='flex items-center gap-4 rounded-xl bg-orange-50 p-4'>
             <MdLocalFireDepartment className='text-2xl text-orange-500' />
@@ -113,6 +99,7 @@ export default function EmergencyCallBanner() {
           </div>
         </div>
       )}
+
       {/* 하단 안내 */}
       <div className='pt-2 text-center text-sm text-gray-500'>
         Tip: In many countries, dialing{' '}
