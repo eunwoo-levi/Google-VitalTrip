@@ -1,5 +1,7 @@
 ![VitalTrip_logo 수정](https://github.com/user-attachments/assets/32c4648e-448d-41ba-8b5b-265b10a47ab4)
 
+[Demo Link](https://youtu.be/Ikz8brbULTk)
+
 ### 2025 Google Asia-Pacific Solution Challenge - Top 10 Finalists
 
 # 🏥 VitalTrip
