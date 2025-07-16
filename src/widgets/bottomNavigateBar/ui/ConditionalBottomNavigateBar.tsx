@@ -6,7 +6,7 @@ import BottomNavigateBar from './BottomNavigateBar';
 export default function ConditionalBottomNavigateBar() {
     const pathname = usePathname();
 
-    if (pathname === '/about') {
+    if (pathname === '/about' || pathname === '/login' || pathname === '/signup') {
         return null;
     }
 
