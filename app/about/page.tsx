@@ -1,4 +1,4 @@
-import { FeaturesSection, HeroSection, VideoSection } from '@/src/widgets/about';
+import { FeaturesSection, HeroSection, VideoSection, Footer } from '@/src/widgets/about';
 import Navbar from '@/src/widgets/navbar/Navbar';
 import { Metadata } from 'next';
 
@@ -15,11 +15,12 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
     return (
-        <div className="min-h-screen overflow-x-hidden">
+        <div className="min-h-screen overflow-x-hidden md:pt-16">
             <Navbar />
             <HeroSection />
             <FeaturesSection />
             <VideoSection />
+            <Footer />
         </div>
     );
 }

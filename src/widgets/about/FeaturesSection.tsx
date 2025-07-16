@@ -22,7 +22,6 @@ export default function FeaturesSection() {
                     </p>
                 </motion.div>
 
-                {/* Main Feature */}
                 <div className="mb-16">
                     <div className="bg-gradient-to-r from-red-500 to-pink-500 rounded-3xl p-8 md:p-12 text-white relative overflow-hidden text-center">
                         <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-16 translate-x-16"></div>
@@ -34,7 +33,6 @@ export default function FeaturesSection() {
                     </div>
                 </div>
 
-                {/* Secondary Features */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <motion.div
                         initial={{ opacity: 0, x: -30 }}
