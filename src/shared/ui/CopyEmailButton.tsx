@@ -14,7 +14,8 @@ export default function CopyEmailButton() {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
-      console.error('복사 실패:', err);
+      // 보안상 상세한 에러 정보는 로깅하지 않음
+      console.error('이메일 복사 실패');
     }
   };
 

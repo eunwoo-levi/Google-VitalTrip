@@ -6,7 +6,6 @@ export async function POST(req: NextRequest) {
 
     const { email, password, name } = formData;
 
-    // 필수 필드 검증
     const errors: Record<string, string> = {};
 
     if (!email) errors.email = '이메일을 입력해야 합니다.';
@@ -17,7 +16,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ errors }, { status: 400 });
     }
 
-    const response = await fetch('http://localhost:8080/members/signup', {
+    const apiBaseUrl = process.env.API_BASE_URL || 'http://localhost:8080';
+    const response = await fetch(`${apiBaseUrl}/members/signup`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -27,7 +27,8 @@ export async function POST(req: NextRequest) {
 
     if (!response.ok) {
       const errorData = await response.json();
-      console.error('회원가입 실패:', errorData);
+      // 보안상 상세한 에러 정보는 로깅하지 않음
+      console.error('회원가입 API 응답 오류');
       return NextResponse.json(
         {
           errorCode: errorData.errorCode || 'BAD_REQUEST',
@@ -40,8 +41,19 @@ export async function POST(req: NextRequest) {
     const data = await response.json();
 
     return NextResponse.json(data, { status: response.status });
-  } catch (error: any) {
-    console.error('회원가입 요청 중 오류 발생:', error);
+  } catch (error) {
+    // 보안상 상세한 에러 정보는 로그에만 남기고, 최소한의 정보만 기록
+    console.error('회원가입 요청 실패');
+
+    if (error instanceof Error) {
+      return NextResponse.json(
+        {
+          errorCode: 'REGISTRATION_FAILED',
+          errorMessage: '회원가입에 실패했습니다. 입력 정보를 확인해주세요.',
+        },
+        { status: 400 },
+      );
+    }
 
     return NextResponse.json(
       {

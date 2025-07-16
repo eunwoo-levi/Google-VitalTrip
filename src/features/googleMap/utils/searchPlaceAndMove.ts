@@ -78,7 +78,13 @@ export const searchPlaceAndMove = ({ service, mapInstance, query }: SearchPlaceP
       }
     } else {
       console.error('Search failed:', status);
-      alert('No results found.');
+      import('@/src/shared/store/useToastStore').then(({ useToastStore }) => {
+        useToastStore.getState().addToast({
+          type: 'warning',
+          title: '검색 결과 없음',
+          message: '해당 위치를 찾을 수 없습니다. 다른 키워드로 검색해보세요.',
+        });
+      });
     }
   });
 };

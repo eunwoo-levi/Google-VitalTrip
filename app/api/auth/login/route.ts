@@ -10,7 +10,8 @@ export async function POST(req: NextRequest) {
     }
 
     // 로그인 요청
-    const response = await fetch('http://localhost:8080/members/login', {
+    const apiBaseUrl = process.env.API_BASE_URL || 'http://localhost:8080';
+    const response = await fetch(`${apiBaseUrl}/members/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -48,16 +49,17 @@ export async function POST(req: NextRequest) {
     });
 
     return NextResponse.json({ accessToken }, { status: response.status });
-  } catch (error: any) {
-    console.error('로그인 요청 중 오류 발생:', error);
+  } catch (error) {
+    // 보안상 상세한 에러 정보는 로그에만 남기고, 최소한의 정보만 기록
+    console.error('로그인 요청 실패');
 
-    if (error.response?.status === 400) {
+    if (error instanceof Error) {
       return NextResponse.json(
         {
-          errorCode: error.response.data?.errorCode || 'BAD_REQUEST',
-          errorMessage: error.response.data?.errorMessage || '로그인 정보가 일치하지 않습니다.',
+          errorCode: 'AUTHENTICATION_FAILED',
+          errorMessage: '로그인에 실패했습니다. 이메일과 비밀번호를 확인해주세요.',
         },
-        { status: 400 },
+        { status: 401 },
       );
     }
 

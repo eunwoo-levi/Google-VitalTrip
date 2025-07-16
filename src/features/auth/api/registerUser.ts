@@ -4,7 +4,12 @@ interface RegisterUser {
   name: string;
 }
 
-export const registerUser = async (formData: RegisterUser) => {
+interface RegisterResponse {
+  success: boolean;
+  message?: string;
+}
+
+export const registerUser = async (formData: RegisterUser): Promise<RegisterResponse> => {
   try {
     const response = await fetch('/api/auth/register', {
       method: 'POST',
@@ -20,7 +25,10 @@ export const registerUser = async (formData: RegisterUser) => {
     }
 
     return await response.json();
-  } catch (error: any) {
-    throw new Error(error.message || '회원가입에 실패했습니다.');
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+    throw new Error('회원가입에 실패했습니다.');
   }
 };

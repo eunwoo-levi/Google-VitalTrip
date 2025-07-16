@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import localFont from 'next/font/local';
 import { BottomNavigateBar } from '@/src/widgets/bottomNavigateBar/ui';
+import { ToastContainer } from '@/src/shared/ui/Toast';
 
 const iansui = localFont({
   src: '../public/fonts/iansui.woff2',
@@ -34,9 +35,9 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <body className={`${iansui.className} antialiased`}>
-        {' '}
         {children}
         <BottomNavigateBar />
+        <ToastContainer />
       </body>
     </html>
   );

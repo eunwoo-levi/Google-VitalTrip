@@ -3,7 +3,12 @@ interface LoginData {
   password: string;
 }
 
-export const loginUser = async (formData: LoginData) => {
+interface LoginResponse {
+  accessToken: string;
+  userInfo?: any; // TODO: 사용자 정보 타입 정의 필요
+}
+
+export const loginUser = async (formData: LoginData): Promise<LoginResponse> => {
   try {
     const response = await fetch('/api/auth/login', {
       method: 'POST',
@@ -19,7 +24,10 @@ export const loginUser = async (formData: LoginData) => {
     }
 
     return await response.json();
-  } catch (error: any) {
-    throw new Error(error.message || '로그인을 실패했습니다.');
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+    throw new Error('로그인을 실패했습니다.');
   }
 };

@@ -3,7 +3,13 @@ interface FirstAidRequest {
   symptomDetail: string;
 }
 
-export const postFirstAid = async (formData: FirstAidRequest) => {
+interface FirstAidResponse {
+  result?: string;
+  advice?: string;
+  emergencyLevel?: 'low' | 'medium' | 'high' | 'critical';
+}
+
+export const postFirstAid = async (formData: FirstAidRequest): Promise<FirstAidResponse> => {
   try {
     const response = await fetch('/api/first-aid', {
       method: 'POST',
@@ -18,9 +24,11 @@ export const postFirstAid = async (formData: FirstAidRequest) => {
       throw new Error(errorData.error || 'first aid POST 요청에 실패했습니다.');
     }
 
-    const data = await response.json();
-    return data;
-  } catch (error: any) {
-    throw new Error(error.message || 'first aid POST 요청에 실패했습니다.');
+    return await response.json();
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+    throw new Error('first aid POST 요청에 실패했습니다.');
   }
 };
