@@ -1,26 +1,8 @@
-'use client';
-
-import { useState } from 'react';
 import { RiRobot3Line } from 'react-icons/ri';
+import { useChatbot } from '../hooks/useChatbot';
 
 export default function Chatbot() {
-  const [isOpen, setIsOpen] = useState(false);
-  const [input, setInput] = useState('');
-  const [messages, setMessages] = useState<{ type: 'user' | 'bot'; text: string }[]>([]);
-
-  const sendMessage = async () => {
-    if (!input.trim()) return;
-    const userText = input;
-    setMessages([...messages, { type: 'user', text: userText }]);
-    setInput('');
-
-    const res = await fetch('/api/chatbot', {
-      method: 'POST',
-      body: JSON.stringify({ messages: [userText] }),
-    });
-    const data = await res.json();
-    setMessages((prev) => [...prev, { type: 'bot', text: data.text }]);
-  };
+  const { isOpen, userText, messages, setIsOpen, setUserText, sendMessage } = useChatbot();
 
   return (
     <>
@@ -51,9 +33,8 @@ export default function Chatbot() {
                 className={`flex ${msg.type === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 <div
-                  className={`max-w-[70%] rounded-lg px-3 py-2 ${
-                    msg.type === 'user' ? 'bg-blue-500 text-white' : 'bg-gray-100 text-gray-800'
-                  }`}
+                  className={`max-w-[70%] rounded-lg px-3 py-2 ${msg.type === 'user' ? 'bg-blue-500 text-white' : 'bg-gray-100 text-gray-800'
+                    }`}
                 >
                   {msg.text}
                 </div>
@@ -64,8 +45,8 @@ export default function Chatbot() {
           <div className='flex w-full gap-2 border-t px-3 py-2'>
             <input
               className='min-w-0 flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:ring-2 focus:ring-blue-400 focus:outline-none'
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
+              value={userText}
+              onChange={(e) => setUserText(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
               placeholder='Type here...'
             />
