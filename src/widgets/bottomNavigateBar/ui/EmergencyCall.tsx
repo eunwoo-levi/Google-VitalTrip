@@ -1,44 +1,11 @@
-'use client';
-
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { motion } from 'motion/react';
-import { EMERGENCY_CALL_DB } from '../data/emergencyCallData';
 import { MdLocalPolice, MdLocalHospital, MdLocalFireDepartment, MdWarning } from 'react-icons/md';
 import { FaGlobeAmericas } from 'react-icons/fa';
-
-interface EmergencyNumbers {
-  country: string;
-  police: string;
-  ambulance: string;
-  fire: string;
-}
+import { useEmergencyNumbers } from '@/src/features/firstAid/hooks/useEmergencyNumbers';
 
 export default function EmergencyCall() {
-  const [emergencyInfo, setEmergencyInfo] = useState<EmergencyNumbers | null>(null);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    let called = false;
-    const detectCountry = async () => {
-      if (called) return;
-      called = true;
-      try {
-        const res = await fetch('/api/location');
-        if (!res.ok) throw new Error('Failed to fetch location data');
-        const data = await res.json();
-        const code = data.country_code?.toUpperCase();
-        const info = EMERGENCY_CALL_DB[code];
-        if (info) {
-          setEmergencyInfo(info);
-        } else {
-          setError('Emergency contact info not available for your country.');
-        }
-      } catch (e) {
-        setError('Failed to detect your location. Please check your internet connection.');
-      }
-    };
-    detectCountry();
-  }, []);
+  const { emergencyInfo, isLoading, error } = useEmergencyNumbers();
 
   return (
     <motion.div
@@ -56,7 +23,7 @@ export default function EmergencyCall() {
       </div>
       {error ? (
         <div className='p-6 text-center text-lg font-bold text-red-600'>⚠️ {error}</div>
-      ) : !emergencyInfo ? (
+      ) : isLoading || !emergencyInfo ? (
         <div className='p-6 text-center text-lg font-semibold text-gray-600'>
           🔍 Detecting your emergency contact info...
         </div>
