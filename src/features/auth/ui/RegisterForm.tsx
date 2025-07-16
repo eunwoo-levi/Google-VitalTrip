@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { registerUser } from '../api/registerUser';
-import { useToast } from '@/src/shared/ui/Toast';
 
 interface FormData {
   email: string;
@@ -21,7 +20,6 @@ export default function RegisterForm() {
   const [error, setError] = useState<string | null>(null);
 
   const router = useRouter();
-  const { showSuccess } = useToast();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -38,7 +36,6 @@ export default function RegisterForm() {
 
     try {
       await registerUser(formData);
-      showSuccess('회원가입 완료', '로그인 페이지로 이동합니다.');
       setFormData({
         email: '',
         password: '',

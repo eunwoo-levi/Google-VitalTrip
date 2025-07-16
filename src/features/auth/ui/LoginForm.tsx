@@ -3,7 +3,6 @@
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { loginUser } from '../api/loginUser';
-import { useToast } from '@/src/shared/ui/Toast';
 
 interface FormData {
   email: string;
@@ -19,7 +18,6 @@ export default function LoginForm() {
   const [error, setError] = useState<string | null>(null);
 
   const router = useRouter();
-  const { showSuccess } = useToast();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -40,7 +38,6 @@ export default function LoginForm() {
         sessionStorage.setItem('accessToken', response.accessToken);
         const userInfo = await loginUser(formData);
         localStorage.setItem('userInfo', JSON.stringify(userInfo));
-        showSuccess('로그인 성공', '환영합니다! 메인 페이지로 이동합니다.');
         router.push('/');
       }
     } catch (err) {

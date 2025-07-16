@@ -31,7 +31,6 @@ const useFirstAidResult = () => {
         setResult(res.result || 'No result available');
       } catch (e) {
         setResult('An error occurred while processing your request. Please try again later.');
-        // 보안상 상세한 에러 정보는 로깅하지 않음
         console.error('First aid 요청 처리 실패');
       } finally {
         setLoading(false);
