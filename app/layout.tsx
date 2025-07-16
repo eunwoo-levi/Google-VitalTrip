@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import localFont from 'next/font/local';
-import { BottomNavigateBar } from '@/src/widgets/bottomNavigateBar/ui';
+import ConditionalBottomNavigateBar from '@/src/widgets/bottomNavigateBar/ui/ConditionalBottomNavigateBar';
 
 const iansui = localFont({
   src: '../public/fonts/iansui.woff2',
@@ -72,7 +72,7 @@ export default function RootLayout({
     <html lang='en'>
       <body className={`${iansui.className} antialiased`}>
         {children}
-        <BottomNavigateBar />
+        <ConditionalBottomNavigateBar />
       </body>
     </html>
   );

@@ -6,7 +6,7 @@ import { FaMapMarkedAlt, FaLanguage, FaRobot, FaHospitalAlt } from 'react-icons/
 export default function FeaturesSection() {
     return (
         <section className="py-20 bg-gradient-to-br from-white via-blue-50 to-green-50">
-            <div className="max-w-6xl mx-auto px-6">
+            <div className="max-w-6xl mx-auto px-4 md:px-6">
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
