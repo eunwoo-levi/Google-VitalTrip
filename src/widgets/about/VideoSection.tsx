@@ -29,7 +29,7 @@ export default function VideoSection() {
                     className="relative w-full aspect-video rounded-2xl overflow-hidden shadow-2xl"
                 >
                     <iframe
-                        src="https://www.youtube.com/embed/YOUR_VIDEO_ID"
+                        src="https://www.youtube.com/embed/Ikz8brbULTk"
                         title="VitalTrip Demo"
                         className="absolute inset-0 w-full h-full"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
