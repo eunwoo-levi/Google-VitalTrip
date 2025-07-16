@@ -2,6 +2,7 @@
 
 import { motion } from 'motion/react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function HeroSection() {
     return (
@@ -14,7 +15,7 @@ export default function HeroSection() {
                 priority
             />
             <div className="absolute inset-0 bg-black/70" />
-            <div className="relative z-10 text-center text-white px-6 max-w-4xl">
+            <div className="relative z-10 text-center text-white px-4 md:px-6 max-w-4xl w-full">
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -58,13 +59,12 @@ export default function HeroSection() {
                     transition={{ duration: 0.6, delay: 0.6, ease: "easeOut" }}
                     className="inline-block"
                 >
-                    <div className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-8 py-4 rounded-full font-semibold text-lg shadow-lg transition-all duration-300 cursor-pointer hover:scale-105 hover:shadow-xl">
+                    <Link href="/" className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-8 py-4 rounded-full font-semibold text-lg shadow-lg transition-all duration-300 cursor-pointer hover:scale-105 hover:shadow-xl">
                         Find Help Nearby
-                    </div>
+                    </Link>
                 </motion.div>
             </div>
 
-            {/* Scroll Indicator */}
             <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
