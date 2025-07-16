@@ -28,9 +28,10 @@ export default function BottomNavigateBar() {
 
   useEffect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
+      if (infoModalCode || isSymptomModalOpen) return;
+
       if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
         setIsMenuOpen(false);
-        setInfoModalCode(null);
       }
     };
 
@@ -38,7 +39,7 @@ export default function BottomNavigateBar() {
     return () => {
       document.removeEventListener('mousedown', handleOutsideClick);
     };
-  }, []);
+  }, [infoModalCode, isSymptomModalOpen]);
 
   const { setSymptomData } = useSymptomStore();
   const router = useRouter();
@@ -103,21 +104,6 @@ export default function BottomNavigateBar() {
                     >
                       {item.label}
                     </button>
-                    {infoModalCode === 'ABOUT_US' && (
-                      <Modal onClose={handleInfoModalClose}>
-                        <AboutUs />
-                      </Modal>
-                    )}
-                    {infoModalCode === 'EMERGENCY' && (
-                      <Modal onClose={handleInfoModalClose}>
-                        <EmergencyCall />
-                      </Modal>
-                    )}
-                    {infoModalCode === 'CONTACT' && (
-                      <Modal onClose={handleInfoModalClose}>
-                        <Contact />
-                      </Modal>
-                    )}
                   </li>
                 ))}
               </ul>
@@ -153,14 +139,29 @@ export default function BottomNavigateBar() {
           <button
             disabled={isDisabled}
             onClick={handleSubmit}
-            className={`w-full rounded-md px-4 py-2 text-white transition-colors duration-200 ${
-              isDisabled
-                ? 'cursor-not-allowed bg-gray-300'
-                : 'cursor-pointer bg-blue-500 hover:bg-blue-600'
-            }`}
+            className={`w-full rounded-md px-4 py-2 text-white transition-colors duration-200 ${isDisabled
+              ? 'cursor-not-allowed bg-gray-300'
+              : 'cursor-pointer bg-blue-500 hover:bg-blue-600'
+              }`}
           >
             Submit
           </button>
+        </Modal>
+      )}
+
+      {infoModalCode === 'ABOUT_US' && (
+        <Modal onClose={handleInfoModalClose}>
+          <AboutUs />
+        </Modal>
+      )}
+      {infoModalCode === 'EMERGENCY' && (
+        <Modal onClose={handleInfoModalClose}>
+          <EmergencyCall />
+        </Modal>
+      )}
+      {infoModalCode === 'CONTACT' && (
+        <Modal onClose={handleInfoModalClose}>
+          <Contact />
         </Modal>
       )}
     </>

@@ -24,13 +24,14 @@ const useFirstAidResult = () => {
 
     const postData = async () => {
       setLoading(true);
+
       try {
         const res = await postFirstAid({ symptomType, symptomDetail });
 
-        setResult(res.result);
+        setResult(res.result || 'No result available');
       } catch (e) {
         setResult('An error occurred while processing your request. Please try again later.');
-        console.error(e);
+        console.error('First aid 요청 처리 실패');
       } finally {
         setLoading(false);
       }

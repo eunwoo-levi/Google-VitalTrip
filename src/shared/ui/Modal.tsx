@@ -20,6 +20,7 @@ export default function Modal({ onClose, children }: ModalProps) {
       <div
         ref={modalRef}
         className='animate-slideFadeUp relative w-[95%] rounded-xl bg-white p-6 shadow-xl'
+        onClick={(e) => e.stopPropagation()}
       >
         <button
           onClick={onClose}

@@ -28,7 +28,7 @@ export const initializeMap = ({
       const loader = new Loader({
         apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string,
         version: 'quarterly',
-        libraries: ['places'], //  반드시 포함해야 함
+        libraries: ['places'],
       });
 
       const { Map } = await loader.importLibrary('maps');

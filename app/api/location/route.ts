@@ -17,7 +17,11 @@ export async function GET() {
     }
 
     return NextResponse.json(data);
-  } catch (e: any) {
-    return NextResponse.json({ error: '서버 에러 발생', detail: e.message }, { status: 500 });
+  } catch (e) {
+    const errorMessage = e instanceof Error ? e.message : '알 수 없는 오류가 발생했습니다.';
+    return NextResponse.json(
+      { error: '위치 정보를 가져오는데 실패했습니다.', detail: errorMessage },
+      { status: 500 },
+    );
   }
 }

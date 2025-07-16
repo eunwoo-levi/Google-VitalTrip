@@ -36,15 +36,14 @@ export default function RegisterForm() {
 
     try {
       await registerUser(formData);
-      alert('회원가입을 완료하였습니다.');
       setFormData({
         email: '',
         password: '',
         name: '',
       });
       router.push('/login');
-    } catch (err: any) {
-      const errorMessage = err.message || '회원가입에 실패했습니다. 다시 시도해주세요.';
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : '회원가입에 실패했습니다. 다시 시도해주세요.';
       setError(errorMessage);
     } finally {
       setIsLoading(false);

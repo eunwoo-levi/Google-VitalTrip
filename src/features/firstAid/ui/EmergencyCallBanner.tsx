@@ -1,29 +1,15 @@
-'use client';
-
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { motion } from 'motion/react';
 import { MdLocalPolice, MdLocalHospital, MdLocalFireDepartment, MdWarning } from 'react-icons/md';
 import { FaGlobeAmericas } from 'react-icons/fa';
-
-interface EmergencyNumbers {
-  country: string;
-  police: string;
-  ambulance: string;
-  fire: string;
-}
+import { useEmergencyNumbers } from '@/src/features/firstAid/hooks/useEmergencyNumbers';
 
 export default function EmergencyCallBanner() {
-  const [emergencyInfo, setEmergencyInfo] = useState<EmergencyNumbers | null>(null);
+  const { emergencyInfo, isLoading, error, retry } = useEmergencyNumbers();
 
-  useEffect(() => {
-    // 필리핀 정보 하드코딩
-    setEmergencyInfo({
-      country: 'Philippines',
-      police: '911',
-      ambulance: '911',
-      fire: '911',
-    });
-  }, []);
+  const handleRetry = () => {
+    retry();
+  };
 
   return (
     <motion.div
@@ -32,7 +18,7 @@ export default function EmergencyCallBanner() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      {/* 상단 타이틀 */}
+      {/* Header */}
       <div className='mb-2 flex items-center gap-2'>
         <MdWarning className='animate-pulse text-2xl text-red-500' />
         <span className='text-xl font-extrabold tracking-tight text-gray-900'>
@@ -46,15 +32,49 @@ export default function EmergencyCallBanner() {
         )}
       </div>
 
-      {/* 내용 */}
-      {!emergencyInfo ? (
-        <div className='py-4 text-center font-medium text-gray-400'>
-          Loading emergency numbers...
-        </div>
-      ) : (
-        <div className='flex flex-col gap-4'>
-          {/* 경찰 */}
-          <div className='flex items-center gap-4 rounded-xl bg-blue-50 p-4'>
+      {/* Content */}
+      {isLoading ? (
+        <motion.div
+          className='flex flex-col items-center gap-4 py-8'
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.3 }}
+        >
+          <div className='animate-spin rounded-full h-8 w-8 border-b-2 border-red-500'></div>
+          <div className='text-center font-medium text-gray-600'>
+            Detecting your location...
+          </div>
+        </motion.div>
+      ) : error ? (
+        <motion.div
+          className='flex flex-col items-center gap-4 py-8'
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.3 }}
+        >
+          <div className='text-center text-lg font-bold text-red-600'>
+            ⚠️ {error}
+          </div>
+          <button
+            onClick={handleRetry}
+            className='rounded-full bg-red-600 px-6 py-2 text-sm font-bold text-white shadow transition hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2'
+          >
+            Try Again
+          </button>
+        </motion.div>
+      ) : emergencyInfo ? (
+        <motion.div
+          className='flex flex-col gap-4'
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.1 }}
+        >
+          {/* Police */}
+          <motion.div
+            className='flex items-center gap-4 rounded-xl bg-blue-50 p-4'
+            whileHover={{ scale: 1.02 }}
+            transition={{ type: "spring", stiffness: 300 }}
+          >
             <MdLocalPolice className='text-2xl text-blue-600' />
             <div className='flex-1'>
               <div className='text-base font-bold text-blue-700'>Police</div>
@@ -62,14 +82,18 @@ export default function EmergencyCallBanner() {
             </div>
             <a
               href={`tel:${emergencyInfo.police}`}
-              className='rounded-full bg-blue-600 px-4 py-1.5 text-sm font-bold text-white shadow transition hover:bg-blue-700'
+              className='rounded-full bg-blue-600 px-4 py-1.5 text-sm font-bold text-white shadow transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'
             >
               Call
             </a>
-          </div>
+          </motion.div>
 
-          {/* 구급차 */}
-          <div className='flex items-center gap-4 rounded-xl bg-green-50 p-4'>
+          {/* Ambulance */}
+          <motion.div
+            className='flex items-center gap-4 rounded-xl bg-green-50 p-4'
+            whileHover={{ scale: 1.02 }}
+            transition={{ type: "spring", stiffness: 300 }}
+          >
             <MdLocalHospital className='text-2xl text-green-600' />
             <div className='flex-1'>
               <div className='text-base font-bold text-green-700'>Ambulance</div>
@@ -77,14 +101,18 @@ export default function EmergencyCallBanner() {
             </div>
             <a
               href={`tel:${emergencyInfo.ambulance}`}
-              className='rounded-full bg-green-600 px-4 py-1.5 text-sm font-bold text-white shadow transition hover:bg-green-700'
+              className='rounded-full bg-green-600 px-4 py-1.5 text-sm font-bold text-white shadow transition hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2'
             >
               Call
             </a>
-          </div>
+          </motion.div>
 
-          {/* 소방서 */}
-          <div className='flex items-center gap-4 rounded-xl bg-orange-50 p-4'>
+          {/* Fire */}
+          <motion.div
+            className='flex items-center gap-4 rounded-xl bg-orange-50 p-4'
+            whileHover={{ scale: 1.02 }}
+            transition={{ type: "spring", stiffness: 300 }}
+          >
             <MdLocalFireDepartment className='text-2xl text-orange-500' />
             <div className='flex-1'>
               <div className='text-base font-bold text-orange-600'>Fire</div>
@@ -92,20 +120,25 @@ export default function EmergencyCallBanner() {
             </div>
             <a
               href={`tel:${emergencyInfo.fire}`}
-              className='rounded-full bg-orange-500 px-4 py-1.5 text-sm font-bold text-white shadow transition hover:bg-orange-600'
+              className='rounded-full bg-orange-500 px-4 py-1.5 text-sm font-bold text-white shadow transition hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2'
             >
               Call
             </a>
-          </div>
-        </div>
-      )}
+          </motion.div>
+        </motion.div>
+      ) : null}
 
-      {/* 하단 안내 */}
-      <div className='pt-2 text-center text-sm text-gray-500'>
+      {/* Footer Tip */}
+      <motion.div
+        className='pt-2 text-center text-sm text-gray-500'
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, delay: 0.3 }}
+      >
         Tip: In many countries, dialing{' '}
         <span className='rounded bg-yellow-200 px-2 py-0.5 font-mono'>112</span> connects you to all
         emergency services.
-      </div>
+      </motion.div>
     </motion.div>
   );
 }
