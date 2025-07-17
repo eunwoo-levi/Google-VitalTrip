@@ -98,12 +98,22 @@ export default function BottomNavigateBar() {
               <ul className='p-2'>
                 {MENU_ITEMS.map((item) => (
                   <li key={item.code} className='flex flex-col items-center'>
-                    <button
-                      onClick={() => handleInfoModalOpen(item.code)}
-                      className='mb-2 hover:cursor-pointer hover:text-blue-500'
-                    >
-                      {item.label}
-                    </button>
+                    {item.code === 'ABOUT_US' ? (
+                      <Link
+                        href='/about'
+                        className='mb-2 hover:cursor-pointer hover:text-blue-500'
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        {item.label}
+                      </Link>
+                    ) : (
+                      <button
+                        onClick={() => handleInfoModalOpen(item.code)}
+                        className='mb-2 hover:cursor-pointer hover:text-blue-500'
+                      >
+                        {item.label}
+                      </button>
+                    )}
                   </li>
                 ))}
               </ul>
