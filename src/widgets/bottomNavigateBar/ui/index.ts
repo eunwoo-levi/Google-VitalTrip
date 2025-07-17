@@ -1,1 +1,1 @@
-export { default as BottomNavigateBar } from './BottomNavigateBar';
+export { default as ConditionalBottomNavigateBar } from './ConditionalBottomNavigateBar';
