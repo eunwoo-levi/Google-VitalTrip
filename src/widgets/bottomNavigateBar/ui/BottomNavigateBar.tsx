@@ -11,7 +11,6 @@ import { MENU_ITEMS, SYMPTOMS } from '../data/BottomNavigateBarData';
 import { useSymptomStore } from '@/src/features/firstAid/store/useSymptomStore';
 import { useRouter } from 'next/navigation';
 import Chatbot from '@/src/features/chatbot/ui/Chatbot';
-import AboutUs from './AboutUs';
 import Contact from './Contact';
 import EmergencyCall from './EmergencyCall';
 
@@ -156,12 +155,6 @@ export default function BottomNavigateBar() {
           >
             Submit
           </button>
-        </Modal>
-      )}
-
-      {infoModalCode === 'ABOUT_US' && (
-        <Modal onClose={handleInfoModalClose}>
-          <AboutUs />
         </Modal>
       )}
       {infoModalCode === 'EMERGENCY' && (
