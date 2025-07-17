@@ -6,7 +6,7 @@ import Link from 'next/link';
 
 export default function HeroSection() {
     return (
-        <section className="relative min-h-screen md:h-screen flex items-center md:items-start justify-center overflow-hidden pt-16 md:pt-20">
+        <section className="relative min-h-screen md:h-screen flex items-center md:items-start justify-center overflow-hidden ">
             <Image
                 src="/landing-image.webp"
                 alt="VitalTrip Landing Image"

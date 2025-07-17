@@ -5,7 +5,7 @@ import { FaMapMarkedAlt, FaLanguage, FaRobot, FaHospitalAlt } from 'react-icons/
 
 export default function FeaturesSection() {
     return (
-        <section className="py-20 bg-gradient-to-br from-white via-blue-50 to-green-50">
+        <section className="py-20">
             <div className="max-w-6xl mx-auto px-4 md:px-6">
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
@@ -14,6 +14,20 @@ export default function FeaturesSection() {
                     viewport={{ once: true }}
                     className="text-center mb-16"
                 >
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.6, delay: 0.2 }}
+                        viewport={{ once: true }}
+                        className="mb-6"
+                    >
+                        <div className="inline-flex items-center bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-6 py-3 rounded-full shadow-lg mb-4">
+                            <span className="text-lg font-bold">🏆</span>
+                            <span className="ml-2 text-sm md:text-base font-semibold">
+                                2025 Google Asia-Pacific Solution Challenge - Top 10 Finalists
+                            </span>
+                        </div>
+                    </motion.div>
                     <h2 className="text-4xl font-bold text-gray-900 mb-4">
                         Why Choose VitalTrip?
                     </h2>
