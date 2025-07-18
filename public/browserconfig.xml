@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<browserconfig>
+  <msapplication>
+    <tile>
+      <square150x150logo src="/vitalTrip.webp"/>
+      <square310x310logo src="/vitalTrip.webp"/>
+      <wide310x150logo src="/vitalTrip.webp"/>
+      <TileColor>#2563eb</TileColor>
+    </tile>
+  </msapplication>
+</browserconfig> 
