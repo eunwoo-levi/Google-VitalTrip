@@ -161,10 +161,11 @@ export default function TranslatePage() {
                           setIsSourceDropdownOpen(false);
                           setSearchQuery('');
                         }}
-                        className={`cursor-pointer px-4 py-2.5 text-sm transition-colors hover:bg-blue-50 ${sourceLanguage === lang.language
-                          ? 'bg-blue-100 font-medium text-blue-700'
-                          : 'text-gray-700'
-                          }`}
+                        className={`cursor-pointer px-4 py-2.5 text-sm transition-colors hover:bg-blue-50 ${
+                          sourceLanguage === lang.language
+                            ? 'bg-blue-100 font-medium text-blue-700'
+                            : 'text-gray-700'
+                        }`}
                       >
                         {lang.name}
                       </li>
@@ -176,10 +177,11 @@ export default function TranslatePage() {
 
             <button
               onClick={swapLanguages}
-              className={`mx-2 rounded-full p-2.5 transition-all ${sourceLanguage === 'auto'
-                ? 'cursor-not-allowed bg-gray-100 text-gray-400'
-                : 'text-blue-600 hover:bg-blue-100 active:bg-blue-200'
-                }`}
+              className={`mx-2 rounded-full p-2.5 transition-all ${
+                sourceLanguage === 'auto'
+                  ? 'cursor-not-allowed bg-gray-100 text-gray-400'
+                  : 'text-blue-600 hover:bg-blue-100 active:bg-blue-200'
+              }`}
               disabled={sourceLanguage === 'auto'}
               title={sourceLanguage === 'auto' ? "Can't swap with auto-detect" : 'Swap languages'}
             >
@@ -243,10 +245,11 @@ export default function TranslatePage() {
                             setIsTargetDropdownOpen(false);
                             setSearchQuery('');
                           }}
-                          className={`cursor-pointer px-4 py-2.5 text-sm transition-colors hover:bg-blue-50 ${targetLanguage === lang.language
-                            ? 'bg-blue-100 font-medium text-blue-700'
-                            : 'text-gray-700'
-                            }`}
+                          className={`cursor-pointer px-4 py-2.5 text-sm transition-colors hover:bg-blue-50 ${
+                            targetLanguage === lang.language
+                              ? 'bg-blue-100 font-medium text-blue-700'
+                              : 'text-gray-700'
+                          }`}
                         >
                           {lang.name}
                         </li>
@@ -284,8 +287,9 @@ export default function TranslatePage() {
                 <div className='flex items-center space-x-2'>
                   <button
                     onClick={() => setSourceText('')}
-                    className={`rounded p-1.5 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600 ${!sourceText ? 'invisible' : ''
-                      }`}
+                    className={`rounded p-1.5 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600 ${
+                      !sourceText ? 'invisible' : ''
+                    }`}
                     title='Clear text'
                   >
                     <svg
@@ -328,10 +332,11 @@ export default function TranslatePage() {
                 <button
                   onClick={handleTranslate}
                   disabled={isTranslating || !sourceText.trim()}
-                  className={`rounded-lg bg-blue-600 px-5 py-2 text-sm font-medium text-white shadow-sm transition-all hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none ${isTranslating || !sourceText.trim()
-                    ? 'cursor-not-allowed opacity-50'
-                    : 'cursor-pointer hover:shadow'
-                    }`}
+                  className={`rounded-lg bg-blue-600 px-5 py-2 text-sm font-medium text-white shadow-sm transition-all hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none ${
+                    isTranslating || !sourceText.trim()
+                      ? 'cursor-not-allowed opacity-50'
+                      : 'cursor-pointer hover:shadow'
+                  }`}
                 >
                   {isTranslating ? (
                     <span className='flex items-center justify-center'>

@@ -17,7 +17,8 @@ export default function Contact() {
       </div>
       <section className='mt-6 text-center text-lg font-medium text-gray-700'>
         <p>
-          If you have any questions, feedback, or need support, please don&apos;t hesitate to reach out.
+          If you have any questions, feedback, or need support, please don&apos;t hesitate to reach
+          out.
           <br />
           We value your input and aim to respond within{' '}
           <span className='font-bold text-blue-700'>24 hours</span>.
