@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { MdContactSupport } from 'react-icons/md';
 import { FaCheck } from 'react-icons/fa';
 
-
 const useCopyEmail = (email: string) => {
   const [copied, setCopied] = useState(false);
 
@@ -16,16 +15,15 @@ const useCopyEmail = (email: string) => {
     } catch (err) {
       console.error('이메일 복사 실패');
     }
-  }
+  };
 
   return { copied, onCopy: handleCopy };
-}
+};
 
 export default function CopyEmailButton() {
   const email = 'eunwoo1341@gmail.com';
 
   const { onCopy, copied } = useCopyEmail(email);
-
 
   return (
     <button

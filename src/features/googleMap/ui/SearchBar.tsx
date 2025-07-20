@@ -12,8 +12,6 @@ export default function SearchBar({
 }) {
   const { searchTerm, setSearchTerm, suggestions, setSuggestions } = useGoogleMapSearch();
 
-
-
   const handleSearch = (query: string) => {
     if (!query || !service || !mapInstance) return;
     setSearchTerm(query);

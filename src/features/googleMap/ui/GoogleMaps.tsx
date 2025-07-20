@@ -4,12 +4,7 @@ import SearchBar from './SearchBar';
 import { goToCurrentLocation } from '../utils/goToCurrentLocation';
 
 export default function GoogleMaps() {
-  const {
-    mapRef,
-    mapInstance,
-    service,
-  } = useGoogleMap();
-
+  const { mapRef, mapInstance, service } = useGoogleMap();
 
   return (
     <div className='absolute inset-0'>
