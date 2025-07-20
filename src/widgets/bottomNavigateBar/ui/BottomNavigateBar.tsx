@@ -77,7 +77,7 @@ export default function BottomNavigateBar() {
 
   return (
     <>
-      <div className='fixed bottom-2 left-1/2 z-10 flex h-[60px] w-[98%] -translate-x-1/2 items-center justify-evenly gap-2 rounded-t-xl bg-white shadow-xl text-black'>
+      <div className='fixed bottom-2 left-1/2 z-10 flex h-[60px] w-[98%] -translate-x-1/2 items-center justify-evenly gap-2 rounded-t-xl bg-white text-black shadow-xl'>
         <Link href='/' className={linkClassName}>
           <FaHome size={25} />
         </Link>
