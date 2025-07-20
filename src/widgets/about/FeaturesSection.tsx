@@ -5,7 +5,7 @@ import { FaMapMarkedAlt, FaLanguage, FaRobot, FaHospitalAlt } from 'react-icons/
 
 export default function FeaturesSection() {
   return (
-    <section className='py-20'>
+    <section className='bg-white py-20'>
       <div className='mx-auto max-w-6xl px-4 md:px-6'>
         <motion.div
           initial={{ opacity: 0, y: 30 }}

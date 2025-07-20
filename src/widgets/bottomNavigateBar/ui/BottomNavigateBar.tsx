@@ -77,7 +77,7 @@ export default function BottomNavigateBar() {
 
   return (
     <>
-      <div className='fixed bottom-2 left-1/2 z-10 flex h-[60px] w-[98%] -translate-x-1/2 items-center justify-evenly gap-2 rounded-t-xl bg-white shadow-xl'>
+      <div className='fixed bottom-2 left-1/2 z-10 flex h-[60px] w-[98%] -translate-x-1/2 items-center justify-evenly gap-2 rounded-t-xl bg-white shadow-xl text-black'>
         <Link href='/' className={linkClassName}>
           <FaHome size={25} />
         </Link>
@@ -148,11 +148,10 @@ export default function BottomNavigateBar() {
           <button
             disabled={isDisabled}
             onClick={handleSubmit}
-            className={`w-full rounded-md px-4 py-2 text-white transition-colors duration-200 ${
-              isDisabled
+            className={`w-full rounded-md px-4 py-2 text-white transition-colors duration-200 ${isDisabled
                 ? 'cursor-not-allowed bg-gray-300'
                 : 'cursor-pointer bg-blue-500 hover:bg-blue-600'
-            }`}
+              }`}
           >
             Submit
           </button>
