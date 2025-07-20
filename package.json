@@ -19,7 +19,12 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "lint:fix": "next lint --fix",
+    "type-check": "tsc --noEmit",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "ci": "pnpm type-check && pnpm lint && pnpm format:check && pnpm build"
   },
   "dependencies": {
     "@googlemaps/js-api-loader": "^1.16.8",
