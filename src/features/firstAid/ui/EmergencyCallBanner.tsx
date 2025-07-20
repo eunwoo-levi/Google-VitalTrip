@@ -40,10 +40,8 @@ export default function EmergencyCallBanner() {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.3 }}
         >
-          <div className='animate-spin rounded-full h-8 w-8 border-b-2 border-red-500'></div>
-          <div className='text-center font-medium text-gray-600'>
-            Detecting your location...
-          </div>
+          <div className='h-8 w-8 animate-spin rounded-full border-b-2 border-red-500'></div>
+          <div className='text-center font-medium text-gray-600'>Detecting your location...</div>
         </motion.div>
       ) : error ? (
         <motion.div
@@ -52,12 +50,10 @@ export default function EmergencyCallBanner() {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.3 }}
         >
-          <div className='text-center text-lg font-bold text-red-600'>
-            ⚠️ {error}
-          </div>
+          <div className='text-center text-lg font-bold text-red-600'>⚠️ {error}</div>
           <button
             onClick={handleRetry}
-            className='rounded-full bg-red-600 px-6 py-2 text-sm font-bold text-white shadow transition hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2'
+            className='rounded-full bg-red-600 px-6 py-2 text-sm font-bold text-white shadow transition hover:bg-red-700 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:outline-none'
           >
             Try Again
           </button>
@@ -73,7 +69,7 @@ export default function EmergencyCallBanner() {
           <motion.div
             className='flex items-center gap-4 rounded-xl bg-blue-50 p-4'
             whileHover={{ scale: 1.02 }}
-            transition={{ type: "spring", stiffness: 300 }}
+            transition={{ type: 'spring', stiffness: 300 }}
           >
             <MdLocalPolice className='text-2xl text-blue-600' />
             <div className='flex-1'>
@@ -82,7 +78,7 @@ export default function EmergencyCallBanner() {
             </div>
             <a
               href={`tel:${emergencyInfo.police}`}
-              className='rounded-full bg-blue-600 px-4 py-1.5 text-sm font-bold text-white shadow transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'
+              className='rounded-full bg-blue-600 px-4 py-1.5 text-sm font-bold text-white shadow transition hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none'
             >
               Call
             </a>
@@ -92,7 +88,7 @@ export default function EmergencyCallBanner() {
           <motion.div
             className='flex items-center gap-4 rounded-xl bg-green-50 p-4'
             whileHover={{ scale: 1.02 }}
-            transition={{ type: "spring", stiffness: 300 }}
+            transition={{ type: 'spring', stiffness: 300 }}
           >
             <MdLocalHospital className='text-2xl text-green-600' />
             <div className='flex-1'>
@@ -101,7 +97,7 @@ export default function EmergencyCallBanner() {
             </div>
             <a
               href={`tel:${emergencyInfo.ambulance}`}
-              className='rounded-full bg-green-600 px-4 py-1.5 text-sm font-bold text-white shadow transition hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2'
+              className='rounded-full bg-green-600 px-4 py-1.5 text-sm font-bold text-white shadow transition hover:bg-green-700 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:outline-none'
             >
               Call
             </a>
@@ -111,7 +107,7 @@ export default function EmergencyCallBanner() {
           <motion.div
             className='flex items-center gap-4 rounded-xl bg-orange-50 p-4'
             whileHover={{ scale: 1.02 }}
-            transition={{ type: "spring", stiffness: 300 }}
+            transition={{ type: 'spring', stiffness: 300 }}
           >
             <MdLocalFireDepartment className='text-2xl text-orange-500' />
             <div className='flex-1'>
@@ -120,7 +116,7 @@ export default function EmergencyCallBanner() {
             </div>
             <a
               href={`tel:${emergencyInfo.fire}`}
-              className='rounded-full bg-orange-500 px-4 py-1.5 text-sm font-bold text-white shadow transition hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2'
+              className='rounded-full bg-orange-500 px-4 py-1.5 text-sm font-bold text-white shadow transition hover:bg-orange-600 focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 focus:outline-none'
             >
               Call
             </a>

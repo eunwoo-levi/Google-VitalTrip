@@ -3,7 +3,8 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'AI-Powered First Aid Assistant',
-  description: 'Get instant AI-powered first aid guidance for medical emergencies. Describe your symptoms and receive step-by-step instructions for emergency care.',
+  description:
+    'Get instant AI-powered first aid guidance for medical emergencies. Describe your symptoms and receive step-by-step instructions for emergency care.',
   keywords: [
     'vitaltrip',
     'Google Solution Challenge',
@@ -20,7 +21,7 @@ export const metadata: Metadata = {
     'AI medical assistant',
     'symptom checker',
     'emergency first aid',
-    'medical advice'
+    'medical advice',
   ],
   openGraph: {
     title: 'AI-Powered First Aid Assistant | VitalTrip',

@@ -41,7 +41,8 @@ export default function LoginForm() {
         router.push('/');
       }
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : '로그인에 실패했습니다. 다시 시도해주세요.';
+      const errorMessage =
+        err instanceof Error ? err.message : '로그인에 실패했습니다. 다시 시도해주세요.';
       setError(errorMessage);
     } finally {
       setIsLoading(false);

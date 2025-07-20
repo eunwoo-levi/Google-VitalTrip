@@ -5,7 +5,11 @@ interface LoginData {
 
 interface LoginResponse {
   accessToken: string;
-  userInfo?: any; // TODO: 사용자 정보 타입 정의 필요
+  userInfo?: {
+    id: string;
+    email: string;
+    name?: string;
+  };
 }
 
 export const loginUser = async (formData: LoginData): Promise<LoginResponse> => {

@@ -35,6 +35,7 @@ VitalTrip is designed to address these global issues. It helps users quickly loc
 # 🛠 Tech Stack
 
 ### 🖥 Client
+
 Framework: Next.js
 UI: Tailwind CSS
 State Management: Zustand
@@ -42,16 +43,19 @@ APIs: Google Maps, Google Gemini, Google Translate
 Deployment: Vercel
 
 ### 🖧 Server
+
 Languages: Java 17, Python 3
 Framework: Spring Boot 3.1.5
 Database: MySQL
 
 ### ☁ Infrastructure & DevOps
+
 Google Cloud Platform (GCP)
 Docker
 GitHub Actions
 
 ### 📋 Collaboration Tools
+
 GitHub (version control)
 Notion (documentation)
 Discord (team communication)
@@ -62,9 +66,10 @@ Discord (team communication)
   </tr>
 </table>
 
-
 # 🚀 Core Features
+
 ### 📍 1. Nearby Hospital & Pharmacy Locator (Map)
+
 - Displays medical facilities within 1 km radius using Google Maps.
 - Clickable markers open detailed directions via Google Maps.
 - Includes search functionality.
@@ -77,15 +82,14 @@ Discord (team communication)
   </tr>
 </table>
 
-
 <table>
   <tr>
     <td align="center"><img src="https://github.com/user-attachments/assets/60cc17ae-4b0a-45d6-96d3-d2ca0413f4d4" width="800"/><br/>Web Map View</td>
   </tr>
 </table>
 
-
 ### 🌐 2. Real-Time Language Translation
+
 - Uses Google Translate API to automatically detect and translate any language.
 - Users can also manually select the target language.
 - Supports accurate communication in medical situations.
@@ -98,6 +102,7 @@ Discord (team communication)
 </table>
 
 ### 🚑 3. AI-Based First Aid Response
+
 Enter symptoms and receive AI-generated emergency response advice including:
 
 - First Aid Instructions
@@ -115,6 +120,7 @@ Enter symptoms and receive AI-generated emergency response advice including:
 </table>
 
 ### 🤖 4. Global Travel Chatbot
+
 - Ask anything related to your trip — from emergency procedures to cultural tips.
 - Available 24/7 and powered by natural language understanding.
 
@@ -126,6 +132,7 @@ Enter symptoms and receive AI-generated emergency response advice including:
 </table>
 
 ### 🧭 5. Utility Features (Dropdown Menu)
+
 - About Us Modal
 - Country-specific Emergency Numbers (Police, Ambulance, Fire) based on User's current location
 - Contact Us Modal
@@ -138,10 +145,9 @@ Enter symptoms and receive AI-generated emergency response advice including:
   </tr>
 </table>
 
-
 # 👥 Team
 
-| Role     | Members                   |
-| -------- | ------------------------- |
-| Frontend | Eunwoo Seong, Seohyun Jung |
-| Backend  | Jaemin An, Seyeon Park, Wooseok Yoo  |
+| Role     | Members                             |
+| -------- | ----------------------------------- |
+| Frontend | Eunwoo Seong, Seohyun Jung          |
+| Backend  | Jaemin An, Seyeon Park, Wooseok Yoo |
