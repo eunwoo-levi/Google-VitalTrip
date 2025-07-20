@@ -29,7 +29,6 @@
   "dependencies": {
     "@googlemaps/js-api-loader": "^1.16.10",
     "@tailwindcss/postcss": "^4.1.11",
-    "beasties": "^0.3.5",
     "motion": "^12.23.6",
     "next": "15.3.2",
     "react": "^19.1.0",
