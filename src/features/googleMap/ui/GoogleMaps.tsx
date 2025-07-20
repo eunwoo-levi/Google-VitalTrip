@@ -11,7 +11,7 @@ export default function GoogleMaps() {
       <SearchBar service={service} mapInstance={mapInstance} />
 
       <button
-        onClick={() => goToCurrentLocation}
+        onClick={() => goToCurrentLocation({ mapInstance, service })}
         className='absolute top-[240px] right-[6px] z-10 rounded-full bg-white p-3 shadow-lg transition hover:bg-gray-100'
       >
         📍
