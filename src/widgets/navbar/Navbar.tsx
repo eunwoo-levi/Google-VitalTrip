@@ -1,8 +1,5 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-import { useHydration } from '@/src/shared/hooks/useHydration';
-import { useOutsideClick } from '@/src/shared/hooks/useOutsideClick';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
@@ -13,7 +10,7 @@ export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
+    setIsMenuOpen((prev) => !prev);
   };
 
   const closeMenu = () => {
@@ -26,7 +23,13 @@ export default function Navbar() {
         <div className='flex h-16 items-center justify-between'>
           <div className='flex items-center'>
             <Link href='/' className='flex items-center space-x-2'>
-              <Image src='/VitalTrip.svg' alt='VitalTrip Logo' className='h-12 w-auto' width={48} height={48} />
+              <Image
+                src='/VitalTrip.svg'
+                alt='VitalTrip Logo'
+                className='h-12 w-auto'
+                width={48}
+                height={48}
+              />
             </Link>
           </div>
 
