@@ -33,6 +33,25 @@ export const initializeMap = async ({
     'marker',
   )) as google.maps.MarkerLibrary;
 
+  if (!navigator.geolocation) {
+    console.warn('Geolocation is not supported by this browser.');
+    initializeMapWithDefaultLocation();
+    return;
+  }
+
+  navigator.permissions
+    ?.query({ name: 'geolocation' })
+    .then((result) => {
+      if (result.state === 'denied') {
+        console.warn('Geolocation permission denied. Using default location.');
+        initializeMapWithDefaultLocation();
+        return;
+      }
+    })
+    .catch(() => {
+      // Permissions API not supported, continue with getCurrentPosition
+    });
+
   navigator.geolocation.getCurrentPosition(
     (position) => {
       const center = {
@@ -69,6 +88,48 @@ export const initializeMap = async ({
     },
     (error) => {
       console.error('위치 정보를 가져오는 데 실패했습니다:', error);
+      // Initialize map with default location on error
+      initializeMapWithDefaultLocation();
+    },
+    {
+      enableHighAccuracy: true,
+      timeout: 10000,
+      maximumAge: 600000, // 10 minutes
     },
   );
+
+  function initializeMapWithDefaultLocation() {
+    // Default to Seoul, Korea coordinates
+    const defaultCenter = {
+      lat: 37.5665,
+      lng: 126.978,
+    };
+
+    const map = new Map(mapRef.current as HTMLDivElement, {
+      center: defaultCenter,
+      zoom: 13,
+      mapId: 'NEXT_MAPS_VITALTRIPS',
+      zoomControl: true,
+      zoomControlOptions: {
+        position: google.maps.ControlPosition.TOP_RIGHT,
+      },
+      streetViewControl: true,
+      streetViewControlOptions: {
+        position: google.maps.ControlPosition.TOP_RIGHT,
+      },
+    });
+
+    setMapInstance(map);
+    const placesService = new google.maps.places.PlacesService(map);
+    setService(placesService);
+
+    // Show default location marker
+    new AdvancedMarkerElement({
+      map,
+      position: defaultCenter,
+    });
+
+    // Search nearby places with default location
+    findNearbyPlaces(placesService, defaultCenter, map);
+  }
 };
