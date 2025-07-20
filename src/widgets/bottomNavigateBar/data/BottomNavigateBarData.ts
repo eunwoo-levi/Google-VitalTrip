@@ -15,5 +15,5 @@ export const SYMPTOMS = [
   { code: 'POISONING', label: 'POISONING' },
   { code: 'BREATHING_DIFFICULTY', label: 'BREATHING DIFFICULTY' },
   { code: 'ANIMAL_BITE', label: 'ANIMAL_BITE' },
-  { code: 'FALL_INJURY', label: 'FALL_INJURY' },
+  { code: 'FALL_INJURY', label: 'FALL INJURY' },
 ];

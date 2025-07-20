@@ -1,8 +1,7 @@
-import React from 'react';
-import { motion } from 'motion/react';
-import { MdLocalPolice, MdLocalHospital, MdLocalFireDepartment, MdWarning } from 'react-icons/md';
-import { FaGlobeAmericas } from 'react-icons/fa';
 import { useEmergencyNumbers } from '@/src/features/firstAid/hooks/useEmergencyNumbers';
+import { motion } from 'motion/react';
+import { FaGlobeAmericas } from 'react-icons/fa';
+import { MdLocalFireDepartment, MdLocalHospital, MdLocalPolice, MdWarning } from 'react-icons/md';
 
 export default function EmergencyCallBanner() {
   const { emergencyInfo, isLoading, error, retry } = useEmergencyNumbers();
@@ -18,7 +17,6 @@ export default function EmergencyCallBanner() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      {/* Header */}
       <div className='mb-2 flex items-center gap-2'>
         <MdWarning className='animate-pulse text-2xl text-red-500' />
         <span className='text-xl font-extrabold tracking-tight text-gray-900'>
@@ -32,7 +30,6 @@ export default function EmergencyCallBanner() {
         )}
       </div>
 
-      {/* Content */}
       {isLoading ? (
         <motion.div
           className='flex flex-col items-center gap-4 py-8'
@@ -84,7 +81,6 @@ export default function EmergencyCallBanner() {
             </a>
           </motion.div>
 
-          {/* Ambulance */}
           <motion.div
             className='flex items-center gap-4 rounded-xl bg-green-50 p-4'
             whileHover={{ scale: 1.02 }}
@@ -124,7 +120,6 @@ export default function EmergencyCallBanner() {
         </motion.div>
       ) : null}
 
-      {/* Footer Tip */}
       <motion.div
         className='pt-2 text-center text-sm text-gray-500'
         initial={{ opacity: 0 }}

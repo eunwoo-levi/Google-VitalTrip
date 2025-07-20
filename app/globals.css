@@ -3,6 +3,7 @@
 html,
 body {
   overflow-x: hidden;
+  color: black;
 }
 
 @keyframes slideFadeUp {
