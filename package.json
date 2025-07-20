@@ -1,7 +1,20 @@
 {
-  "name": "gdg",
+  "name": "vitaltrip",
   "version": "0.1.0",
+  "description": "VitalTrip - Your Emergency Travel Companion. Find hospitals, translate symptoms, and get AI-powered first aid guidance worldwide.",
   "private": true,
+  "keywords": [
+    "vitaltrip",
+    "Google Solution Challenge",
+    "travel safety",
+    "emergency medical",
+    "hospital finder",
+    "medical translation",
+    "first aid AI",
+    "travel companion"
+  ],
+  "author": "VitalTrip Team",
+  "homepage": "https://vitaltrip.vercel.app",
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
