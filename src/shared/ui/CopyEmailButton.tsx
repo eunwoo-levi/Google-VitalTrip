@@ -12,7 +12,7 @@ const useCopyEmail = (email: string) => {
       await navigator.clipboard.writeText(email);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
-    } catch (err) {
+    } catch {
       console.error('이메일 복사 실패');
     }
   };

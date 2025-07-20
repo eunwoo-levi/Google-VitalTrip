@@ -1,5 +1,5 @@
 import { motion } from 'motion/react';
-import { MdEmail, MdContactSupport } from 'react-icons/md';
+import { MdEmail } from 'react-icons/md';
 import { FaRegSmile } from 'react-icons/fa';
 import CopyEmailButton from '@/src/shared/ui/CopyEmailButton';
 
@@ -13,11 +13,11 @@ export default function Contact() {
       <div className='flex flex-col items-center gap-2'>
         <MdEmail className='mb-1 text-5xl text-blue-600 drop-shadow' />
         <h2 className='text-3xl font-extrabold tracking-tight text-blue-700'>Contact Us</h2>
-        <span className='text-base font-semibold text-blue-500'>We're here to help you!</span>
+        <span className='text-base font-semibold text-blue-500'>We&apos;re here to help you!</span>
       </div>
       <section className='mt-6 text-center text-lg font-medium text-gray-700'>
         <p>
-          If you have any questions, feedback, or need support, please don't hesitate to reach out.
+          If you have any questions, feedback, or need support, please don&apos;t hesitate to reach out.
           <br />
           We value your input and aim to respond within{' '}
           <span className='font-bold text-blue-700'>24 hours</span>.
