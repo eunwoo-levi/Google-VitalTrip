@@ -1,16 +1,16 @@
 'use client';
 
+import Chatbot from '@/src/features/chatbot/ui/Chatbot';
+import { useSymptomStore } from '@/src/features/firstAid/store/useSymptomStore';
 import Dropdown from '@/src/shared/ui/Dropdown';
 import Modal from '@/src/shared/ui/Modal';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
 import { FaHome, FaRegHospital } from 'react-icons/fa';
 import { MdGTranslate } from 'react-icons/md';
 import { TiThMenu } from 'react-icons/ti';
 import { MENU_ITEMS, SYMPTOMS } from '../data/BottomNavigateBarData';
-import { useSymptomStore } from '@/src/features/firstAid/store/useSymptomStore';
-import { useRouter } from 'next/navigation';
-import Chatbot from '@/src/features/chatbot/ui/Chatbot';
 import Contact from './Contact';
 import EmergencyCall from './EmergencyCall';
 
@@ -77,7 +77,7 @@ export default function BottomNavigateBar() {
 
   return (
     <>
-      <div className='fixed bottom-2 left-1/2 z-10 flex h-[60px] w-[98%] -translate-x-1/2 items-center justify-evenly gap-2 rounded-t-xl bg-white text-black shadow-xl'>
+      <div className='fixed bottom-2 left-1/2 z-10 flex h-[60px] w-[98%] -translate-x-1/2 items-center justify-evenly gap-2 rounded-t-xl bg-white shadow-xl'>
         <Link href='/' className={linkClassName}>
           <FaHome size={25} />
         </Link>
@@ -126,7 +126,7 @@ export default function BottomNavigateBar() {
         <Modal onClose={closeModal}>
           <h2 className='mb-4 text-center text-xl font-bold'>Describe your symptom</h2>
           <select
-            className='mb-4 w-full rounded-md border border-gray-300 p-2 text-sm focus:ring-2 focus:ring-blue-400 focus:outline-none'
+            className='mb-4 w-full rounded-md border border-gray-300 p-2 text-sm font-semibold focus:ring-2 focus:ring-blue-400 focus:outline-none'
             onChange={handleSymptomChange}
             value={symptomType}
           >
@@ -134,7 +134,7 @@ export default function BottomNavigateBar() {
               Select symptom
             </option>
             {SYMPTOMS.map((symptom) => (
-              <option key={symptom.code} value={symptom.code}>
+              <option key={symptom.code} value={symptom.code} className='font-semibold'>
                 {symptom.label}
               </option>
             ))}
