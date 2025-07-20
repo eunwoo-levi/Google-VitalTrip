@@ -33,8 +33,9 @@ export default function Chatbot() {
                 className={`flex ${msg.type === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 <div
-                  className={`max-w-[70%] rounded-lg px-3 py-2 ${msg.type === 'user' ? 'bg-blue-500 text-white' : 'bg-gray-100 text-gray-800'
-                    }`}
+                  className={`max-w-[70%] rounded-lg px-3 py-2 ${
+                    msg.type === 'user' ? 'bg-blue-500 text-white' : 'bg-gray-100 text-gray-800'
+                  }`}
                 >
                   {msg.text}
                 </div>

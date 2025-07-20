@@ -64,9 +64,7 @@ const nextConfig: NextConfig = {
     ];
   },
 
-  // 실험적 기능
   experimental: {
-    optimizeCss: true,
     optimizePackageImports: ['react-icons'],
   },
 };

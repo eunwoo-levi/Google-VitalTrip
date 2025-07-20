@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+
 import './globals.css';
 import localFont from 'next/font/local';
 import ConditionalBottomNavigateBar from '@/src/widgets/bottomNavigateBar/ui/ConditionalBottomNavigateBar';
@@ -17,23 +17,14 @@ const iansui = localFont({
   display: 'swap',
 });
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
-});
-
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
-});
-
 export const metadata: Metadata = {
   metadataBase: new URL('https://vitaltrip.vercel.app'),
   title: {
     default: 'VitalTrip - Your Emergency Travel Companion',
-    template: '%s | VitalTrip'
+    template: '%s | VitalTrip',
   },
-  description: 'VitalTrip helps travelers respond quickly and effectively in emergency situations abroad. Find nearby hospitals, translate symptoms, get AI-powered first aid advice, and access emergency contacts worldwide.',
+  description:
+    'VitalTrip helps travelers respond quickly and effectively in emergency situations abroad. Find nearby hospitals, translate symptoms, get AI-powered first aid advice, and access emergency contacts worldwide.',
   keywords: [
     'vitaltrip',
     'Google Solution Challenge',
@@ -52,7 +43,7 @@ export const metadata: Metadata = {
     'travel health',
     'emergency services',
     'medical tourism',
-    'healthcare travel'
+    'healthcare travel',
   ],
   authors: [{ name: 'VitalTrip Team', url: 'https://vitaltrip.vercel.app' }],
   creator: 'VitalTrip',
@@ -73,9 +64,7 @@ export const metadata: Metadata = {
       { url: '/logo.webp', sizes: '16x16', type: 'image/webp' },
     ],
     shortcut: '/logo.webp',
-    apple: [
-      { url: '/logo.webp', sizes: '180x180', type: 'image/webp' },
-    ],
+    apple: [{ url: '/logo.webp', sizes: '180x180', type: 'image/webp' }],
     other: [
       {
         rel: 'apple-touch-icon-precomposed',
@@ -90,7 +79,8 @@ export const metadata: Metadata = {
     url: '/',
     siteName: 'VitalTrip',
     title: 'VitalTrip - Your Emergency Travel Companion',
-    description: 'Smart travel guide service for emergency situations abroad. Find hospitals, translate symptoms, and get AI-powered assistance.',
+    description:
+      'Smart travel guide service for emergency situations abroad. Find hospitals, translate symptoms, and get AI-powered assistance.',
     images: [
       {
         url: '/vitalTrip.webp',
@@ -156,11 +146,11 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link rel="dns-prefetch" href="https://maps.googleapis.com" />
-        <meta name="format-detection" content="telephone=no" />
-        <meta name="color-scheme" content="light dark" />
+        <link rel='preconnect' href='https://fonts.googleapis.com' />
+        <link rel='preconnect' href='https://fonts.gstatic.com' crossOrigin='anonymous' />
+        <link rel='dns-prefetch' href='https://maps.googleapis.com' />
+        <meta name='format-detection' content='telephone=no' />
+        <meta name='color-scheme' content='light dark' />
       </head>
       <body className={`${iansui.className} antialiased`}>
         <StructuredData data={websiteStructuredData} />

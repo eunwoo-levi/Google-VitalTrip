@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
     }
 
     return NextResponse.json({ result: responseData.data }, { status: 200 });
-  } catch (error) {
+  } catch {
     // 보안상 상세한 에러 정보는 로깅하지 않음
     console.error('First aid API 요청 실패');
     return new Response('Internal Server Error', { status: 500 });

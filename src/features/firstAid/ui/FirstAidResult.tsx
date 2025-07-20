@@ -128,7 +128,7 @@ export default function FirstAidResult() {
           <MdErrorOutline className='mb-4 text-5xl text-red-500' />
           <h2 className='mb-2 text-2xl font-bold text-gray-800'>Missing Information</h2>
           <p className='mb-6 text-center text-gray-600'>
-            We couldn't find your symptom information.
+            We couldn&apos;t find your symptom information.
             <br />
             Please go back and provide the necessary details.
           </p>
