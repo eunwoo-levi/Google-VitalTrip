@@ -65,7 +65,6 @@ export default function TranslatePage() {
         setDetectedLang(data.detectedSourceLanguage);
       }
     } catch {
-      // 보안상 상세한 에러 정보는 로깅하지 않음
       console.error('번역 요청 실패');
       setTranslatedText('번역에 실패했습니다.');
     } finally {
