@@ -1,12 +1,20 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { loginUser } from '../api/loginUser';
 
 interface FormData {
   email: string;
   password: string;
+}
+
+interface LoginResponse {
+  accessToken: string;
+  userInfo?: {
+    id: string;
+    email: string;
+    name?: string;
+  };
 }
 
 export default function LoginForm() {
@@ -17,14 +25,13 @@ export default function LoginForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const router = useRouter();
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
+    if (error) setError(null);
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -33,21 +40,17 @@ export default function LoginForm() {
     setError(null);
 
     try {
-      const response = await loginUser(formData);
-      if (response.accessToken) {
-        sessionStorage.setItem('accessToken', response.accessToken);
-        const userInfo = await loginUser(formData);
-        localStorage.setItem('userInfo', JSON.stringify(userInfo));
-        router.push('/');
-      }
+      const response: LoginResponse = await loginUser(formData);
+      // TODO: API 로직 추후 추가
     } catch (err) {
-      const errorMessage =
-        err instanceof Error ? err.message : '로그인에 실패했습니다. 다시 시도해주세요.';
+      const errorMessage = err instanceof Error ? err.message : 'Login failed. Please try again.';
       setError(errorMessage);
     } finally {
       setIsLoading(false);
     }
   };
+
+  const isFormValid = formData.email && formData.password;
 
   return (
     <div className='flex flex-col'>
@@ -63,7 +66,8 @@ export default function LoginForm() {
             value={formData.email}
             onChange={handleChange}
             placeholder='example@example.com'
-            className='w-full rounded-md border border-gray-300 p-3 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-400'
+            className='w-full rounded-md border border-gray-300 p-3 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-400 disabled:bg-gray-100'
+            disabled={isLoading}
             required
           />
         </div>
@@ -79,19 +83,31 @@ export default function LoginForm() {
             value={formData.password}
             onChange={handleChange}
             placeholder='Enter your password'
-            className='w-full rounded-md border border-gray-300 p-3 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-400'
+            className='w-full rounded-md border border-gray-300 p-3 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-400 disabled:bg-gray-100'
+            disabled={isLoading}
             required
           />
         </div>
 
-        {error && <p className='mb-4 text-sm text-red-500'>{error}</p>}
+        {error && (
+          <div className='mb-4 rounded-md border border-red-200 bg-red-50 p-3'>
+            <p className='text-sm text-red-600'>{error}</p>
+          </div>
+        )}
 
         <button
           type='submit'
-          className='w-full rounded-md bg-blue-500 py-3 font-semibold text-white transition duration-200 hover:bg-blue-600 disabled:bg-gray-400'
-          disabled={isLoading}
+          className='w-full rounded-md bg-blue-500 py-3 font-semibold text-white transition duration-200 hover:bg-blue-600 disabled:cursor-not-allowed disabled:bg-blue-300'
+          disabled={isLoading || !isFormValid}
         >
-          {isLoading ? 'Logging in...' : 'Login'}
+          {isLoading ? (
+            <div className='flex items-center justify-center'>
+              <div className='mr-2 h-4 w-4 animate-spin rounded-full border-b-2 border-white' />
+              Logging in...
+            </div>
+          ) : (
+            'Login'
+          )}
         </button>
       </form>
     </div>
