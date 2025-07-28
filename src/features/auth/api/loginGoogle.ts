@@ -1,12 +1,6 @@
 export const loginGoogle = async () => {
   try {
-    const response = await fetch('/api/auth/google');
-
-    if (!response.ok) {
-      throw new Error('Failed to login with Google');
-    }
-
-    return await response.json();
+    window.location.href = '/api/auth/loginGoogle';
   } catch {
     throw new Error('Failed to login with Google');
   }
