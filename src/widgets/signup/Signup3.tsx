@@ -1,5 +1,7 @@
 'use client';
 
+import { getFromSessionStorage } from '@/src/shared/utils/sessionService';
+
 interface FormData {
   email: string;
   password: string;
@@ -13,13 +15,20 @@ interface FormData {
 interface Signup3Props {
   formData: FormData;
   onPrev: () => void;
-  onSubmit: () => void;
+  onSubmit: (isGoogleSignup?: boolean) => void;
   isLoading: boolean;
 }
 
 export default function Signup3({ formData, onPrev, onSubmit, isLoading }: Signup3Props) {
+  const googleProfile = getFromSessionStorage('google-profile');
+  const { email: googleEmail } = googleProfile;
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (googleEmail) {
+      onSubmit(true);
+      return;
+    }
     onSubmit();
   };
 
@@ -35,7 +44,7 @@ export default function Signup3({ formData, onPrev, onSubmit, isLoading }: Signu
           </div>
           <div>
             <span className='text-sm font-medium text-gray-600'>Email:</span>
-            <p className='text-gray-800'>{formData.email}</p>
+            <p className='text-gray-800'>{googleEmail || formData.email}</p>
           </div>
           <div>
             <span className='text-sm font-medium text-gray-600'>Date of Birth:</span>

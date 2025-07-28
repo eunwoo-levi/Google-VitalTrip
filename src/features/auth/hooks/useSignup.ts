@@ -1,5 +1,6 @@
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { signupGoogleUser } from '../api/signupGoogleuser';
 import { signupUser } from '../api/signupUser';
 import { SignupFormData } from '../types/signup';
 
@@ -26,12 +27,22 @@ export const useSignup = () => {
     setError(null);
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (isGoogleSignup?: boolean) => {
     setIsLoading(true);
     setError(null);
 
     try {
-      await signupUser(formData);
+      if (isGoogleSignup) {
+        const googleFormData = {
+          name: formData.name,
+          birthDate: formData.birthDate,
+          countryCode: formData.countryCode,
+          phoneNumber: formData.phoneNumber,
+        };
+        await signupGoogleUser(googleFormData);
+      } else {
+        await signupUser(formData);
+      }
 
       setFormData({
         email: '',

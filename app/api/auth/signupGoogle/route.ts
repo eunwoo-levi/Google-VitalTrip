@@ -1,3 +1,4 @@
+import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
 const BASE_URL = process.env.API_BASE_URL || 'http://localhost:8080';
@@ -5,11 +6,14 @@ const BASE_URL = process.env.API_BASE_URL || 'http://localhost:8080';
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
+    const cookieStore = await cookies();
+    const tempToken = cookieStore.get('tempToken')?.value;
 
-    const response = await fetch(`${BASE_URL}/auth/signup`, {
+    const response = await fetch(`${BASE_URL}/oauth2/complete-profile`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${tempToken}`,
       },
       body: JSON.stringify(body),
     });

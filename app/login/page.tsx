@@ -1,4 +1,5 @@
 import { LoginForm } from '@/src/features/auth';
+import { GoogleAuthButton } from '@/src/features/auth/ui/GoogleAuthButton';
 import { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -24,9 +25,9 @@ export default function LoginPage() {
           Sign in to your VitalTrip account
         </h2>
 
-        <div className='rounded-xl border border-gray-100 bg-white px-8 py-10 shadow-lg'>
+        <div className='flex flex-col gap-4 rounded-xl bg-white px-8 py-10 shadow-lg'>
           <LoginForm />
-
+          <GoogleAuthButton />
           <div className='mt-6 text-center'>
             <div className='relative'>
               <div className='absolute inset-0 flex items-center'>
@@ -47,18 +48,6 @@ export default function LoginPage() {
               </Link>
             </div>
           </div>
-        </div>
-
-        <div className='mt-6 text-center'>
-          <p className='text-sm text-gray-500'>
-            Need help? Contact our
-            <Link
-              href='/about'
-              className='text-blue-600 transition-colors duration-200 hover:text-blue-800'
-            >
-              support team
-            </Link>
-          </p>
         </div>
       </div>
     </div>
