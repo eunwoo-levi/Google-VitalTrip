@@ -1,17 +1,8 @@
-interface RegisterUser {
-  email: string;
-  password: string;
-  name: string;
-}
+import { SignupFormData, SignupResponse } from '../types/signup';
 
-interface RegisterResponse {
-  success: boolean;
-  message?: string;
-}
-
-export const registerUser = async (formData: RegisterUser): Promise<RegisterResponse> => {
+export const signupUser = async (formData: SignupFormData): Promise<SignupResponse> => {
   try {
-    const response = await fetch('/api/auth/register', {
+    const response = await fetch('/api/auth/signup', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -24,7 +15,7 @@ export const registerUser = async (formData: RegisterUser): Promise<RegisterResp
       throw new Error(errorData.errorMessage || '회원가입에 실패했습니다.');
     }
 
-    return await response.json();
+    return response.json();
   } catch (error) {
     if (error instanceof Error) {
       throw error;
