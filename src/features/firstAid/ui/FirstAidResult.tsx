@@ -1,6 +1,7 @@
 'use client';
 
 import { Variants, motion } from 'motion/react';
+import Image from 'next/image';
 import { useEffect } from 'react';
 
 import EmergencyCallBanner from '@/src/features/firstAid/ui/EmergencyCallBanner';
@@ -158,8 +159,13 @@ export default function FirstAidResult() {
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.7, type: 'spring', stiffness: 100 }}
       >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src='/VitalTrip.svg' alt='VitalTrip Logo' className='h-16 w-auto' />
+        <Image
+          src='/VitalTrip.svg'
+          alt='VitalTrip Logo'
+          width={64}
+          height={64}
+          className='h-16 w-auto'
+        />
       </motion.div>
 
       <div ref={contentRef} className='w-full max-w-2xl'>

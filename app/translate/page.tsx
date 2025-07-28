@@ -95,7 +95,13 @@ export default function TranslatePage() {
     <main className='flex min-h-screen flex-col bg-gradient-to-b from-blue-50 to-gray-50 px-4 py-8'>
       <div className='mx-auto w-full max-w-7xl'>
         <div className='mb-6 flex items-center gap-3'>
-          <Image src='/VitalTrip.svg' alt='VitalTrip Logo' className='mt-1 ml-1 h-12 w-auto' />
+          <Image
+            src='/VitalTrip.svg'
+            alt='VitalTrip Logo'
+            width={48}
+            height={48}
+            className='mt-1 ml-1 h-12 w-auto'
+          />
           <h1 className='text-2xl font-semibold text-gray-800'>AI Translator</h1>
         </div>
 

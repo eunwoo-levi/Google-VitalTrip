@@ -11,7 +11,13 @@ export default function Footer() {
         <div className='grid grid-cols-1 gap-6 md:grid-cols-3'>
           <div className='space-y-4'>
             <div className='flex items-center space-x-2'>
-              <Image src='/VitalTrip.svg' alt='VitalTrip Logo' className='h-12 w-auto' />
+              <Image
+                src='/VitalTrip.svg'
+                alt='VitalTrip Logo'
+                width={48}
+                height={48}
+                className='h-12 w-auto'
+              />
             </div>
             <p className='leading-relaxed text-gray-300'>
               Your essential travel safety companion. <br />
