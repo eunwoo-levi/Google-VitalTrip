@@ -8,15 +8,6 @@ interface FormData {
   password: string;
 }
 
-interface LoginResponse {
-  accessToken: string;
-  userInfo?: {
-    id: string;
-    email: string;
-    name?: string;
-  };
-}
-
 export default function LoginForm() {
   const [formData, setFormData] = useState<FormData>({
     email: '',
