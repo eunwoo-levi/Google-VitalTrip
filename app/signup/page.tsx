@@ -2,6 +2,7 @@ import { SignupForm } from '@/src/features/auth';
 import { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
+import { Suspense } from 'react';
 
 export const metadata: Metadata = {
   title: 'Sign Up - VitalTrip',
@@ -13,18 +14,20 @@ export default function SignupPage() {
     <div className='flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 px-4 py-8'>
       <div className='w-full max-w-md'>
         <Image
-          src='/vitalTrip.svg'
+          src='/VitalTrip.svg'
           alt='VitalTrip Logo'
-          width={300}
-          height={300}
-          className='mx-auto'
+          width={120}
+          height={48}
+          className='mx-auto h-12 w-auto'
         />
         <h2 className='mb-8 text-center text-2xl font-bold text-gray-600'>
           Create your account to get started
         </h2>
 
         <div className='rounded-xl border border-gray-100 bg-white px-8 py-10 shadow-lg'>
-          <SignupForm />
+          <Suspense fallback={<div className='flex justify-center py-4'>Loading...</div>}>
+            <SignupForm />
+          </Suspense>
 
           <div className='mt-6 text-center'>
             <div className='relative'>

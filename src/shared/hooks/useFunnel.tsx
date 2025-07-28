@@ -20,11 +20,14 @@ export function useFunnel<T extends readonly string[]>(steps: T) {
     [router, pathname, searchParamsString],
   );
 
-  const Funnel = ({ children }: { children: React.ReactNode }) => <>{children}</>;
+  const Funnel = useCallback(({ children }: { children: React.ReactNode }) => <>{children}</>, []);
 
-  const Step = ({ name, children }: { name: T[number]; children: React.ReactNode }) => {
-    return name === step ? <>{children}</> : null;
-  };
+  const Step = useCallback(
+    ({ name, children }: { name: T[number]; children: React.ReactNode }) => {
+      return name === step ? <>{children}</> : null;
+    },
+    [step],
+  );
 
   return useMemo(
     () => ({
@@ -32,6 +35,6 @@ export function useFunnel<T extends readonly string[]>(steps: T) {
       Step,
       useStep: () => ({ step, setStep }),
     }),
-    [step, setStep, Step],
+    [step, setStep, Funnel, Step],
   );
 }
