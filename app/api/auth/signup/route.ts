@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
     } else {
       return NextResponse.json(data, { status: response.status });
     }
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       {
         errorCode: 'SIGNUP_FAILED',

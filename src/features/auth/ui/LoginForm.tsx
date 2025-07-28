@@ -40,8 +40,7 @@ export default function LoginForm() {
     setError(null);
 
     try {
-      const response: LoginResponse = await loginUser(formData);
-      // TODO: API 로직 추후 추가
+      await loginUser(formData);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Login failed. Please try again.';
       setError(errorMessage);

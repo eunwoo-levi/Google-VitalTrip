@@ -10,13 +10,14 @@ export function useFunnel<T extends readonly string[]>(steps: T) {
   const step =
     stepQuery && steps.includes(stepQuery as T[number]) ? (stepQuery as T[number]) : steps[0];
 
+  const searchParamsString = searchParams.toString();
   const setStep = useCallback(
     (nextStep: T[number]) => {
-      const params = new URLSearchParams(searchParams.toString());
+      const params = new URLSearchParams(searchParamsString);
       params.set('step', nextStep);
       router.push(`${pathname}?${params.toString()}`, { scroll: false });
     },
-    [router, pathname, searchParams.toString()],
+    [router, pathname, searchParamsString],
   );
 
   const Funnel = ({ children }: { children: React.ReactNode }) => <>{children}</>;
@@ -31,6 +32,6 @@ export function useFunnel<T extends readonly string[]>(steps: T) {
       Step,
       useStep: () => ({ step, setStep }),
     }),
-    [step, setStep], // Funnel, Step은 불변이므로 deps에서 제거 가능
+    [step, setStep, Step],
   );
 }
