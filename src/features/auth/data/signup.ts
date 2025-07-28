@@ -1,0 +1,15 @@
+export const COUNTRY_DIAL_CODES: Record<string, string> = {
+  KR: '+82',
+  US: '+1',
+  JP: '+81',
+  CN: '+86',
+  GB: '+44',
+  FR: '+33',
+  DE: '+49',
+  IT: '+39',
+  ES: '+34',
+  CA: '+1',
+  AU: '+61',
+  BR: '+55',
+  IN: '+91',
+};
