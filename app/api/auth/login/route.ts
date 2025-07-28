@@ -1,5 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
+import { NextRequest, NextResponse } from 'next/server';
+
+const apiBaseUrl = process.env.API_BASE_URL || 'http://localhost:8080';
 
 export async function POST(req: NextRequest) {
   try {
@@ -9,9 +11,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: '이메일과 비밀번호를 입력해야 합니다.' }, { status: 400 });
     }
 
-    // 로그인 요청
-    const apiBaseUrl = process.env.API_BASE_URL || 'http://localhost:8080';
-    const response = await fetch(`${apiBaseUrl}/members/login`, {
+    const response = await fetch(`${apiBaseUrl}/api/auth/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -29,7 +29,6 @@ export async function POST(req: NextRequest) {
 
     const { accessToken, refreshToken } = await response.json();
 
-    // refreshToken을 쿠키에 저장
     const cookieStore = await cookies();
 
     cookieStore.set('accessToken', accessToken, {
@@ -37,20 +36,19 @@ export async function POST(req: NextRequest) {
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
       path: '/',
-      maxAge: 60 * 30, // 30분 (accessToken 만료 시간)
+      maxAge: 60 * 60, // 1시간
     });
 
     cookieStore.set('refreshToken', refreshToken, {
-      httpOnly: true, // 클라이언트에서 접근 불가
-      secure: process.env.NODE_ENV === 'production', // 프로덕션에서는 HTTPS 사용
-      sameSite: 'strict', // (CSRF)크로스사이트 요청 방지
-      path: '/', // 쿠키를 모든 경로에서 사용 가능
-      maxAge: 60 * 60 * 24 * 7, // 7일 동안 유지
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      path: '/',
+      maxAge: 60 * 60 * 24 * 7, // 7일
     });
 
     return NextResponse.json({ accessToken }, { status: response.status });
   } catch (error) {
-    // 보안상 상세한 에러 정보는 로그에만 남기고, 최소한의 정보만 기록
     console.error('로그인 요청 실패');
 
     if (error instanceof Error) {
