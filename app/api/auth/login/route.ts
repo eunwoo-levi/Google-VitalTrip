@@ -29,6 +29,11 @@ export async function POST(req: NextRequest) {
 
     const { accessToken, refreshToken } = await response.json();
 
+    const data = await response.json();
+    console.log('response', data);
+    console.log('accessToken', accessToken);
+    console.log('refreshToken', refreshToken);
+
     const cookieStore = await cookies();
 
     cookieStore.set('accessToken', accessToken, {
