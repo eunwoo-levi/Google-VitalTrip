@@ -20,8 +20,14 @@ interface Signup3Props {
 }
 
 export default function Signup3({ formData, onPrev, onSubmit, isLoading }: Signup3Props) {
-  const googleProfile = getFromSessionStorage('google-profile');
-  const { email: googleEmail } = googleProfile;
+  let googleEmail: string | undefined;
+
+  try {
+    const googleProfile = getFromSessionStorage('google-profile');
+    googleEmail = googleProfile?.email;
+  } catch (error) {
+    googleEmail = undefined;
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
