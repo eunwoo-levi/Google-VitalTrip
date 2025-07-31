@@ -27,7 +27,8 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const { accessToken, refreshToken } = await response.json();
+    const data = await response.json();
+    const { accessToken, refreshToken } = data.data;
 
     const cookieStore = await cookies();
 
