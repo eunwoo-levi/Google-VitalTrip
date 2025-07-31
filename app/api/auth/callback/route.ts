@@ -5,6 +5,8 @@ export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
 
+    const accessToken = searchParams.get('accessToken');
+    const refreshToken = searchParams.get('refreshToken');
     const tempToken = searchParams.get('tempToken');
     const email = searchParams.get('email');
     const name = searchParams.get('name');
@@ -14,6 +16,31 @@ export async function GET(req: NextRequest) {
     if (error) {
       console.error('OAuth Error:', error);
       return NextResponse.redirect(new URL('/login?error=oauth_failed', req.url));
+    }
+
+    if (accessToken && refreshToken) {
+      const cookieStore = await cookies();
+      cookieStore.set('accessToken', accessToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+        path: '/',
+        maxAge: 60 * 60,
+      });
+
+      cookieStore.set('refreshToken', refreshToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+        path: '/',
+        maxAge: 60 * 60 * 24 * 7,
+      });
+
+      const successUrl = new URL('/about', req.url);
+
+      console.log('successUrl@@@@@@@@@@@@@', successUrl);
+
+      return NextResponse.redirect(successUrl);
     }
 
     if (tempToken) {
