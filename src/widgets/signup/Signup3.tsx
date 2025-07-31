@@ -25,7 +25,7 @@ export default function Signup3({ formData, onPrev, onSubmit, isLoading }: Signu
   try {
     const googleProfile = getFromSessionStorage('google-profile');
     googleEmail = googleProfile?.email;
-  } catch (error) {
+  } catch {
     googleEmail = undefined;
   }
 
