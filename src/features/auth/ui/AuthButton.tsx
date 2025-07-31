@@ -5,6 +5,9 @@ import { useAuth } from '../hooks/useAuth';
 export const AuthButton = ({ closeMenu }: { closeMenu: () => void }) => {
   const { isAuthenticated, profile, checkAuthStatus } = useAuth();
 
+  // 프로필 모달 구현 필요
+  console.log('profile', profile);
+
   const handleLogout = async () => {
     try {
       await logoutUser();
