@@ -10,7 +10,7 @@ export const useAuth = () => {
     try {
       const response = await getProfile();
       if (response.isAuthenticated) {
-        setProfile(response.data);
+        setProfile(response.data.data);
         setIsAuthenticated(true);
       } else {
         setProfile(null);

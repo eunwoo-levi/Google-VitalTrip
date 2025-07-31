@@ -18,7 +18,7 @@ export const AuthButton = ({ closeMenu }: { closeMenu: () => void }) => {
     return (
       <button
         onClick={handleLogout}
-        className='mx-2 mt-2 hidden items-center justify-center space-x-2 rounded-md bg-red-600 px-3 py-2 text-white transition-colors duration-200 hover:bg-red-700 md:flex'
+        className='mx-2 hidden items-center justify-center space-x-2 rounded-md bg-red-600 px-3 py-2 text-white transition-colors duration-200 hover:bg-red-700 md:flex'
       >
         <span>LOGOUT</span>
       </button>
@@ -29,7 +29,7 @@ export const AuthButton = ({ closeMenu }: { closeMenu: () => void }) => {
     <Link
       href='/login'
       onClick={closeMenu}
-      className='mx-2 mt-2 hidden items-center justify-center space-x-2 rounded-md bg-blue-600 px-3 py-2 text-white transition-colors duration-200 hover:bg-blue-700 md:flex'
+      className='mx-2 hidden items-center justify-center space-x-2 rounded-md bg-blue-600 px-3 py-2 text-white transition-colors duration-200 hover:bg-blue-700 md:flex'
     >
       <span>LOGIN</span>
     </Link>
