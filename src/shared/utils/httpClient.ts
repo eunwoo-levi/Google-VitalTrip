@@ -1,89 +1,70 @@
-const API_BASE_URL = process.env.API_BASE_URL || '';
-
-const defaultHeaders = {
-  'Content-Type': 'application/json',
-};
-
-interface RequestOptions {
-  headers?: HeadersInit;
-  signal?: AbortSignal;
-}
+import { FetchConfig } from '../types/http';
 
 export const httpClient = {
-  get: async <T>({ path, headers, signal }: { path: string } & RequestOptions): Promise<T> => {
-    const response = await fetch(`${API_BASE_URL}${path}`, {
-      method: 'GET',
-      headers: { ...defaultHeaders, ...headers },
-      signal,
-    });
-    if (!response.ok) throw new Error(response.statusText);
-    return response.json();
-  },
+  async request<T = unknown>(url: string, config: FetchConfig = {}): Promise<T> {
+    const { method = 'GET', headers = {}, body } = config;
 
-  post: async <T>({
-    path,
-    body,
-    headers,
-    signal,
-  }: { path: string; body?: unknown } & RequestOptions): Promise<T | void> => {
-    const response = await fetch(`${API_BASE_URL}${path}`, {
-      method: 'POST',
-      headers: { ...defaultHeaders, ...headers },
-      body: JSON.stringify(body),
-      signal,
-    });
-    if (!response.ok) throw new Error(response.statusText);
+    try {
+      const response = await fetch(url, {
+        method,
+        headers: {
+          'Content-Type': 'application/json',
+          ...headers,
+        },
+        body: body ? JSON.stringify(body) : undefined,
+      });
 
-    const contentType = response.headers.get('content-type');
-    if (contentType?.includes('application/json')) {
-      return response.json();
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || `HTTP ${response.status}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      throw error;
     }
-    return;
   },
 
-  delete: async ({ path, headers, signal }: { path: string } & RequestOptions): Promise<void> => {
-    const response = await fetch(`${API_BASE_URL}${path}`, {
-      method: 'DELETE',
-      headers: { ...defaultHeaders, ...headers },
-      signal,
-    });
-    if (!response.ok) throw new Error(response.statusText);
+  async get<T = unknown>(url: string, config?: Omit<FetchConfig, 'method'>): Promise<T> {
+    return this.request<T>(url, { ...config, method: 'GET' });
   },
 
-  put: async <T>({
-    path,
-    body,
-    headers,
-    signal,
-  }: { path: string; body: unknown } & RequestOptions): Promise<T> => {
-    const response = await fetch(`${API_BASE_URL}${path}`, {
-      method: 'PUT',
-      headers: { ...defaultHeaders, ...headers },
-      body: JSON.stringify(body),
-      signal,
-    });
-    if (!response.ok) throw new Error(response.statusText);
-    return response.json();
+  async post<T = unknown>(url: string, config?: Omit<FetchConfig, 'method' | 'body'>): Promise<T> {
+    return this.request<T>(url, { ...config, method: 'POST' });
   },
 
-  patch: async <T>({
-    path,
-    body,
-    headers,
-    signal,
-  }: { path: string; body: unknown } & RequestOptions): Promise<T | void> => {
-    const response = await fetch(`${API_BASE_URL}${path}`, {
-      method: 'PATCH',
-      headers: { ...defaultHeaders, ...headers },
-      body: JSON.stringify(body),
-      signal,
-    });
-    if (!response.ok) throw new Error(response.statusText);
+  async put<T = unknown>(url: string, config?: Omit<FetchConfig, 'method' | 'body'>): Promise<T> {
+    return this.request<T>(url, { ...config, method: 'PUT' });
+  },
 
-    const contentType = response.headers.get('content-type');
-    if (contentType?.includes('application/json')) {
-      return response.json();
-    }
-    return;
+  async delete<T = unknown>(url: string, config?: Omit<FetchConfig, 'method'>): Promise<T> {
+    return this.request<T>(url, { ...config, method: 'DELETE' });
+  },
+
+  async patch<T = unknown>(
+    url: string,
+    body?: unknown,
+    config?: Omit<FetchConfig, 'method' | 'body'>,
+  ): Promise<T> {
+    return this.request<T>(url, { ...config, method: 'PATCH', body });
+  },
+
+  async safeRequest(url: string, config: FetchConfig = {}): Promise<Response> {
+    const { method = 'GET', headers = {}, body } = config;
+
+    const response = await fetch(url, {
+      method,
+      headers: {
+        'Content-Type': 'application/json',
+        ...headers,
+      },
+      body: body ? JSON.stringify(body) : undefined,
+    });
+
+    return response;
+  },
+
+  async safeGet(url: string, config?: Omit<FetchConfig, 'method'>): Promise<Response> {
+    return this.safeRequest(url, { ...config, method: 'GET' });
   },
 };
