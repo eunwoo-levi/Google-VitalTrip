@@ -1,41 +1,13 @@
+import { httpServer } from '@/src/shared/utils/httpServer';
 import { NextRequest, NextResponse } from 'next/server';
-
-const BASE_URL = process.env.API_BASE_URL || 'http://localhost:8080';
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
 
-    const response = await fetch(`${BASE_URL}/auth/signup`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(body),
-    });
-
-    const contentType = response.headers.get('content-type');
-    let data;
-
-    if (contentType && contentType.includes('application/json')) {
-      data = await response.json();
-    } else {
-      const text = await response.text();
-      data = { message: text || 'No response body' };
-    }
-
-    if (response.ok) {
-      return NextResponse.json(data, { status: 201 });
-    } else {
-      return NextResponse.json(data, { status: response.status });
-    }
-  } catch {
-    return NextResponse.json(
-      {
-        errorCode: 'SIGNUP_FAILED',
-        errorMessage: 'Signup failed. Please check your input information.',
-      },
-      { status: 500 },
-    );
+    await httpServer.post('/auth/signup', body);
+    return NextResponse.json({ message: '회원가입 성공' }, { status: 201 });
+  } catch (error) {
+    return NextResponse.json({ message: error }, { status: 500 });
   }
 }

@@ -19,8 +19,6 @@ export async function GET(req: NextRequest) {
       return NextResponse.redirect(new URL('/login?error=oauth_failed', req.url));
     }
 
-    console.log('accessToken@@@@@@@@@@@@@', accessToken);
-    console.log('refreshToken@@@@@@@@@@@@@', refreshToken);
     if (success === 'true' && accessToken && refreshToken) {
       const cookieStore = await cookies();
       cookieStore.set('accessToken', accessToken, {

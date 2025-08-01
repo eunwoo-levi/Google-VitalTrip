@@ -1,38 +1,51 @@
+import { Profile } from '@/src/features/auth/types/auth';
+import { getTempToken } from '@/src/shared/utils/cookieService';
+import { httpServer } from '@/src/shared/utils/httpServer';
 import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
-const BASE_URL = process.env.API_BASE_URL || 'http://localhost:8080';
+interface SignupGoogleResponse {
+  message: string;
+  data: {
+    accessToken: string;
+    refreshToken: string;
+    user: Profile;
+  };
+}
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const cookieStore = await cookies();
-    const tempToken = cookieStore.get('tempToken')?.value;
+    const tempToken = await getTempToken();
+    if (!tempToken) {
+      return NextResponse.json({ message: 'tempToken is not found' }, { status: 401 });
+    }
 
-    const response = await fetch(`${BASE_URL}/oauth2/complete-profile`, {
-      method: 'POST',
+    const response: SignupGoogleResponse = await httpServer.post('/oauth2/complete-profile', body, {
       headers: {
-        'Content-Type': 'application/json',
         Authorization: `Bearer ${tempToken}`,
       },
-      body: JSON.stringify(body),
     });
 
-    const contentType = response.headers.get('content-type');
-    let data;
+    const { accessToken, refreshToken, user } = response.data;
 
-    if (contentType && contentType.includes('application/json')) {
-      data = await response.json();
-    } else {
-      const text = await response.text();
-      data = { message: text || 'No response body' };
-    }
+    const cookieStore = await cookies();
+    cookieStore.set('accessToken', accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      path: '/',
+      maxAge: 60 * 60, // 1시간
+    });
+    cookieStore.set('refreshToken', refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      path: '/',
+      maxAge: 60 * 60 * 24 * 7, // 7일
+    });
 
-    if (response.ok) {
-      return NextResponse.json(data, { status: 201 });
-    } else {
-      return NextResponse.json(data, { status: response.status });
-    }
+    return NextResponse.json(user, { status: 201 });
   } catch {
     return NextResponse.json(
       {

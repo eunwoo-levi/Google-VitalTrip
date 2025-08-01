@@ -1,4 +1,3 @@
-// utils/httpServer.ts
 import { FetchConfig } from '../types/http';
 
 const BASE_URL = process.env.API_BASE_URL;
@@ -15,12 +14,15 @@ async function request<T = unknown>(url: string, config: FetchConfig = {}): Prom
     body: body ? JSON.stringify(body) : undefined,
   });
 
+  const data = await response.json();
+
+  console.log('data@@@@@@@@@@@@@', data);
+
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || `HTTP ${response.status}`);
+    throw new Error(data.message || `HTTP ${response.status}`);
   }
 
-  return await response.json();
+  return data;
 }
 
 export const httpServer = {

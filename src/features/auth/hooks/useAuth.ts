@@ -9,8 +9,8 @@ export const useAuth = () => {
   const checkAuthStatus = useCallback(async () => {
     try {
       const response = await getProfile();
-      if (response.isAuthenticated) {
-        setProfile(response.data.data);
+      if (response.isAuthenticated && response.data) {
+        setProfile(response.data);
         setIsAuthenticated(true);
       } else {
         setProfile(null);

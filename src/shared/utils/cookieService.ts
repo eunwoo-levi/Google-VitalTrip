@@ -9,6 +9,15 @@ export const getAccessToken = async () => {
   return accessToken?.value;
 };
 
+export const getTempToken = async () => {
+  const cookieStore = await cookies();
+  const tempToken = cookieStore.get('tempToken');
+  if (!tempToken) {
+    return null;
+  }
+  return tempToken?.value;
+};
+
 export const deleteTokens = async () => {
   const cookieStore = await cookies();
   cookieStore.delete('accessToken');
