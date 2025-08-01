@@ -1,7 +1,7 @@
 'use client';
 
 import { useCheckEmail } from '@/src/features/auth/hooks/useCheckEmail';
-import { EmailCheckButton } from '@/src/features/auth/ui/EmailCheckButton';
+import { CheckEmailButton } from '@/src/features/auth/ui/CheckEmailButton';
 
 interface FormData {
   email: string;
@@ -53,7 +53,7 @@ export default function Signup1({ formData, onFormChange, onNext }: Signup1Props
               className='w-full rounded-md border border-gray-300 p-3 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-400'
               required
             />
-            <EmailCheckButton onCheck={() => checkEmail(formData.email)} isLoading={isLoading} />
+            <CheckEmailButton onCheck={() => checkEmail(formData.email)} isLoading={isLoading} />
           </div>
           {message && (
             <p className={`text-sm ${isAvailable ? 'text-green-500' : 'text-red-500'}`}>
