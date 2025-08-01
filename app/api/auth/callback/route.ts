@@ -1,4 +1,3 @@
-import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(req: NextRequest) {
@@ -19,47 +18,42 @@ export async function GET(req: NextRequest) {
       return NextResponse.redirect(new URL('/login?error=oauth_failed', req.url));
     }
 
+    const res = NextResponse.json({
+      email,
+      name,
+      profileImageUrl,
+    });
+
     if (success === 'true' && accessToken && refreshToken) {
-      const cookieStore = await cookies();
-      cookieStore.set('accessToken', accessToken, {
+      res.cookies.set('accessToken', accessToken, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
+        secure: true,
         sameSite: 'strict',
         path: '/',
         maxAge: 60 * 60,
       });
 
-      cookieStore.set('refreshToken', refreshToken, {
+      res.cookies.set('refreshToken', refreshToken, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
+        secure: true,
         sameSite: 'strict',
         path: '/',
         maxAge: 60 * 60 * 24 * 7,
       });
 
-      return NextResponse.json({
-        email,
-        name,
-        profileImageUrl,
-      });
+      return res;
     }
 
     if (tempToken) {
-      const cookieStore = await cookies();
-
-      cookieStore.set('tempToken', tempToken, {
+      res.cookies.set('tempToken', tempToken, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
+        secure: true,
         sameSite: 'strict',
         path: '/',
         maxAge: 60 * 30,
       });
 
-      return NextResponse.json({
-        email,
-        name,
-        profileImageUrl,
-      });
+      return res;
     }
 
     console.error('No Temp Token');

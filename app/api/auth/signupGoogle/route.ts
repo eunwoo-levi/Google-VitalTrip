@@ -1,7 +1,6 @@
 import { Profile } from '@/src/features/auth/types/auth';
 import { getTempToken } from '@/src/shared/utils/cookieService';
 import { httpServer } from '@/src/shared/utils/httpServer';
-import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
 interface SignupGoogleResponse {
@@ -29,17 +28,18 @@ export async function POST(req: NextRequest) {
 
     const { accessToken, refreshToken, user } = response.data;
 
-    const cookieStore = await cookies();
-    cookieStore.set('accessToken', accessToken, {
+    const res = NextResponse.json({ message: '회원가입 성공' }, { status: 201 });
+
+    res.cookies.set('accessToken', accessToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      secure: true,
       sameSite: 'strict',
       path: '/',
       maxAge: 60 * 60, // 1시간
     });
-    cookieStore.set('refreshToken', refreshToken, {
+    res.cookies.set('refreshToken', refreshToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      secure: true,
       sameSite: 'strict',
       path: '/',
       maxAge: 60 * 60 * 24 * 7, // 7일

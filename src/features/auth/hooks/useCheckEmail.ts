@@ -12,14 +12,14 @@ export const useCheckEmail = () => {
       const { available } = await checkEmailApi(email);
       if (available) {
         setIsAvailable(true);
-        setMessage('사용 가능한 이메일입니다.');
+        setMessage('This email is available.');
       } else if (!available) {
         setIsAvailable(false);
-        setMessage('이미 사용 중인 이메일입니다.');
+        setMessage('This email is already in use.');
       }
     } catch {
       setIsAvailable(false);
-      setMessage('이메일 중복 확인에 실패했습니다.');
+      setMessage('Failed to check email availability.');
     } finally {
       setIsLoading(false);
     }
