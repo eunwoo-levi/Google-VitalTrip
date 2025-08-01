@@ -1,37 +1,28 @@
+import { Profile } from '@/src/features/auth/types/auth';
+import { httpServer } from '@/src/shared/utils/httpServer';
 import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
-const BASE_URL = process.env.API_BASE_URL || 'http://localhost:8080';
+interface LoginResponse {
+  message: string;
+  data: {
+    accessToken: string;
+    refreshToken: string;
+    user: Profile;
+  };
+}
 
 export async function POST(req: NextRequest) {
   try {
     const { email, password } = await req.json();
-
     if (!email || !password) {
       return NextResponse.json({ error: '이메일과 비밀번호를 입력해야 합니다.' }, { status: 400 });
     }
 
-    const response = await fetch(`${BASE_URL}/auth/login`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email, password }),
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      return NextResponse.json(
-        { error: errorData.errorMessage || '로그인을 실패했습니다.' },
-        { status: response.status },
-      );
-    }
-
-    const data = await response.json();
-    const { accessToken, refreshToken } = data.data;
+    const response: LoginResponse = await httpServer.post('/auth/login', { email, password });
+    const { accessToken, refreshToken } = response.data;
 
     const cookieStore = await cookies();
-
     cookieStore.set('accessToken', accessToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
@@ -39,7 +30,6 @@ export async function POST(req: NextRequest) {
       path: '/',
       maxAge: 60 * 60, // 1시간
     });
-
     cookieStore.set('refreshToken', refreshToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
@@ -48,7 +38,7 @@ export async function POST(req: NextRequest) {
       maxAge: 60 * 60 * 24 * 7, // 7일
     });
 
-    return NextResponse.json({ accessToken }, { status: response.status });
+    return NextResponse.json({ message: '로그인 성공' }, { status: 200 });
   } catch (error) {
     console.error('로그인 요청 실패');
 

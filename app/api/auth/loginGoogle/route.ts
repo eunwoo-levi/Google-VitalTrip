@@ -1,16 +1,18 @@
+import { httpServer } from '@/src/shared/utils/httpServer';
 import { NextResponse } from 'next/server';
 
-const BASE_URL = process.env.API_BASE_URL || 'http://localhost:8080';
+interface LoginGoogleResponse {
+  message: string;
+  data: {
+    googleLoginUrl: string;
+    message: string;
+  };
+}
 
 export async function GET() {
   try {
-    const response = await fetch(`${BASE_URL}/oauth2/login-url`);
-    if (!response.ok) {
-      throw new Error('Failed to get login URL');
-    }
-
-    const data = await response.json();
-    const googleLoginUrl = data.data.googleLoginUrl;
+    const response: LoginGoogleResponse = await httpServer.get('/oauth2/login-url');
+    const googleLoginUrl = response.data.googleLoginUrl;
 
     return NextResponse.redirect(googleLoginUrl);
   } catch (error) {

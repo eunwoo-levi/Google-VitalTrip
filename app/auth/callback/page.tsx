@@ -28,6 +28,8 @@ export default function OAuthCallbackPage() {
         }
 
         if (success) {
+          const googleProfile = await oAuthCallback();
+          setToSessionStorage('google-profile', JSON.stringify(googleProfile));
           window.history.replaceState({}, document.title, window.location.pathname);
           router.push('/about');
           return;

@@ -5,6 +5,7 @@ export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
 
+    const success = searchParams.get('success');
     const accessToken = searchParams.get('accessToken');
     const refreshToken = searchParams.get('refreshToken');
     const tempToken = searchParams.get('tempToken');
@@ -18,7 +19,7 @@ export async function GET(req: NextRequest) {
       return NextResponse.redirect(new URL('/login?error=oauth_failed', req.url));
     }
 
-    if (accessToken && refreshToken) {
+    if (success === 'true' && accessToken && refreshToken) {
       const cookieStore = await cookies();
       cookieStore.set('accessToken', accessToken, {
         httpOnly: true,
@@ -36,11 +37,11 @@ export async function GET(req: NextRequest) {
         maxAge: 60 * 60 * 24 * 7,
       });
 
-      const successUrl = new URL('/about', req.url);
-
-      console.log('successUrl@@@@@@@@@@@@@', successUrl);
-
-      return NextResponse.redirect(successUrl);
+      return NextResponse.json({
+        email,
+        name,
+        profileImageUrl,
+      });
     }
 
     if (tempToken) {

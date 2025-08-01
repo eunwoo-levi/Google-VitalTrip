@@ -11,8 +11,6 @@ export default function SignupForm() {
   const { setStep } = useStep();
   const { formData, error, isLoading, handleFormChange, handleSubmit } = useSignup();
 
-  console.log(formData);
-
   const handleNext = (nextStep: (typeof SIGNUP_STEPS)[number]) => {
     setStep(nextStep);
   };

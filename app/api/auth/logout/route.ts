@@ -1,25 +1,23 @@
-import { cookies } from 'next/headers';
+import { deleteTokens, getAccessToken } from '@/src/shared/utils/cookieService';
+import { httpServer } from '@/src/shared/utils/httpServer';
 import { NextResponse } from 'next/server';
 
-const BASE_URL = process.env.API_BASE_URL || 'http://localhost:8080';
-
 export async function POST() {
-  const cookieStore = await cookies();
-  const accessToken = cookieStore.get('accessToken');
+  const accessToken = await getAccessToken();
+
+  if (!accessToken) {
+    return NextResponse.json({ message: '로그아웃 실패' }, { status: 401 });
+  }
+
   try {
-    const response = await fetch(`${BASE_URL}/auth/logout`, {
-      method: 'POST',
+    await httpServer.post('/auth/logout', undefined, {
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken?.value}`,
+        Authorization: `Bearer ${accessToken}`,
       },
     });
-    if (!response.ok) {
-      throw new Error('로그아웃 실패');
-    }
-    cookieStore.delete('refreshToken');
-    cookieStore.delete('accessToken');
-    return NextResponse.json({ message: '로그아웃 성공' }, { status: response.status });
+
+    await deleteTokens();
+    return NextResponse.json({ message: '로그아웃 성공' }, { status: 200 });
   } catch (error) {
     console.error('로그아웃 실패', error);
     return NextResponse.json({ message: '로그아웃 실패' }, { status: 500 });

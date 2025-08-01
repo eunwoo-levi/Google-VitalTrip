@@ -1,26 +1,22 @@
-import { cookies } from 'next/headers';
+import { Profile } from '@/src/features/auth/types/auth';
+import { getAccessToken } from '@/src/shared/utils/cookieService';
+import { httpServer } from '@/src/shared/utils/httpServer';
 import { NextResponse } from 'next/server';
 
-const BASE_URL = process.env.API_BASE_URL || 'http://localhost:8080';
-
 export async function GET() {
-  const cookieStore = await cookies();
-  const accessToken = cookieStore.get('accessToken');
+  const accessToken = await getAccessToken();
   if (!accessToken) {
     return NextResponse.json({ message: '프로필 조회 실패' }, { status: 401 });
   }
 
   try {
-    const response = await fetch(`${BASE_URL}/auth/me`, {
+    const response: Profile = await httpServer.get('/auth/me', {
       headers: {
-        Authorization: `Bearer ${accessToken?.value}`,
+        Authorization: `Bearer ${accessToken}`,
       },
     });
-    const data = await response.json();
-    if (!response.ok) {
-      return NextResponse.json({ isAuthenticated: false, data });
-    }
-    return NextResponse.json({ isAuthenticated: true, data });
+
+    return NextResponse.json({ isAuthenticated: true, data: response });
   } catch (error) {
     console.error('프로필 조회 실패', error);
     return NextResponse.json({ isAuthenticated: false }, { status: 500 });
