@@ -1,12 +1,16 @@
-import { useState } from 'react';
+interface EmailCheckButtonProps {
+  onCheck: () => void;
+  isLoading: boolean;
+}
 
-export const EmailCheckButton = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [isChecked, setIsChecked] = useState(false);
-
-  const handleCheck = async () => {
-    setIsLoading(true);
-  };
-
-  return <button>Check Availability</button>;
+export const EmailCheckButton = ({ onCheck, isLoading }: EmailCheckButtonProps) => {
+  return (
+    <button
+      className='rounded-md bg-blue-500 px-1 font-semibold text-white transition-colors duration-300 hover:bg-blue-600 disabled:bg-blue-300'
+      onClick={onCheck}
+      disabled={isLoading}
+    >
+      {isLoading ? 'Checking...' : 'Check Availability'}
+    </button>
+  );
 };
