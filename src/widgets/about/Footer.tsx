@@ -1,6 +1,6 @@
-import React from 'react';
-import { FaEnvelope } from 'react-icons/fa';
+import Image from 'next/image';
 import Link from 'next/link';
+import { FaEnvelope } from 'react-icons/fa';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -11,7 +11,13 @@ export default function Footer() {
         <div className='grid grid-cols-1 gap-6 md:grid-cols-3'>
           <div className='space-y-4'>
             <div className='flex items-center space-x-2'>
-              <img src='/VitalTrip.svg' alt='VitalTrip Logo' className='h-12 w-auto' />
+              <Image
+                src='/VitalTrip.svg'
+                alt='VitalTrip Logo'
+                width={48}
+                height={48}
+                className='h-12 w-auto'
+              />
             </div>
             <p className='leading-relaxed text-gray-300'>
               Your essential travel safety companion. <br />
@@ -36,10 +42,7 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link
-                  href='/first-aid'
-                  className='transition-colors duration-200 hover:text-blue-400'
-                >
+                <Link href='/' className='transition-colors duration-200 hover:text-blue-400'>
                   AI First Aid Assistant
                 </Link>
               </li>

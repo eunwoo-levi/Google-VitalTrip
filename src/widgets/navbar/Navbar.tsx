@@ -1,10 +1,11 @@
 'use client';
 
-import Link from 'next/link';
+import { AuthButton } from '@/src/features/auth/ui/AuthButton';
+import { AnimatePresence, motion } from 'motion/react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useState } from 'react';
 import { FaBars, FaTimes } from 'react-icons/fa';
-import { motion, AnimatePresence } from 'motion/react';
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -54,13 +55,7 @@ export default function Navbar() {
             </Link>
           </div>
 
-          <Link
-            href='/login'
-            onClick={closeMenu}
-            className='mx-2 mt-2 hidden items-center justify-center space-x-2 rounded-md bg-blue-600 px-3 py-2 text-white transition-colors duration-200 hover:bg-blue-700 md:flex'
-          >
-            <span>로그인</span>
-          </Link>
+          <AuthButton closeMenu={closeMenu} />
 
           <div className='md:hidden'>
             <button

@@ -1,15 +1,16 @@
 'use client';
 
-import { useEffect } from 'react';
 import { Variants, motion } from 'motion/react';
+import Image from 'next/image';
+import { useEffect } from 'react';
 
+import EmergencyCallBanner from '@/src/features/firstAid/ui/EmergencyCallBanner';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { BsCheckCircle } from 'react-icons/bs';
-import { HiOutlineChartBar } from 'react-icons/hi';
 import { FaRegLightbulb } from 'react-icons/fa';
-import { MdMedicalServices, MdArrowBack, MdErrorOutline, MdArrowForward } from 'react-icons/md';
+import { HiOutlineChartBar } from 'react-icons/hi';
+import { MdArrowBack, MdArrowForward, MdErrorOutline, MdMedicalServices } from 'react-icons/md';
 import useFirstAidResult from '../hooks/useFirstAidResult';
-import EmergencyCallBanner from '@/src/features/firstAid/ui/EmergencyCallBanner';
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 20 },
@@ -158,7 +159,13 @@ export default function FirstAidResult() {
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.7, type: 'spring', stiffness: 100 }}
       >
-        <img src='/VitalTrip.svg' alt='VitalTrip Logo' className='h-16 w-auto' />
+        <Image
+          src='/VitalTrip.svg'
+          alt='VitalTrip Logo'
+          width={64}
+          height={64}
+          className='h-16 w-auto'
+        />
       </motion.div>
 
       <div ref={contentRef} className='w-full max-w-2xl'>

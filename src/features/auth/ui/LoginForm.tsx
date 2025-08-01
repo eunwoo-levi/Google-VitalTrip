@@ -25,6 +25,7 @@ export default function LoginForm() {
       ...prevData,
       [name]: value,
     }));
+    if (error) setError(null);
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -33,67 +34,74 @@ export default function LoginForm() {
     setError(null);
 
     try {
-      const response = await loginUser(formData);
-      if (response.accessToken) {
-        sessionStorage.setItem('accessToken', response.accessToken);
-        const userInfo = await loginUser(formData);
-        localStorage.setItem('userInfo', JSON.stringify(userInfo));
-        router.push('/');
-      }
+      await loginUser(formData);
+      router.push('/');
     } catch (err) {
-      const errorMessage =
-        err instanceof Error ? err.message : '로그인에 실패했습니다. 다시 시도해주세요.';
+      const errorMessage = err instanceof Error ? err.message : 'Login failed. Please try again.';
       setError(errorMessage);
     } finally {
       setIsLoading(false);
     }
   };
 
+  const isFormValid = formData.email && formData.password;
+
   return (
-    <div className='flex flex-col'>
-      <form onSubmit={handleSubmit} className='flex flex-col'>
-        <div className='mb-4 flex flex-col'>
-          <label htmlFor='email' className='mb-2 text-sm font-medium text-gray-600'>
-            Email
-          </label>
-          <input
-            id='email'
-            name='email'
-            type='email'
-            value={formData.email}
-            onChange={handleChange}
-            placeholder='example@example.com'
-            className='w-full rounded-md border border-gray-300 p-3 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-400'
-            required
-          />
-        </div>
-
-        <div className='mb-6 flex flex-col'>
-          <label htmlFor='password' className='mb-2 text-sm font-medium text-gray-600'>
-            Password
-          </label>
-          <input
-            id='password'
-            name='password'
-            type='password'
-            value={formData.password}
-            onChange={handleChange}
-            placeholder='Enter your password'
-            className='w-full rounded-md border border-gray-300 p-3 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-400'
-            required
-          />
-        </div>
-
-        {error && <p className='mb-4 text-sm text-red-500'>{error}</p>}
-
-        <button
-          type='submit'
-          className='w-full rounded-md bg-blue-500 py-3 font-semibold text-white transition duration-200 hover:bg-blue-600 disabled:bg-gray-400'
+    <form onSubmit={handleSubmit} className='flex flex-col'>
+      <div className='mb-4 flex flex-col'>
+        <label htmlFor='email' className='text-md mb-2 font-semibold text-gray-600'>
+          Email
+        </label>
+        <input
+          id='email'
+          name='email'
+          type='email'
+          value={formData.email}
+          onChange={handleChange}
+          placeholder='example@example.com'
+          className='w-full rounded-md border border-gray-300 p-3 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-400 disabled:bg-gray-100'
           disabled={isLoading}
-        >
-          {isLoading ? 'Logging in...' : 'Login'}
-        </button>
-      </form>
-    </div>
+          required
+        />
+      </div>
+
+      <div className='mb-6 flex flex-col'>
+        <label htmlFor='password' className='text-md mb-2 font-semibold text-gray-600'>
+          Password
+        </label>
+        <input
+          id='password'
+          name='password'
+          type='password'
+          value={formData.password}
+          onChange={handleChange}
+          placeholder='Enter your password'
+          className='w-full rounded-md border border-gray-300 p-3 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-400 disabled:bg-gray-100'
+          disabled={isLoading}
+          required
+        />
+      </div>
+
+      {error && (
+        <div className='mb-4 rounded-md border border-red-200 bg-red-50 p-3'>
+          <p className='text-sm text-red-600'>{error}</p>
+        </div>
+      )}
+
+      <button
+        type='submit'
+        className='w-full rounded-md bg-blue-500 py-3 font-semibold text-white transition-colors duration-300 hover:bg-blue-600 disabled:cursor-not-allowed disabled:bg-blue-300'
+        disabled={isLoading || !isFormValid}
+      >
+        {isLoading ? (
+          <div className='flex items-center justify-center'>
+            <div className='mr-2 h-4 w-4 animate-spin rounded-full border-b-2 border-white' />
+            Logging in...
+          </div>
+        ) : (
+          'Login'
+        )}
+      </button>
+    </form>
   );
 }

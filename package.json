@@ -14,7 +14,7 @@
     "travel companion"
   ],
   "author": "VitalTrip Team",
-  "homepage": "https://vitaltrip.vercel.app",
+  "homepage": "https://aivitaltrip.com",
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
@@ -28,6 +28,8 @@
   },
   "dependencies": {
     "@googlemaps/js-api-loader": "^1.16.10",
+    "@next/third-parties": "^15.4.5",
+    "@sentry/nextjs": "^10.0.0",
     "@tailwindcss/postcss": "^4.1.11",
     "motion": "^12.23.6",
     "next": "15.3.2",
