@@ -1,14 +1,14 @@
 import type { Metadata } from 'next';
 
-import './globals.css';
-import localFont from 'next/font/local';
-import ConditionalBottomNavigateBar from '@/src/widgets/bottomNavigateBar/ui/ConditionalBottomNavigateBar';
 import StructuredData, {
-  websiteStructuredData,
-  webApplicationStructuredData,
-  organizationStructuredData,
   medicalWebsiteStructuredData,
+  organizationStructuredData,
+  webApplicationStructuredData,
+  websiteStructuredData,
 } from '@/src/shared/ui/StructuredData';
+import ConditionalBottomNavigateBar from '@/src/widgets/bottomNavigateBar/ui/ConditionalBottomNavigateBar';
+import localFont from 'next/font/local';
+import './globals.css';
 
 const iansui = localFont({
   src: '../public/fonts/iansui.woff2',
@@ -18,7 +18,7 @@ const iansui = localFont({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://vitaltrip.vercel.app'),
+  metadataBase: new URL('https://aivitaltrip.com'),
   title: {
     default: 'VitalTrip - Your Emergency Travel Companion',
     template: '%s | VitalTrip',
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
     'medical tourism',
     'healthcare travel',
   ],
-  authors: [{ name: 'VitalTrip Team', url: 'https://vitaltrip.vercel.app' }],
+  authors: [{ name: 'VitalTrip Team', url: 'https://aivitaltrip.com' }],
   creator: 'VitalTrip',
   publisher: 'VitalTrip',
   applicationName: 'VitalTrip',

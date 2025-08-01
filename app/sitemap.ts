@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://vitaltrip.vercel.app';
+  const baseUrl = 'https://aivitaltrip.com';
   const currentDate = new Date();
 
   return [
