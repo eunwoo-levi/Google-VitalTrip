@@ -4,16 +4,17 @@ import { NextRequest, NextResponse } from 'next/server';
 interface CheckEmailResponse {
   message: string;
   data: {
-    isAvailable: boolean;
+    available: boolean;
   };
 }
 
-export async function POST(request: NextRequest) {
-  const { email } = await request.json();
+export async function GET(request: NextRequest) {
+  const { searchParams } = new URL(request.url);
+  const email = searchParams.get('email');
 
   try {
-    const response = await httpServer.post('/auth/check-email', email);
-    return NextResponse.json(response);
+    const response: CheckEmailResponse = await httpServer.get(`/auth/check-email?email=${email}`);
+    return NextResponse.json(response.data);
   } catch (error) {
     return NextResponse.json({ message: error }, { status: 500 });
   }
