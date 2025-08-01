@@ -30,6 +30,7 @@ export async function getValidAccessToken(): Promise<string | null> {
 
       return accessToken;
     } catch (error) {
+      console.error('accessToken 재발급 실패', error);
       return null;
     }
   }
