@@ -1,3 +1,4 @@
+import { GoogleAnalytics } from '@next/third-parties/google';
 import type { Metadata } from 'next';
 
 import StructuredData, {
@@ -16,6 +17,8 @@ const iansui = localFont({
   style: 'normal',
   display: 'swap',
 });
+
+const GA_ID = process.env.GOOGLE_ANALYTICS_ID;
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://aivitaltrip.com'),
@@ -159,6 +162,7 @@ export default function RootLayout({
         <StructuredData data={medicalWebsiteStructuredData} />
         {children}
         <ConditionalBottomNavigateBar />
+        {GA_ID && <GoogleAnalytics gaId={GA_ID} />}
       </body>
     </html>
   );
