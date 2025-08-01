@@ -16,10 +16,6 @@ export async function GET() {
 
     return NextResponse.redirect(googleLoginUrl);
   } catch (error) {
-    console.error('Error logging in with Google in Server Side:', error);
-    return NextResponse.json(
-      { error: 'Failed to login with Google in Server Side' },
-      { status: 500 },
-    );
+    return NextResponse.json({ message: error }, { status: 500 });
   }
 }
