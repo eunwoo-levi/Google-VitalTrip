@@ -14,7 +14,7 @@
     "travel companion"
   ],
   "author": "VitalTrip Team",
-  "homepage": "https://vitaltrip.vercel.app",
+  "homepage": "https://aivitaltrip.com",
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
