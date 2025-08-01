@@ -17,7 +17,7 @@ export const useCheckEmail = () => {
         setIsAvailable(false);
         setMessage('이미 사용 중인 이메일입니다.');
       }
-    } catch (error) {
+    } catch {
       setIsAvailable(false);
       setMessage('이메일 중복 확인에 실패했습니다.');
     } finally {
