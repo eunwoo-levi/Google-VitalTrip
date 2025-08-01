@@ -1,14 +1,14 @@
 'use client';
 
 import { useFunnel } from '@/src/shared/hooks/useFunnel';
-import { Signup1, Signup2, Signup3 } from '@/src/widgets/signup';
+import { Signup1, Signup2, Signup3, SignupNavigateBar } from '@/src/widgets/signup';
 import { useSignup } from '../hooks/useSignup';
 
 const SIGNUP_STEPS = ['step1', 'step2', 'step3'] as const;
 
 export default function SignupForm() {
   const { Funnel, Step, useStep } = useFunnel(SIGNUP_STEPS);
-  const { setStep } = useStep();
+  const { step, setStep } = useStep();
   const { formData, error, isLoading, handleFormChange, handleSubmit } = useSignup();
 
   const handleNext = (nextStep: (typeof SIGNUP_STEPS)[number]) => {
@@ -21,6 +21,8 @@ export default function SignupForm() {
 
   return (
     <div className='flex flex-col'>
+      <SignupNavigateBar currentStep={step as 'step1' | 'step2' | 'step3'} />
+
       {error && (
         <div className='mb-4 rounded-md bg-red-50 p-4'>
           <p className='text-sm text-red-600'>{error}</p>
