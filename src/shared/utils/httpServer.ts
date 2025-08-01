@@ -16,8 +16,6 @@ async function request<T = unknown>(url: string, config: FetchConfig = {}): Prom
 
   const data = await response.json();
 
-  console.log('data@@@@@@@@@@@@@', data);
-
   if (!response.ok) {
     throw new Error(data.message || `HTTP ${response.status}`);
   }

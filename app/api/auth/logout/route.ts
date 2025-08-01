@@ -19,7 +19,6 @@ export async function POST() {
     await deleteTokens();
     return NextResponse.json({ message: '로그아웃 성공' }, { status: 200 });
   } catch (error) {
-    console.error('로그아웃 실패', error);
-    return NextResponse.json({ message: '로그아웃 실패' }, { status: 500 });
+    return NextResponse.json({ message: error }, { status: 500 });
   }
 }

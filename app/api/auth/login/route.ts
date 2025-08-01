@@ -40,24 +40,6 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ message: '로그인 성공' }, { status: 200 });
   } catch (error) {
-    console.error('로그인 요청 실패');
-
-    if (error instanceof Error) {
-      return NextResponse.json(
-        {
-          errorCode: 'AUTHENTICATION_FAILED',
-          errorMessage: '로그인에 실패했습니다. 이메일과 비밀번호를 확인해주세요.',
-        },
-        { status: 401 },
-      );
-    }
-
-    return NextResponse.json(
-      {
-        errorCode: 'INTERNAL_SERVER_ERROR',
-        errorMessage: '서버 내부 오류가 발생했습니다. 다시 시도해주세요.',
-      },
-      { status: 500 },
-    );
+    return NextResponse.json({ message: error }, { status: 500 });
   }
 }

@@ -46,13 +46,7 @@ export async function POST(req: NextRequest) {
     });
 
     return NextResponse.json(user, { status: 201 });
-  } catch {
-    return NextResponse.json(
-      {
-        errorCode: 'SIGNUP_FAILED',
-        errorMessage: 'Signup failed. Please check your input information.',
-      },
-      { status: 500 },
-    );
+  } catch (error) {
+    return NextResponse.json({ message: error }, { status: 500 });
   }
 }

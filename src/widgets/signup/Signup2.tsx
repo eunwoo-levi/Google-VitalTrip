@@ -70,7 +70,8 @@ export default function Signup2({ formData, onFormChange, onNext, onPrev }: Sign
             type='date'
             value={formData.birthDate}
             onChange={(e) => onFormChange('birthDate', e.target.value)}
-            className='w-full rounded-md border border-gray-300 p-3 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-400'
+            className='w-full rounded-md border border-gray-300 p-3 text-black outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-400 [&::-webkit-calendar-picker-indicator]:rounded [&::-webkit-calendar-picker-indicator]:bg-gray-300 [&::-webkit-calendar-picker-indicator]:p-1 [&::-webkit-calendar-picker-indicator]:hover:bg-gray-400'
+            lang='en'
             required
           />
         </div>

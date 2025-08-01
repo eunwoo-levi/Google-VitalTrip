@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 export default function SignupPage() {
   return (
     <div className='flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 px-4 py-8'>
-      <div className='w-full max-w-md'>
+      <div className='w-full max-w-lg'>
         <Image
           src='/VitalTrip.svg'
           alt='VitalTrip Logo'
