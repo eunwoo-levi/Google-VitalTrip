@@ -13,13 +13,16 @@ export default function SignupPage() {
   return (
     <div className='flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 px-4 py-8'>
       <div className='w-full max-w-lg'>
-        <Image
-          src='/VitalTrip.svg'
-          alt='VitalTrip Logo'
-          width={120}
-          height={48}
-          className='mx-auto h-12 w-auto'
-        />
+        <Link href='/'>
+          <Image
+            src='/VitalTrip.svg'
+            alt='VitalTrip Logo'
+            width={300}
+            height={300}
+            className='mx-auto'
+          />
+        </Link>
+
         <h2 className='mb-8 text-center text-2xl font-bold text-gray-600'>
           Create your account to get started
         </h2>
