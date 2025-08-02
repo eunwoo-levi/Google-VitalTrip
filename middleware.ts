@@ -4,11 +4,12 @@ import { NextResponse } from 'next/server';
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  if (pathname === '/login' || pathname === '/signup') {
-    const accessToken = request.cookies.get('accessToken')?.value;
-    const refreshToken = request.cookies.get('refreshToken')?.value;
+  const accessToken = request.cookies.get('accessToken')?.value;
+  const refreshToken = request.cookies.get('refreshToken')?.value;
+  const hasToken = accessToken || refreshToken;
 
-    if (accessToken || refreshToken) {
+  if (pathname === '/login' || pathname === '/signup') {
+    if (hasToken) {
       return NextResponse.redirect(new URL('/', request.url));
     }
   }
