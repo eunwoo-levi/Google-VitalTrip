@@ -9,6 +9,7 @@ import StructuredData, {
 } from '@/src/shared/ui/StructuredData';
 import ConditionalBottomNavigateBar from '@/src/widgets/bottomNavigateBar/ui/ConditionalBottomNavigateBar';
 import localFont from 'next/font/local';
+import { Suspense } from 'react';
 import './globals.css';
 
 const iansui = localFont({
@@ -161,7 +162,9 @@ export default function RootLayout({
         <StructuredData data={medicalWebsiteStructuredData} />
         {children}
         <ConditionalBottomNavigateBar />
-        <Analytics />
+        <Suspense fallback={null}>
+          <Analytics />
+        </Suspense>
         {GA_ID && <GoogleAnalytics gaId={GA_ID} />}
       </body>
     </html>
