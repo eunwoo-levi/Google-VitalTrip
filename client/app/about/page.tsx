@@ -2,6 +2,8 @@ import { FeaturesSection, Footer, HeroSection, VideoSection } from '@/src/widget
 import Navbar from '@/src/widgets/navbar/Navbar';
 import { Metadata } from 'next';
 
+export const dynamic = 'force-static';
+
 export const metadata: Metadata = {
   title: 'About VitalTrip - Your Essential Travel Safety Companion',
   description:
