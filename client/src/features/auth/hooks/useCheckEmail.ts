@@ -1,16 +1,15 @@
-import { APIError } from '@/src/shared/utils/apiError';
 import { useState } from 'react';
-import { checkEmail as checkEmailApi } from '../api/checkEmail';
+import { useCheckEmailMutation } from '../api/useCheckEmailMutation';
 
 export const useCheckEmail = () => {
   const [isAvailable, setIsAvailable] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [message, setMessage] = useState<string>('');
 
+  const { mutateAsync: checkEmailMutation, isPending, error } = useCheckEmailMutation();
+
   const checkEmail = async (email: string) => {
-    setIsLoading(true);
     try {
-      const { available } = await checkEmailApi(email);
+      const { available } = await checkEmailMutation(email);
       if (available) {
         setIsAvailable(true);
         setMessage('This email is available.');
@@ -18,16 +17,11 @@ export const useCheckEmail = () => {
         setIsAvailable(false);
         setMessage('This email is already in use.');
       }
-    } catch (error) {
-      if (error instanceof APIError) {
-        console.log('errorrrrrrrrrrrrrr', error);
-        setIsAvailable(false);
-        setMessage(error.message);
-      }
-    } finally {
-      setIsLoading(false);
+    } catch {
+      setIsAvailable(false);
+      setMessage(error?.message || 'Failed to check email availability');
     }
   };
 
-  return { message, isAvailable, checkEmail, isLoading };
+  return { message, isAvailable, checkEmail, isLoading: isPending };
 };

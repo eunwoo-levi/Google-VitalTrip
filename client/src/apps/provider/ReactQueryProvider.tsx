@@ -20,8 +20,8 @@ export default function ReactQueryProvider({ children, dehydratedState }: Props)
       new QueryClient({
         defaultOptions: {
           queries: {
-            staleTime: 60 * 1000, // 1분간 fresh
-            gcTime: 10 * 60 * 1000, // 10분 뒤 캐시에서 제거
+            staleTime: 60 * 1000, // 1분
+            gcTime: 10 * 60 * 1000, // 10분
             retry: 1,
             refetchOnWindowFocus: false,
           },

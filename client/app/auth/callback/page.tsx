@@ -1,6 +1,7 @@
 'use client';
 
 import { oAuthCallback } from '@/src/features/auth/api/oAuthCallback';
+import { APIError } from '@/src/shared/utils/apiError';
 import { setToSessionStorage } from '@/src/shared/utils/sessionService';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
@@ -48,7 +49,11 @@ export default function OAuthCallbackPage() {
         window.history.replaceState({}, document.title, window.location.pathname);
         router.push('/signup?step=step2');
       } catch (error) {
-        console.error('OAuth Callback Error:', error);
+        if (error instanceof APIError) {
+          console.error('OAuth Callback Error:', error.message || 'OAuth Callback Error');
+        } else {
+          console.error('OAuth Callback Error:', error);
+        }
         window.history.replaceState({}, document.title, window.location.pathname);
         router.push('/login?error=callback_failed');
       }
