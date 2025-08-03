@@ -1,6 +1,7 @@
 import { GoogleAnalytics } from '@next/third-parties/google';
 import type { Metadata } from 'next';
 
+import Analytics from '@/src/apps/lib/Analytics';
 import StructuredData, {
   medicalWebsiteStructuredData,
   organizationStructuredData,
@@ -162,6 +163,7 @@ export default function RootLayout({
         <StructuredData data={medicalWebsiteStructuredData} />
         {children}
         <ConditionalBottomNavigateBar />
+        <Analytics />
         {GA_ID && <GoogleAnalytics gaId={GA_ID} />}
       </body>
     </html>
