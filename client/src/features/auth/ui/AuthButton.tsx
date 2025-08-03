@@ -4,16 +4,13 @@ import { useProfileQuery } from '../api/useProfileQuery';
 
 export const AuthButton = ({ closeMenu }: { closeMenu: () => void }) => {
   const { data, isError, error } = useProfileQuery();
-  console.log('data@@@@@@@@@@@@@', data);
   const profile = data?.data?.data;
   const isAuthenticated = data?.isAuthenticated;
-
-  console.log('profile nameeee@@@@@@@@@@@@@', profile?.name);
 
   const { mutateAsync: logoutUser } = useLogoutMutation();
 
   if (isError) {
-    console.log('Error fetching profile:', error.message);
+    console.error('Error fetching profile:', error.message);
   }
 
   const handleLogout = async () => {

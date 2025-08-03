@@ -25,7 +25,7 @@ export default function SignupForm() {
 
       {error && (
         <div className='mb-4 rounded-md bg-red-50 p-4'>
-          <p className='text-sm text-red-600'>{error}</p>
+          <p className='text-sm text-red-600'>{error.message}</p>
         </div>
       )}
 
