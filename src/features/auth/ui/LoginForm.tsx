@@ -1,5 +1,6 @@
 'use client';
 
+import { APIError } from '@/src/shared/utils/apiError';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { loginUser } from '../api/loginUser';
@@ -36,9 +37,12 @@ export default function LoginForm() {
     try {
       await loginUser(formData);
       router.push('/');
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Login failed. Please try again.';
-      setError(errorMessage);
+    } catch (error) {
+      if (error instanceof APIError) {
+        setError(error.message);
+      } else {
+        setError('Login failed. Please try again.');
+      }
     } finally {
       setIsLoading(false);
     }

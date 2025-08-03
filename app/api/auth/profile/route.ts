@@ -1,4 +1,5 @@
 import { Profile } from '@/src/features/auth/types/auth';
+import { APIError } from '@/src/shared/utils/apiError';
 import { getValidAccessToken } from '@/src/shared/utils/cookieService';
 import { httpServer } from '@/src/shared/utils/httpServer';
 import { NextResponse } from 'next/server';
@@ -6,7 +7,7 @@ import { NextResponse } from 'next/server';
 export async function GET() {
   const accessToken = await getValidAccessToken();
   if (!accessToken) {
-    return NextResponse.json({ message: '프로필 조회 실패' }, { status: 401 });
+    return NextResponse.json({ message: 'Please login again' }, { status: 401 });
   }
 
   try {
@@ -18,7 +19,9 @@ export async function GET() {
 
     return NextResponse.json({ isAuthenticated: true, data: response });
   } catch (error) {
-    console.error('프로필 조회 실패', error);
+    if (error instanceof APIError && error.status === 401) {
+      return NextResponse.json({ message: 'Please login again' }, { status: 401 });
+    }
     return NextResponse.json({ isAuthenticated: false }, { status: 500 });
   }
 }

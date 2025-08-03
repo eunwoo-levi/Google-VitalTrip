@@ -1,4 +1,5 @@
 import { Profile } from '@/src/features/auth/types/auth';
+import { APIError } from '@/src/shared/utils/apiError';
 import { getTempToken } from '@/src/shared/utils/cookieService';
 import { httpServer } from '@/src/shared/utils/httpServer';
 import { NextRequest, NextResponse } from 'next/server';
@@ -28,7 +29,7 @@ export async function POST(req: NextRequest) {
 
     const { accessToken, refreshToken, user } = response.data;
 
-    const res = NextResponse.json({ message: '회원가입 성공' }, { status: 201 });
+    const res = NextResponse.json({ message: 'Google signup success' }, { status: 201 });
 
     res.cookies.set('accessToken', accessToken, {
       httpOnly: true,
@@ -47,6 +48,18 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(user, { status: 201 });
   } catch (error) {
-    return NextResponse.json({ message: error }, { status: 500 });
+    if (error instanceof APIError) {
+      if (error.status === 400) {
+        return NextResponse.json(
+          { message: 'Please enter a valid email address' },
+          { status: 400 },
+        );
+      } else if (error.status === 401) {
+        return NextResponse.json({ message: 'Please login again' }, { status: 401 });
+      } else if (error.status === 404) {
+        return NextResponse.json({ message: 'User not found' }, { status: 404 });
+      }
+    }
+    return NextResponse.json({ message: 'Google signup failed' }, { status: 500 });
   }
 }
