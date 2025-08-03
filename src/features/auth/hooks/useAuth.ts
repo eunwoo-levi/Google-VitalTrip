@@ -1,7 +1,12 @@
+import { APIError } from '@/src/shared/utils/apiError';
 import { useCallback, useEffect, useState } from 'react';
 import { getProfile } from '../api/getProfile';
 import { Profile } from '../types/auth';
 
+interface GetProfileResponse {
+  isAuthenticated: boolean;
+  data: Profile;
+}
 export const useAuth = () => {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -9,15 +14,19 @@ export const useAuth = () => {
   const checkAuthStatus = useCallback(async () => {
     try {
       const response = await getProfile();
-      if (response.isAuthenticated && response.data) {
-        setProfile(response.data);
+      const profileResponse: GetProfileResponse = await response.json();
+
+      if (profileResponse.isAuthenticated && profileResponse.data) {
+        setProfile(profileResponse.data);
         setIsAuthenticated(true);
       } else {
         setProfile(null);
         setIsAuthenticated(false);
       }
     } catch (error) {
-      console.error('프로필 조회 실패', error);
+      if (error instanceof APIError && error.status === 401) {
+        console.error('Profile error:', error.message, error.status);
+      }
       setProfile(null);
       setIsAuthenticated(false);
     }
@@ -27,5 +36,5 @@ export const useAuth = () => {
     checkAuthStatus();
   }, [checkAuthStatus]);
 
-  return { profile, isAuthenticated, checkAuthStatus };
+  return { profile, isAuthenticated };
 };

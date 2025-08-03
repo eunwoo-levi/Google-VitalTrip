@@ -1,14 +1,15 @@
 import { GoogleAnalytics } from '@next/third-parties/google';
 import type { Metadata } from 'next';
 
+import Analytics from '@/src/apps/lib/Analytics';
 import StructuredData, {
   medicalWebsiteStructuredData,
   organizationStructuredData,
-  webApplicationStructuredData,
   websiteStructuredData,
 } from '@/src/shared/ui/StructuredData';
 import ConditionalBottomNavigateBar from '@/src/widgets/bottomNavigateBar/ui/ConditionalBottomNavigateBar';
 import localFont from 'next/font/local';
+import { Suspense } from 'react';
 import './globals.css';
 
 const iansui = localFont({
@@ -157,11 +158,13 @@ export default function RootLayout({
       </head>
       <body className={`${iansui.className} antialiased`}>
         <StructuredData data={websiteStructuredData} />
-        <StructuredData data={webApplicationStructuredData} />
         <StructuredData data={organizationStructuredData} />
         <StructuredData data={medicalWebsiteStructuredData} />
         {children}
         <ConditionalBottomNavigateBar />
+        <Suspense fallback={null}>
+          <Analytics />
+        </Suspense>
         {GA_ID && <GoogleAnalytics gaId={GA_ID} />}
       </body>
     </html>

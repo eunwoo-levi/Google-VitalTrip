@@ -1,4 +1,5 @@
 import { FetchConfig } from '../types/http';
+import { APIError } from './apiError';
 
 async function request<T = unknown>(url: string, config: FetchConfig = {}): Promise<T> {
   const { method = 'GET', headers = {}, body } = config;
@@ -13,12 +14,14 @@ async function request<T = unknown>(url: string, config: FetchConfig = {}): Prom
       body: body ? JSON.stringify(body) : undefined,
     });
 
+    const data = await response.json();
+
     if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.message || `HTTP ${response.status}`);
+      const errorMessage = data.message || `HTTP ${response.status}`;
+      throw new APIError(errorMessage, response.status);
     }
 
-    return await response.json();
+    return data;
   } catch (error) {
     throw error;
   }
@@ -57,12 +60,12 @@ export const httpClient = {
     return request<T>(url, { ...config, method: 'DELETE' });
   },
 
-  safeGet(url: string, config?: Omit<FetchConfig, 'method'>): Promise<Response> {
-    return safeRequest(url, { ...config, method: 'GET' });
+  getWithoutError(url: string, config?: Omit<FetchConfig, 'method'>): Promise<Response> {
+    return requestWithoutError(url, { ...config, method: 'GET' });
   },
 };
 
-async function safeRequest(url: string, config: FetchConfig = {}): Promise<Response> {
+async function requestWithoutError(url: string, config: FetchConfig = {}): Promise<Response> {
   const { method = 'GET', headers = {}, body } = config;
 
   return fetch(url, {

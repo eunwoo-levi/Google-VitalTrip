@@ -1,11 +1,18 @@
 'use client';
 
+import { APIError } from '@/src/shared/utils/apiError';
 import Image from 'next/image';
 import { loginGoogle } from '../api/loginGoogle';
 
 export const GoogleAuthButton = () => {
   const handleGoogleAuthClick = async () => {
-    await loginGoogle();
+    try {
+      await loginGoogle();
+    } catch (error) {
+      if (error instanceof APIError) {
+        console.error('Google login error:', error.message, error.status);
+      }
+    }
   };
 
   return (

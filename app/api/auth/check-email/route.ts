@@ -1,3 +1,4 @@
+import { APIError } from '@/src/shared/utils/apiError';
 import { httpServer } from '@/src/shared/utils/httpServer';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -16,6 +17,9 @@ export async function GET(request: NextRequest) {
     const response: CheckEmailResponse = await httpServer.get(`/auth/check-email?email=${email}`);
     return NextResponse.json(response.data);
   } catch (error) {
-    return NextResponse.json({ message: error }, { status: 500 });
+    if (error instanceof APIError && error.status === 400) {
+      return NextResponse.json({ message: 'Please enter a valid email address' }, { status: 400 });
+    }
+    return NextResponse.json({ message: 'Failed to check email availability' }, { status: 500 });
   }
 }

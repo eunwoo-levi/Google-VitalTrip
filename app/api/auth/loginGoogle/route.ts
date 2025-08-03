@@ -1,3 +1,4 @@
+import { APIError } from '@/src/shared/utils/apiError';
 import { httpServer } from '@/src/shared/utils/httpServer';
 import { NextResponse } from 'next/server';
 
@@ -16,6 +17,9 @@ export async function GET() {
 
     return NextResponse.redirect(googleLoginUrl);
   } catch (error) {
-    return NextResponse.json({ message: error }, { status: 500 });
+    if (error instanceof APIError) {
+      console.error('Google login URL error:', error.message, error.status);
+    }
+    return NextResponse.json({ message: 'Failed to get Google login URL' }, { status: 500 });
   }
 }

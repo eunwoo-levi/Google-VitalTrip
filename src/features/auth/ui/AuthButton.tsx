@@ -1,9 +1,10 @@
+import { APIError } from '@/src/shared/utils/apiError';
 import Link from 'next/link';
 import { logoutUser } from '../api/logoutUser';
 import { useAuth } from '../hooks/useAuth';
 
 export const AuthButton = ({ closeMenu }: { closeMenu: () => void }) => {
-  const { isAuthenticated, profile, checkAuthStatus } = useAuth();
+  const { isAuthenticated, profile } = useAuth();
 
   // 프로필 모달 구현 필요
   console.log('profile', profile);
@@ -11,9 +12,10 @@ export const AuthButton = ({ closeMenu }: { closeMenu: () => void }) => {
   const handleLogout = async () => {
     try {
       await logoutUser();
-      await checkAuthStatus();
     } catch (error) {
-      console.error('로그아웃 실패', error);
+      if (error instanceof APIError) {
+        console.error('Logout error:', error.message, error.status);
+      }
     }
   };
 

@@ -5,6 +5,5 @@ interface CheckEmailResponse {
 }
 
 export const checkEmail = async (email: string): Promise<CheckEmailResponse> => {
-  const response: CheckEmailResponse = await httpClient.get(`/api/auth/check-email?email=${email}`);
-  return response;
+  return await httpClient.get<CheckEmailResponse>(`/api/auth/check-email?email=${email}`);
 };
