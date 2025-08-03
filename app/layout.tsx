@@ -5,7 +5,6 @@ import Analytics from '@/src/apps/lib/Analytics';
 import StructuredData, {
   medicalWebsiteStructuredData,
   organizationStructuredData,
-  webApplicationStructuredData,
   websiteStructuredData,
 } from '@/src/shared/ui/StructuredData';
 import ConditionalBottomNavigateBar from '@/src/widgets/bottomNavigateBar/ui/ConditionalBottomNavigateBar';
@@ -158,7 +157,6 @@ export default function RootLayout({
       </head>
       <body className={`${iansui.className} antialiased`}>
         <StructuredData data={websiteStructuredData} />
-        <StructuredData data={webApplicationStructuredData} />
         <StructuredData data={organizationStructuredData} />
         <StructuredData data={medicalWebsiteStructuredData} />
         {children}
