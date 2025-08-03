@@ -1,3 +1,4 @@
+import { APIError } from '@/src/shared/utils/apiError';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(req: NextRequest) {
@@ -59,7 +60,9 @@ export async function GET(req: NextRequest) {
     console.error('No Temp Token');
     return NextResponse.redirect(new URL('/login?error=callback_failed', req.url));
   } catch (error) {
-    console.error('OAuth Callback Error:', error);
+    if (error instanceof APIError) {
+      console.error('OAuth Callback Error:', error.message, error.status);
+    }
     return NextResponse.redirect(new URL('/login?error=callback_failed', req.url));
   }
 }

@@ -1,3 +1,4 @@
+import { APIError } from '@/src/shared/utils/apiError';
 import { useState } from 'react';
 import { checkEmail as checkEmailApi } from '../api/checkEmail';
 
@@ -17,9 +18,12 @@ export const useCheckEmail = () => {
         setIsAvailable(false);
         setMessage('This email is already in use.');
       }
-    } catch {
-      setIsAvailable(false);
-      setMessage('Failed to check email availability.');
+    } catch (error) {
+      if (error instanceof APIError) {
+        console.log('errorrrrrrrrrrrrrr', error);
+        setIsAvailable(false);
+        setMessage(error.message);
+      }
     } finally {
       setIsLoading(false);
     }

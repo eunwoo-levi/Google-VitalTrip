@@ -11,14 +11,5 @@ interface LoginResponse {
 }
 
 export const loginUser = async (formData: LoginData): Promise<LoginResponse> => {
-  try {
-    const response: LoginResponse = await httpClient.post('/api/auth/login', formData);
-
-    return response;
-  } catch (error) {
-    if (error instanceof Error) {
-      throw error;
-    }
-    throw new Error('로그인을 실패했습니다.');
-  }
+  return await httpClient.post<LoginResponse>('/api/auth/login', formData);
 };

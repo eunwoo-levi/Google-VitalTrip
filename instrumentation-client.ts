@@ -2,6 +2,7 @@ import * as Sentry from '@sentry/nextjs';
 
 Sentry.init({
   dsn: process.env.SENTRY_DSN,
+  sendDefaultPii: true,
   tracesSampleRate: 1, // 0에서 1 사이의 숫자로 주어진 트랜잭션이 Sentry로 전송 될 확률을 제어
   debug: false,
   replaysOnErrorSampleRate: 1.0, //오류가 발생한 세션 중 어느 정도의 비율로 리플레이 데이터를 수집할지 결정

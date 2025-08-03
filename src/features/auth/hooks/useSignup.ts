@@ -1,3 +1,4 @@
+import { APIError } from '@/src/shared/utils/apiError';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { signupGoogleUser } from '../api/signupGoogleuser';
@@ -15,7 +16,7 @@ export const useSignup = () => {
     phoneNumber: '',
   });
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string>('');
 
   const router = useRouter();
 
@@ -24,12 +25,12 @@ export const useSignup = () => {
       ...prev,
       [field]: value,
     }));
-    setError(null);
+    setError('');
   };
 
   const handleSubmit = async (isGoogleSignup?: boolean) => {
     setIsLoading(true);
-    setError(null);
+    setError('');
 
     try {
       if (isGoogleSignup) {
@@ -56,9 +57,11 @@ export const useSignup = () => {
 
       router.push('/login');
     } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : 'Registration failed. Please try again.';
-      setError(errorMessage);
+      if (error instanceof APIError) {
+        setError(error.message);
+      } else {
+        setError('Registration failed. Please try again.');
+      }
     } finally {
       setIsLoading(false);
     }

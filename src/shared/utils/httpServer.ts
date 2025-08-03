@@ -1,4 +1,5 @@
 import { FetchConfig } from '../types/http';
+import { APIError } from './apiError';
 
 const BASE_URL = process.env.API_BASE_URL;
 
@@ -17,9 +18,12 @@ async function request<T = unknown>(url: string, config: FetchConfig = {}): Prom
   const data = await response.json();
 
   if (!response.ok) {
-    throw new Error(data.message || `HTTP ${response.status}`);
-  }
+    const errorMessage = data.message || `HTTP ${response.status}: an unknown error occurred`;
+    console.error('백엔드 에러 메시지', data);
+    console.error('HTTP 에러 코드: ', response.status);
 
+    throw new APIError(errorMessage, response.status);
+  }
   return data;
 }
 
