@@ -1,9 +1,8 @@
 'use client';
 
 import { APIError } from '@/src/shared/utils/apiError';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { loginUser } from '../api/loginUser';
+import { useLoginMutation } from '../api/useLoginMutation';
 
 interface FormData {
   email: string;
@@ -15,10 +14,8 @@ export default function LoginForm() {
     email: '',
     password: '',
   });
-  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
-  const router = useRouter();
+  const { mutateAsync: loginUser, isPending, error: loginError } = useLoginMutation();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -31,20 +28,16 @@ export default function LoginForm() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsLoading(true);
     setError(null);
 
     try {
       await loginUser(formData);
-      router.push('/');
     } catch (error) {
       if (error instanceof APIError) {
         setError(error.message);
       } else {
-        setError('Login failed. Please try again.');
+        setError(loginError?.message || 'Login failed. Please try again.');
       }
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -64,7 +57,7 @@ export default function LoginForm() {
           onChange={handleChange}
           placeholder='example@example.com'
           className='w-full rounded-md border border-gray-300 p-3 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-400 disabled:bg-gray-100'
-          disabled={isLoading}
+          disabled={isPending}
           required
         />
       </div>
@@ -81,7 +74,7 @@ export default function LoginForm() {
           onChange={handleChange}
           placeholder='Enter your password'
           className='w-full rounded-md border border-gray-300 p-3 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-400 disabled:bg-gray-100'
-          disabled={isLoading}
+          disabled={isPending}
           required
         />
       </div>
@@ -95,9 +88,9 @@ export default function LoginForm() {
       <button
         type='submit'
         className='w-full rounded-md bg-blue-500 py-3 font-semibold text-white transition-colors duration-300 hover:bg-blue-600 disabled:cursor-not-allowed disabled:bg-blue-300'
-        disabled={isLoading || !isFormValid}
+        disabled={isPending || !isFormValid}
       >
-        {isLoading ? (
+        {isPending ? (
           <div className='flex items-center justify-center'>
             <div className='mr-2 h-4 w-4 animate-spin rounded-full border-b-2 border-white' />
             Logging in...

@@ -2,6 +2,7 @@ import { GoogleAnalytics } from '@next/third-parties/google';
 import type { Metadata } from 'next';
 
 import Analytics from '@/src/apps/lib/Analytics';
+import ReactQueryProvider from '@/src/apps/provider/ReactQueryProvider';
 import StructuredData, {
   medicalWebsiteStructuredData,
   organizationStructuredData,
@@ -157,15 +158,17 @@ export default function RootLayout({
         <meta name='color-scheme' content='light dark' />
       </head>
       <body className={`${iansui.className} antialiased`}>
-        <StructuredData data={websiteStructuredData} />
-        <StructuredData data={organizationStructuredData} />
-        <StructuredData data={medicalWebsiteStructuredData} />
-        {children}
-        <ConditionalBottomNavigateBar />
-        <Suspense fallback={null}>
-          <Analytics />
-        </Suspense>
-        {GA_ID && <GoogleAnalytics gaId={GA_ID} />}
+        <ReactQueryProvider>
+          <StructuredData data={websiteStructuredData} />
+          <StructuredData data={organizationStructuredData} />
+          <StructuredData data={medicalWebsiteStructuredData} />
+          {children}
+          <ConditionalBottomNavigateBar />
+          <Suspense fallback={null}>
+            <Analytics />
+          </Suspense>
+          {GA_ID && <GoogleAnalytics gaId={GA_ID} />}
+        </ReactQueryProvider>
       </body>
     </html>
   );
