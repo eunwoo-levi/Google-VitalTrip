@@ -1,62 +1,13 @@
 {
-  "name": "vitaltrip",
-  "version": "0.1.0",
-  "description": "VitalTrip - Your Emergency Travel Companion. Find hospitals, translate symptoms, and get AI-powered first aid guidance worldwide.",
-  "private": true,
-  "keywords": [
-    "vitaltrip",
-    "Google Solution Challenge",
-    "travel safety",
-    "emergency medical",
-    "hospital finder",
-    "medical translation",
-    "first aid AI",
-    "travel companion"
-  ],
-  "author": "VitalTrip Team",
-  "homepage": "https://aivitaltrip.com",
   "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
-    "lint:fix": "next lint --fix",
-    "type-check": "tsc --noEmit",
-    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
-    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\"",
-    "ci": "pnpm type-check && pnpm lint && pnpm format:check && pnpm build"
-  },
-  "dependencies": {
-    "@googlemaps/js-api-loader": "^1.16.10",
-    "@next/third-parties": "^15.4.5",
-    "@sentry/nextjs": "^10.0.0",
-    "@tailwindcss/postcss": "^4.1.11",
-    "motion": "^12.23.6",
-    "next": "15.3.2",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0",
-    "react-icons": "^5.5.0",
-    "require-in-the-middle": "^7.5.2",
-    "zustand": "^5.0.6"
+    "dev:client": "pnpm --filter client dev",
+    "dev:admin": "pnpm --filter admin dev",
+    "build:client": "pnpm --filter client build",
+    "build:admin": "pnpm --filter admin build"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3.3.1",
-    "@types/google.maps": "^3.58.1",
-    "@types/node": "^20.19.9",
-    "@types/react": "^19.1.8",
-    "@types/react-dom": "^19.1.6",
-    "eslint-config-next": "15.1.7",
-    "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-prettier": "^5.5.3",
+    "autoprefixer": "^10.4.21",
     "postcss": "^8.5.6",
-    "prettier": "^3.6.2",
-    "prettier-plugin-tailwindcss": "^0.6.14",
-    "tailwindcss": "^4.1.11",
-    "typescript": "^5.8.3"
-  },
-  "pnpm": {
-    "overrides": {
-      "@eslint/plugin-kit": ">=0.3.3"
-    }
+    "tailwindcss": "^4.1.11"
   }
 }
