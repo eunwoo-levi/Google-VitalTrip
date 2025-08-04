@@ -13,6 +13,7 @@ export const useProfileQuery = () => {
   return useQuery<ProfileResponse>({
     queryKey: ['me'],
     queryFn: getProfile,
+    staleTime: 1000 * 60 * 5, // 5분
   });
 };
 

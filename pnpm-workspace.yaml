@@ -1,3 +1,4 @@
 packages:
   - 'client'
   - 'admin'
+  - 'shared'
