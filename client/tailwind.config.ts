@@ -9,6 +9,7 @@ export default {
     './src/shared/**/*.{js,ts,jsx,tsx,mdx}', // shared 폴더도 포함
     './src/widgets/**/*.{js,ts,jsx,tsx,mdx}', // widgets 포함
     './public/**/*.html', // 정적 HTML 파일에서 클래스 검색
+    '../../../shared/**/*.{js,ts,jsx,tsx}', // 모노레포 shared 패키지
   ],
   theme: {
     extend: {

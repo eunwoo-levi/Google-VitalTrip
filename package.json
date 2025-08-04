@@ -1,4 +1,10 @@
 {
+  "name": "vitaltrip",
+  "workspaces": [
+    "client/*",
+    "admin/*",
+    "shared/*"
+  ],
   "scripts": {
     "dev:client": "pnpm --filter client dev",
     "dev:admin": "pnpm --filter admin dev",

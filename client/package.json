@@ -36,11 +36,12 @@
     "import-in-the-middle": "^1.14.2",
     "motion": "^12.23.6",
     "next": "15.3.2",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
     "react-icons": "^5.5.0",
     "require-in-the-middle": "^7.5.2",
-    "zustand": "^5.0.6"
+    "zustand": "^5.0.6",
+    "@vitaltrip/shared": "workspace:*"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.1",
