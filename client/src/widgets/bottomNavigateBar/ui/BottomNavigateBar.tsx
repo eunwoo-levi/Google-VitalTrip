@@ -118,12 +118,18 @@ const MenuButton = ({
   setIsMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setInfoModalCode: React.Dispatch<React.SetStateAction<string | null>>;
 }) => (
-  <div className='relative'>
-    <button onClick={() => setIsMenuOpen((prev) => !prev)} className={linkClassName}>
+  <div className='relative' ref={menuRef}>
+    <button
+      onClick={(e) => {
+        e.stopPropagation();
+        setIsMenuOpen((prev) => !prev);
+      }}
+      className={linkClassName}
+    >
       <TiThMenu size={25} className='text-blue-500' />
     </button>
     {isMenuOpen && (
-      <Dropdown ref={menuRef} direction='top'>
+      <Dropdown direction='top'>
         <ul className='p-2'>
           {MENU_ITEMS.map((item) => (
             <li key={item.code} className='flex flex-col items-center'>
