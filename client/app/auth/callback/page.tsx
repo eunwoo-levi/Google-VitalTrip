@@ -32,7 +32,7 @@ export default function OAuthCallbackPage() {
           const googleProfile = await oAuthCallback();
           setToSessionStorage('google-profile', JSON.stringify(googleProfile));
           window.history.replaceState({}, document.title, window.location.pathname);
-          router.push('/about');
+          router.push('/');
           return;
         }
 

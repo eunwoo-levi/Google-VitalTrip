@@ -9,7 +9,7 @@ export const useSignupMutation = () => {
   return useMutation({
     mutationFn: signupUser,
     onSuccess: () => {
-      router.push('/');
+      router.push('/login');
     },
     onError: (error) => {
       if (error instanceof APIError) {

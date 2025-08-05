@@ -2,7 +2,7 @@
 
 import Chatbot from '@/src/features/chatbot/ui/Chatbot';
 import { useSymptomStore } from '@/src/features/firstAid/store/useSymptomStore';
-import { ProfileModal } from '@/src/features/profile/ui/ProfileModal';
+import { UserProfileInfo } from '@/src/features/profile/ui/UserProfileInfo';
 import { useOutsideClick } from '@/src/shared/hooks/useOutsideClick';
 import Dropdown from '@/src/shared/ui/Dropdown';
 import Modal from '@/src/shared/ui/Modal';
@@ -54,23 +54,27 @@ export default function BottomNavigateBar() {
   return (
     <>
       <div className='fixed bottom-2 left-1/2 z-10 flex h-[60px] w-[98%] -translate-x-1/2 items-center justify-evenly gap-2 rounded-t-xl bg-white shadow-xl'>
-        <Link href='/about' className={linkClassName}>
-          <FaHome size={25} />
-        </Link>
+        <button onClick={() => setIsSymptomModalOpen((prev) => !prev)} className={linkClassName}>
+          <FaRegHospital size={25} className='text-blue-500' />
+        </button>
+
         <Link href='/translate' className={linkClassName}>
-          <MdGTranslate size={25} />
+          <MdGTranslate size={25} className='text-blue-500' />
         </Link>
+
         <button onClick={() => setIsProfileModalOpen(true)} className={linkClassName}>
           <Image src='/logo.webp' alt='logo' width={25} height={25} className='object-contain' />
         </button>
         {isProfileModalOpen && (
           <Modal key='profile-modal' onClose={() => setIsProfileModalOpen(false)}>
-            <ProfileModal />
+            <UserProfileInfo />
           </Modal>
         )}
-        <button onClick={() => setIsSymptomModalOpen((prev) => !prev)} className={linkClassName}>
-          <FaRegHospital size={25} />
-        </button>
+
+        <Link href='/about' className={linkClassName}>
+          <FaHome size={25} className='text-blue-500' />
+        </Link>
+
         <MenuButton
           isMenuOpen={isMenuOpen}
           menuRef={menuRef}
@@ -116,7 +120,7 @@ const MenuButton = ({
 }) => (
   <div className='relative'>
     <button onClick={() => setIsMenuOpen((prev) => !prev)} className={linkClassName}>
-      <TiThMenu size={25} />
+      <TiThMenu size={25} className='text-blue-500' />
     </button>
     {isMenuOpen && (
       <Dropdown ref={menuRef} direction='top'>
