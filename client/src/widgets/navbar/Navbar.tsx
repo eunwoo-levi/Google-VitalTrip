@@ -1,7 +1,7 @@
 'use client';
 
-import { useProfileQuery } from '@/src/features/auth/api/useProfileQuery';
 import { AuthButton } from '@/src/features/auth/ui/AuthButton';
+import { useProfileQuery } from '@/src/features/profile/api/useProfileQuery';
 import { AnimatePresence, motion } from 'motion/react';
 import Image from 'next/image';
 import Link from 'next/link';

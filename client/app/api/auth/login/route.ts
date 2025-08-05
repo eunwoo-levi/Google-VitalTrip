@@ -1,4 +1,4 @@
-import { Profile } from '@/src/features/auth/types/auth';
+import { Profile } from '@/src/features/profile/types/profile';
 import { APIError } from '@/src/shared/utils/apiError';
 import { httpServer } from '@/src/shared/utils/httpServer';
 import { NextRequest, NextResponse } from 'next/server';

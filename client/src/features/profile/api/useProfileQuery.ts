@@ -1,6 +1,6 @@
 import { httpClient } from '@/src/shared/utils/httpClient';
 import { useQuery } from '@tanstack/react-query';
-import { Profile } from '../types/auth';
+import { Profile } from '../types/profile';
 
 interface ProfileResponse {
   isAuthenticated: boolean;

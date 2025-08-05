@@ -1,4 +1,4 @@
-import { Profile } from '@/src/features/auth/types/auth';
+import { Profile } from '@/src/features/profile/types/profile';
 import { APIError } from '@/src/shared/utils/apiError';
 import { getTempToken } from '@/src/shared/utils/cookieService';
 import { httpServer } from '@/src/shared/utils/httpServer';

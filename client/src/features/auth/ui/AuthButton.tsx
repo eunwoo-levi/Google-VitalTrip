@@ -1,6 +1,6 @@
 import Link from 'next/link';
+import { Profile } from '../../profile/types/profile';
 import { useLogoutMutation } from '../api/useLogoutMutation';
-import { Profile } from '../types/auth';
 
 interface AuthButtonProps {
   data?: {
@@ -28,7 +28,7 @@ export const AuthButton = ({ data, closeMenu, mobileHidden }: AuthButtonProps) =
     return (
       <button
         onClick={handleLogout}
-        className={`${mobileHiddenClass} items-center justify-center rounded-md bg-red-600 px-3 py-2 text-white transition-colors duration-200 hover:bg-red-700`}
+        className={`${mobileHiddenClass} items-center justify-center rounded-md bg-red-600 px-3 py-2 font-semibold text-white transition-colors duration-200 hover:bg-red-700`}
       >
         LOGOUT
       </button>
@@ -39,7 +39,7 @@ export const AuthButton = ({ data, closeMenu, mobileHidden }: AuthButtonProps) =
     <Link
       href='/login'
       onClick={closeMenu}
-      className={`${mobileHiddenClass} items-center justify-center rounded-md bg-blue-600 px-3 py-2 text-white transition-colors duration-200 hover:bg-blue-700 md:flex`}
+      className={`${mobileHiddenClass} items-center justify-center rounded-md bg-blue-600 px-3 py-2 font-semibold text-white transition-colors duration-200 hover:bg-blue-700 md:flex`}
     >
       LOGIN
     </Link>
