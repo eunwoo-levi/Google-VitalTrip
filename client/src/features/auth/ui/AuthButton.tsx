@@ -1,20 +1,15 @@
 import Link from 'next/link';
-import { Profile } from '../../profile/types/profile';
+import { ProfileResponse } from '../../profile/types/profile';
 import { useLogoutMutation } from '../api/useLogoutMutation';
 
 interface AuthButtonProps {
-  data?: {
-    isAuthenticated: boolean;
-    data: {
-      data: Profile;
-    };
-  };
+  data: ProfileResponse | undefined;
   closeMenu?: () => void;
   mobileHidden?: boolean;
 }
 
 export const AuthButton = ({ data, closeMenu, mobileHidden }: AuthButtonProps) => {
-  const isAuthenticated = data?.isAuthenticated;
+  const isAuthenticated = data?.isAuthenticated ?? false;
 
   const mobileHiddenClass = mobileHidden ? 'hidden md:flex' : '';
 

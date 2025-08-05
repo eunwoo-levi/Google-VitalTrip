@@ -4,8 +4,16 @@ import { useEditProfile } from '../hooks/useEditProfile';
 import { Profile } from '../types/profile';
 
 export const EditProfileForm = ({ profile }: { profile: Profile }) => {
-  const { profileForm, setProfileForm, handleFormChange, isFormValid, handleFormSubmit } =
-    useEditProfile();
+  const {
+    profileForm,
+    setProfileForm,
+    handleFormChange,
+    isFormValid,
+    handleFormSubmit,
+    isLoading,
+    isError,
+    error,
+  } = useEditProfile();
 
   useEffect(() => {
     if (profile) {
@@ -21,7 +29,7 @@ export const EditProfileForm = ({ profile }: { profile: Profile }) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (isFormValid) {
-      handleFormSubmit();
+      handleFormSubmit(profileForm);
     }
   };
 
@@ -63,22 +71,33 @@ export const EditProfileForm = ({ profile }: { profile: Profile }) => {
           className='w-full rounded-md border border-gray-300 p-2 focus:border-blue-500 focus:ring-2 focus:ring-blue-400'
         />
       </div>
-      <ProfileEditButton isFormValid={isFormValid} />
+      <ProfileEditButton isLoading={isLoading} isFormValid={isFormValid} />
+      {isError && (
+        <div className='text-red-500'>
+          Error: {error?.message || 'An error occurred while editing the profile.'}
+        </div>
+      )}
     </form>
   );
 };
 
-const ProfileEditButton = ({ isFormValid }: { isFormValid: boolean }) => {
+const ProfileEditButton = ({
+  isLoading,
+  isFormValid,
+}: {
+  isLoading: boolean;
+  isFormValid: boolean;
+}) => {
   return (
     <button
       type='submit'
-      disabled={!isFormValid}
-      className={`inline-flex items-center justify-center rounded-lg px-3 py-2 font-medium font-semibold text-white transition-colors ${
+      disabled={!isFormValid || isLoading}
+      className={`inline-flex items-center justify-center rounded-lg px-3 py-2 font-semibold text-white transition-colors ${
         isFormValid ? 'bg-blue-600 hover:bg-blue-700' : 'cursor-not-allowed bg-gray-400'
       }`}
     >
       <MdEdit className='mr-2 h-4 w-4' />
-      Edit Profile
+      {isLoading ? 'Editing...' : 'Edit Profile'}
     </button>
   );
 };

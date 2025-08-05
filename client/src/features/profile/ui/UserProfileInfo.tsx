@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { MdCalendarToday, MdEmail, MdError, MdFlag, MdPerson, MdPhone } from 'react-icons/md';
 import { AuthButton } from '../../auth/ui/AuthButton';
 import { useProfileQuery } from '../api/useProfileQuery';
-import { Profile } from '../types/profile';
+import { Profile, ProfileResponse } from '../types/profile';
 import { EditProfileForm } from './EditProfileForm';
 
 export const UserProfileInfo = () => {
@@ -16,22 +16,10 @@ export const UserProfileInfo = () => {
   }
   if (isError) {
     console.error('Error fetching profile:', error.message);
-    return <ProfileError />;
+    return <ProfileError data={data} />;
   }
-
   if (!profile) {
-    return (
-      <div className='flex min-h-[400px] items-center justify-center'>
-        <div className='text-center'>
-          <div className='mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-gray-100'>
-            <MdPerson className='h-6 w-6 text-gray-500' />
-          </div>
-          <p className='text-gray-600'>No profile information available</p>
-        </div>
-        <div className='mt-4 text-sm text-gray-500'>Please log in to set up your profile.</div>
-        <AuthButton />
-      </div>
-    );
+    return <ProfileError data={data} />;
   }
 
   return (
@@ -174,7 +162,7 @@ const ProfileLoading = () => {
   );
 };
 
-const ProfileError = () => {
+const ProfileError = ({ data }: { data: ProfileResponse | undefined }) => {
   return (
     <div className='flex min-h-[400px] items-center justify-center'>
       <div className='rounded-lg bg-red-50 p-6 text-center'>
@@ -182,6 +170,9 @@ const ProfileError = () => {
           <MdError className='h-6 w-6 text-red-600' />
         </div>
         <div className='mb-2 text-lg font-medium text-red-800'>Unable to load profile</div>
+        <div className='mt-4 text-sm text-gray-500'>Please log in to set up your profile.</div>
+        <AuthButton data={data} />
+
         <span className='mt-2 text-sm text-gray-500'>
           If the problem persists, please contact customer support.
         </span>

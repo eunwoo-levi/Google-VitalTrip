@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useEditProfileMutation } from '../api/useEditProfileMutation';
 import { EditProfile } from '../types/editProfile';
 
 export const useEditProfile = () => {
@@ -9,6 +10,12 @@ export const useEditProfile = () => {
     phoneNumber: '',
   });
 
+  const { mutate: editProfile, isPending, isError, error } = useEditProfileMutation();
+
+  if (isError) {
+    console.error('Error editing profile:', error.message);
+  }
+
   const handleFormChange = (field: keyof EditProfile, value: string) => {
     setProfileForm((prev: EditProfile) => ({
       ...prev,
@@ -16,8 +23,12 @@ export const useEditProfile = () => {
     }));
   };
 
-  const handleFormSubmit = () => {
-    console.log('Profile updated:', profileForm);
+  const handleFormSubmit = (profileForm: EditProfile) => {
+    try {
+      editProfile(profileForm);
+    } catch (error) {
+      console.error('Error submitting profile form:', error);
+    }
   };
 
   const isFormValid = profileForm.name !== '' && profileForm.phoneNumber !== '';
@@ -28,5 +39,8 @@ export const useEditProfile = () => {
     handleFormChange,
     handleFormSubmit,
     isFormValid,
+    isLoading: isPending,
+    isError,
+    error,
   };
 };
