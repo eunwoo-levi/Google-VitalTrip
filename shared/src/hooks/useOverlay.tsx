@@ -4,6 +4,7 @@ import { createPortal } from 'react-dom';
 export type UsePortalOptions = {
   container?: Element | null;
   closeOnEscape?: boolean;
+  autoOpen?: boolean;
 };
 
 export type PortalControls = {
@@ -15,10 +16,9 @@ export type PortalControls = {
 };
 
 export const useOverlay = (options: UsePortalOptions = {}): PortalControls => {
-  const { container, closeOnEscape = true } = options;
-
+  const { container, closeOnEscape = true, autoOpen = false } = options;
   const [isMounted, setIsMounted] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(autoOpen);
 
   useEffect(() => {
     setIsMounted(true);

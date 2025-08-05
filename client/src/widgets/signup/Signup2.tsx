@@ -1,5 +1,7 @@
 'use client';
 
+import { countries } from '../bottomNavigateBar/data/countryCode';
+
 interface FormData {
   email: string;
   password: string;
@@ -25,22 +27,6 @@ export default function Signup2({ formData, onFormChange, onNext, onPrev }: Sign
       onNext();
     }
   };
-
-  const countries = [
-    { code: 'KR', name: 'South Korea', dialCode: '+82' },
-    { code: 'US', name: 'United States', dialCode: '+1' },
-    { code: 'JP', name: 'Japan', dialCode: '+81' },
-    { code: 'CN', name: 'China', dialCode: '+86' },
-    { code: 'GB', name: 'United Kingdom', dialCode: '+44' },
-    { code: 'FR', name: 'France', dialCode: '+33' },
-    { code: 'DE', name: 'Germany', dialCode: '+49' },
-    { code: 'IT', name: 'Italy', dialCode: '+39' },
-    { code: 'ES', name: 'Spain', dialCode: '+34' },
-    { code: 'CA', name: 'Canada', dialCode: '+1' },
-    { code: 'AU', name: 'Australia', dialCode: '+61' },
-    { code: 'BR', name: 'Brazil', dialCode: '+55' },
-    { code: 'IN', name: 'India', dialCode: '+91' },
-  ];
 
   return (
     <div>

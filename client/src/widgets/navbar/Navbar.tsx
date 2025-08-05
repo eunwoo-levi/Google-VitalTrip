@@ -1,6 +1,7 @@
 'use client';
 
 import { AuthButton } from '@/src/features/auth/ui/AuthButton';
+import { useProfileQuery } from '@/src/features/profile/api/useProfileQuery';
 import { AnimatePresence, motion } from 'motion/react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -8,7 +9,12 @@ import { useState } from 'react';
 import { FaBars, FaTimes } from 'react-icons/fa';
 
 export default function Navbar() {
+  const { data, isError, error } = useProfileQuery();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  if (isError) {
+    console.error('Error fetching profile:', error.message);
+  }
 
   const toggleMenu = () => {
     setIsMenuOpen((prev) => !prev);
@@ -55,7 +61,10 @@ export default function Navbar() {
             </Link>
           </div>
 
-          <AuthButton closeMenu={closeMenu} />
+          <div className='flex items-center justify-center md:space-x-2'>
+            <span className='text-lg font-semibold'>{data?.data?.data.name}</span>
+            <AuthButton data={data} closeMenu={closeMenu} mobileHidden={true} />
+          </div>
 
           <div className='md:hidden'>
             <button

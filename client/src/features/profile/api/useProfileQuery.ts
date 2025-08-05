@@ -1,6 +1,6 @@
 import { httpClient } from '@/src/shared/utils/httpClient';
 import { useQuery } from '@tanstack/react-query';
-import { Profile } from '../types/auth';
+import { Profile } from '../types/profile';
 
 interface ProfileResponse {
   isAuthenticated: boolean;
@@ -14,9 +14,11 @@ export const useProfileQuery = () => {
     queryKey: ['me'],
     queryFn: getProfile,
     staleTime: 1000 * 60 * 5, // 5분
+    retry: 1,
+    refetchOnWindowFocus: false,
   });
 };
 
 const getProfile = async (): Promise<ProfileResponse> => {
-  return await httpClient.get('/api/auth/profile');
+  return await httpClient.get('/api/profile/profile');
 };
