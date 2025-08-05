@@ -20,5 +20,5 @@ export const useProfileQuery = () => {
 };
 
 const getProfile = async (): Promise<ProfileResponse> => {
-  return await httpClient.get('/api/auth/profile');
+  return await httpClient.get('/api/profile/profile');
 };
