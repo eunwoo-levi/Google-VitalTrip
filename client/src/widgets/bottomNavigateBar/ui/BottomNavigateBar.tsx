@@ -2,15 +2,18 @@
 
 import Chatbot from '@/src/features/chatbot/ui/Chatbot';
 import { useSymptomStore } from '@/src/features/firstAid/store/useSymptomStore';
+import { useOutsideClick } from '@/src/shared/hooks/useOutsideClick';
 import Dropdown from '@/src/shared/ui/Dropdown';
 import Modal from '@/src/shared/ui/Modal';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useRef, useState } from 'react';
 import { FaHome, FaRegHospital } from 'react-icons/fa';
 import { MdGTranslate } from 'react-icons/md';
 import { TiThMenu } from 'react-icons/ti';
 import { MENU_ITEMS, SYMPTOMS } from '../data/BottomNavigateBarData';
+import { useBottonNavigateBarModals } from '../hooks/useBottonNavigateBarModals';
+import { useTempSymptomData } from '../hooks/useTempSymptomData';
 import Contact from './Contact';
 import EmergencyCall from './EmergencyCall';
 
@@ -18,82 +21,56 @@ const linkClassName =
   'flex items-center cursor-pointer justify-center rounded-full p-2 hover:scale-110 hover:bg-gray-200 transition-transform transition-colors duration-200 ease-in-out';
 
 export default function BottomNavigateBar() {
-  const [isSymptomModalOpen, setIsSymptomModalOpen] = useState(false);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [symptomType, setSymptomType] = useState('');
-  const [symptomDetail, setSymptomDetail] = useState('');
-  const [infoModalCode, setInfoModalCode] = useState<string | null>(null);
-  const modalRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const handleOutsideClick = (event: MouseEvent) => {
-      if (infoModalCode || isSymptomModalOpen) return;
-
-      if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
-        setIsMenuOpen(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleOutsideClick);
-    return () => {
-      document.removeEventListener('mousedown', handleOutsideClick);
-    };
-  }, [infoModalCode, isSymptomModalOpen]);
-
   const { setSymptomData } = useSymptomStore();
+  const { symptomData, updateSymptomData } = useTempSymptomData();
+  const {
+    isSymptomModalOpen,
+    setIsSymptomModalOpen,
+    isProfileModalOpen,
+    setIsProfileModalOpen,
+    isMenuOpen,
+    setIsMenuOpen,
+    infoModalCode,
+    setInfoModalCode,
+    menuRef,
+    closeSymptomModal,
+  } = useBottonNavigateBarModals();
   const router = useRouter();
 
-  const handleModal = () => setIsSymptomModalOpen((prev) => !prev);
-  const closeModal = () => {
-    setIsSymptomModalOpen(false);
-  };
-  const handleMenu = () => {
-    setIsMenuOpen((prev) => !prev);
-  };
-
-  const handleSymptomChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSymptomType(e.target.value);
-  };
-
-  const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setSymptomDetail(e.target.value);
-  };
+  useOutsideClick(menuRef, () => {
+    if (infoModalCode || isSymptomModalOpen) return;
+    setIsMenuOpen(false);
+  });
 
   const handleSubmit = () => {
-    setSymptomData(symptomType, symptomDetail);
-    closeModal();
+    setSymptomData(symptomData.type, symptomData.detail);
+    closeSymptomModal();
     router.push('/first-aid');
   };
 
-  const handleInfoModalOpen = (code: string) => {
-    setInfoModalCode(code);
-  };
-
-  const handleInfoModalClose = () => {
-    setInfoModalCode(null);
-  };
-
-  const isDisabled = !symptomType || !symptomDetail;
+  const isDisabled = !symptomData.type || !symptomData.detail;
 
   return (
     <>
       <div className='fixed bottom-2 left-1/2 z-10 flex h-[60px] w-[98%] -translate-x-1/2 items-center justify-evenly gap-2 rounded-t-xl bg-white shadow-xl'>
-        <Link href='/' className={linkClassName}>
+        <Link href='/about' className={linkClassName}>
           <FaHome size={25} />
         </Link>
         <Link href='/translate' className={linkClassName}>
           <MdGTranslate size={25} />
         </Link>
-        <button onClick={handleModal} className={linkClassName}>
+        <button onClick={() => setIsProfileModalOpen((prev) => !prev)} className={linkClassName}>
+          <Image src='/logo.webp' alt='logo' width={25} height={25} className='object-contain' />
+        </button>
+        <button onClick={() => setIsSymptomModalOpen((prev) => !prev)} className={linkClassName}>
           <FaRegHospital size={25} />
         </button>
         <div className='relative'>
-          <button onClick={handleMenu} className={linkClassName}>
+          <button onClick={() => setIsMenuOpen((prev) => !prev)} className={linkClassName}>
             <TiThMenu size={25} />
           </button>
-
           {isMenuOpen && (
-            <Dropdown ref={modalRef} direction='top'>
+            <Dropdown ref={menuRef} direction='top'>
               <ul className='p-2'>
                 {MENU_ITEMS.map((item) => (
                   <li key={item.code} className='flex flex-col items-center'>
@@ -107,7 +84,7 @@ export default function BottomNavigateBar() {
                       </Link>
                     ) : (
                       <button
-                        onClick={() => handleInfoModalOpen(item.code)}
+                        onClick={() => setInfoModalCode(item.code)}
                         className='mb-2 hover:cursor-pointer hover:text-blue-500'
                       >
                         {item.label}
@@ -123,12 +100,12 @@ export default function BottomNavigateBar() {
       </div>
 
       {isSymptomModalOpen && (
-        <Modal onClose={closeModal}>
+        <Modal key='symptom-modal' onClose={closeSymptomModal}>
           <h2 className='mb-4 text-center text-xl font-bold'>Describe your symptom</h2>
           <select
             className='mb-4 w-full rounded-md border border-gray-300 p-2 text-sm font-semibold focus:ring-2 focus:ring-blue-400 focus:outline-none'
-            onChange={handleSymptomChange}
-            value={symptomType}
+            onChange={(e) => updateSymptomData(e)}
+            value={symptomData.type}
           >
             <option value='' disabled>
               Select symptom
@@ -142,8 +119,8 @@ export default function BottomNavigateBar() {
           <textarea
             className='mb-4 h-32 w-full resize-none rounded-md border border-gray-300 p-2 text-sm focus:ring-2 focus:ring-blue-400 focus:outline-none'
             placeholder='Describe your symptoms in detail'
-            value={symptomDetail}
-            onChange={handleTextareaChange}
+            value={symptomData.detail}
+            onChange={(e) => updateSymptomData(e)}
           />
           <button
             disabled={isDisabled}
@@ -159,12 +136,12 @@ export default function BottomNavigateBar() {
         </Modal>
       )}
       {infoModalCode === 'EMERGENCY' && (
-        <Modal onClose={handleInfoModalClose}>
+        <Modal key='emergency-modal' onClose={() => setInfoModalCode(null)}>
           <EmergencyCall />
         </Modal>
       )}
       {infoModalCode === 'CONTACT' && (
-        <Modal onClose={handleInfoModalClose}>
+        <Modal key='contact-modal' onClose={() => setInfoModalCode(null)}>
           <Contact />
         </Modal>
       )}
