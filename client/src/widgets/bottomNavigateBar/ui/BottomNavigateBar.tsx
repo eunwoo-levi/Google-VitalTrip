@@ -9,7 +9,7 @@ import Modal from '@/src/shared/ui/Modal';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { FaHome, FaRegHospital } from 'react-icons/fa';
+import { FaMapMarkedAlt, FaRegHospital } from 'react-icons/fa';
 import { MdGTranslate } from 'react-icons/md';
 import { TiThMenu } from 'react-icons/ti';
 import { MENU_ITEMS, SYMPTOMS } from '../data/BottomNavigateBarData';
@@ -54,9 +54,9 @@ export default function BottomNavigateBar() {
   return (
     <>
       <div className='fixed bottom-2 left-1/2 z-10 flex h-[60px] w-[98%] -translate-x-1/2 items-center justify-evenly gap-2 rounded-t-xl bg-white shadow-xl'>
-        <button onClick={() => setIsSymptomModalOpen((prev) => !prev)} className={linkClassName}>
-          <FaRegHospital size={25} className='text-blue-500' />
-        </button>
+        <Link href='/' className={linkClassName}>
+          <FaMapMarkedAlt size={25} className='text-blue-500' />
+        </Link>
 
         <Link href='/translate' className={linkClassName}>
           <MdGTranslate size={25} className='text-blue-500' />
@@ -71,9 +71,9 @@ export default function BottomNavigateBar() {
           </Modal>
         )}
 
-        <Link href='/about' className={linkClassName}>
-          <FaHome size={25} className='text-blue-500' />
-        </Link>
+        <button onClick={() => setIsSymptomModalOpen((prev) => !prev)} className={linkClassName}>
+          <FaRegHospital size={25} className='text-blue-500' />
+        </button>
 
         <MenuButton
           isMenuOpen={isMenuOpen}
@@ -130,7 +130,7 @@ const MenuButton = ({
               {item.code === 'ABOUT_US' ? (
                 <Link
                   href='/about'
-                  className='mb-2 hover:cursor-pointer hover:text-blue-500'
+                  className='mb-2 font-semibold text-blue-500 hover:cursor-pointer hover:text-blue-500'
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {item.label}
