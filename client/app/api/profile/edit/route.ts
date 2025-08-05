@@ -12,7 +12,7 @@ export async function PUT(req: NextRequest) {
 
   try {
     const body = await req.json();
-    await httpServer.put('/api/auth/profile', body, {
+    await httpServer.put('/auth/profile', body, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
