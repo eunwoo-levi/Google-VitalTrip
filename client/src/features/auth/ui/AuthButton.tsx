@@ -1,17 +1,24 @@
 import Link from 'next/link';
 import { useLogoutMutation } from '../api/useLogoutMutation';
-import { useProfileQuery } from '../api/useProfileQuery';
+import { Profile } from '../types/auth';
 
-export const AuthButton = ({ closeMenu }: { closeMenu: () => void }) => {
-  const { data, isError, error } = useProfileQuery();
-  const profile = data?.data?.data;
+interface AuthButtonProps {
+  data?: {
+    isAuthenticated: boolean;
+    data: {
+      data: Profile;
+    };
+  };
+  closeMenu?: () => void;
+  mobileHidden?: boolean;
+}
+
+export const AuthButton = ({ data, closeMenu, mobileHidden }: AuthButtonProps) => {
   const isAuthenticated = data?.isAuthenticated;
 
-  const { mutateAsync: logoutUser } = useLogoutMutation();
+  const mobileHiddenClass = mobileHidden ? 'hidden md:flex' : '';
 
-  if (isError) {
-    console.error('Error fetching profile:', error.message);
-  }
+  const { mutateAsync: logoutUser } = useLogoutMutation();
 
   const handleLogout = async () => {
     await logoutUser();
@@ -19,15 +26,12 @@ export const AuthButton = ({ closeMenu }: { closeMenu: () => void }) => {
 
   if (isAuthenticated) {
     return (
-      <div className='flex items-center justify-center md:space-x-2'>
-        <span className='text-lg font-semibold'>{profile?.name}</span>
-        <button
-          onClick={handleLogout}
-          className='mx-2 hidden items-center justify-center space-x-2 rounded-md bg-red-600 px-3 py-2 text-white transition-colors duration-200 hover:bg-red-700 md:flex'
-        >
-          <span>{'LOGOUT'}</span>
-        </button>
-      </div>
+      <button
+        onClick={handleLogout}
+        className={`${mobileHiddenClass} items-center justify-center rounded-md bg-red-600 px-3 py-2 text-white transition-colors duration-200 hover:bg-red-700`}
+      >
+        LOGOUT
+      </button>
     );
   }
 
@@ -35,9 +39,9 @@ export const AuthButton = ({ closeMenu }: { closeMenu: () => void }) => {
     <Link
       href='/login'
       onClick={closeMenu}
-      className='mx-2 hidden items-center justify-center space-x-2 rounded-md bg-blue-600 px-3 py-2 text-white transition-colors duration-200 hover:bg-blue-700 md:flex'
+      className={`${mobileHiddenClass} items-center justify-center rounded-md bg-blue-600 px-3 py-2 text-white transition-colors duration-200 hover:bg-blue-700 md:flex`}
     >
-      <span>LOGIN</span>
+      LOGIN
     </Link>
   );
 };
