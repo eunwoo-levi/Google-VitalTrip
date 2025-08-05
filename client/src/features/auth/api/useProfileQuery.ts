@@ -14,6 +14,8 @@ export const useProfileQuery = () => {
     queryKey: ['me'],
     queryFn: getProfile,
     staleTime: 1000 * 60 * 5, // 5분
+    retry: 1,
+    refetchOnWindowFocus: false,
   });
 };
 
