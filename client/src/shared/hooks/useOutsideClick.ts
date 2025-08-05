@@ -1,9 +1,9 @@
 'use client';
 
-import { useEffect, RefObject } from 'react';
+import { RefObject, useEffect } from 'react';
 
 export function useOutsideClick<T extends HTMLElement>(
-  ref: RefObject<T>,
+  ref: RefObject<T | null>,
   onClickOutside: () => void,
 ) {
   useEffect(() => {

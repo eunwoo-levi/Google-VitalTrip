@@ -1,37 +1,39 @@
 'use client';
 
-import React, { useRef } from 'react';
-import { useOutsideClick } from '../hooks/useOutsideClick';
-import { createPortal } from 'react-dom';
+import { useOverlay } from '@vitaltrip/shared';
+import React, { useEffect } from 'react';
 
 interface ModalProps {
-  onClose: () => void;
   children: React.ReactNode;
+  onClose?: () => void;
 }
 
-export default function Modal({ onClose, children }: ModalProps) {
-  const modalRef = useRef<HTMLDivElement>(null) as React.RefObject<HTMLDivElement>;
-  useOutsideClick(modalRef, onClose);
+export default function Modal({ children, onClose }: ModalProps) {
+  const overlay = useOverlay({
+    closeOnEscape: true,
+    autoOpen: true,
+  });
 
-  const modalRoot = typeof window !== 'undefined' ? document.body : null;
+  useEffect(() => {
+    if (!overlay.isOpen && onClose) {
+      onClose();
+    }
+  }, [overlay.isOpen, onClose]);
 
-  const modalContent = (
-    <div className='fixed inset-0 z-50 flex items-center justify-center bg-black/50'>
-      <div
-        ref={modalRef}
-        className='animate-slideFadeUp relative w-[95%] rounded-xl bg-white p-6 shadow-xl'
-        onClick={(e) => e.stopPropagation()}
+  const handleClose = () => {
+    overlay.close();
+    onClose?.();
+  };
+
+  return overlay.render(
+    <div className='relative'>
+      <button
+        onClick={handleClose}
+        className='absolute top-2 right-2 z-10 text-xl font-bold text-gray-500 hover:text-black'
       >
-        <button
-          onClick={onClose}
-          className='absolute top-3 right-4 text-xl font-bold text-gray-500 hover:text-black'
-        >
-          ✕
-        </button>
-        {children}
-      </div>
-    </div>
+        ✕
+      </button>
+      <div className='pt-6'>{children}</div>
+    </div>,
   );
-
-  return modalRoot ? createPortal(modalContent, modalRoot) : null;
 }

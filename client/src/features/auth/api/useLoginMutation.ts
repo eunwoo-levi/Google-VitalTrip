@@ -2,7 +2,7 @@ import { APIError } from '@/src/shared/utils/apiError';
 import { httpClient } from '@/src/shared/utils/httpClient';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import { Profile } from '../types/auth';
+import { Profile } from '../../profile/types/profile';
 
 interface LoginData {
   email: string;
