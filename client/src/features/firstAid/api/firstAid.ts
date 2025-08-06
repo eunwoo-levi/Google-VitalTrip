@@ -1,19 +1,7 @@
 import { APIError } from '@/src/shared/utils/apiError';
 import { httpClient } from '@/src/shared/utils/httpClient';
 import { useMutation } from '@tanstack/react-query';
-
-interface FirstAidRequest {
-  symptomType: string;
-  symptomDetail: string;
-}
-
-interface FirstAidResponse {
-  content: string;
-  summary: string;
-  recommendedAction: string;
-  confidence: number;
-  blogLinks: string[];
-}
+import { FirstAid, Symtoms } from '../type/firstAid';
 
 export const useFirstAidMutation = () => {
   return useMutation({
@@ -26,6 +14,6 @@ export const useFirstAidMutation = () => {
   });
 };
 
-const postFirstAid = async (formData: FirstAidRequest): Promise<FirstAidResponse> => {
+const postFirstAid = async (formData: Symtoms): Promise<FirstAid> => {
   return await httpClient.post('/api/first-aid', formData);
 };

@@ -9,8 +9,9 @@ import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { BsCheckCircle } from 'react-icons/bs';
 import { FaRegLightbulb } from 'react-icons/fa';
 import { HiOutlineChartBar } from 'react-icons/hi';
-import { MdArrowBack, MdArrowForward, MdErrorOutline, MdMedicalServices } from 'react-icons/md';
-import useFirstAidResult from '../hooks/useFirstAidResult';
+import { MdArrowForward, MdErrorOutline, MdMedicalServices } from 'react-icons/md';
+import { useFirstAidMutation } from '../api/firstAid';
+import { useSymptomStore } from '../store/useSymptomStore';
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 20 },
@@ -97,13 +98,14 @@ function ProgressCircle({ percent }: { percent: number }) {
 }
 
 export default function FirstAidResult() {
-  const { hydrated, symptomType, symptomDetail, result, loading, contentRef } = useFirstAidResult();
+  const { mutateAsync, data: result, isPending, isError, error } = useFirstAidMutation();
+  const { symptomType, symptomDetail } = useSymptomStore();
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  if (!hydrated) {
+  if (isPending) {
     return (
       <div className='flex min-h-screen flex-col items-center justify-center bg-gray-50'>
         <AiOutlineLoading3Quarters className='mb-4 animate-spin text-4xl text-red-500' />
@@ -112,37 +114,14 @@ export default function FirstAidResult() {
     );
   }
 
-  if (!symptomType || !symptomDetail) {
+  if (isError) {
+    console.error(error.message);
     return (
-      <motion.div
-        className='flex min-h-screen flex-col items-center justify-center bg-gray-50 px-4'
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
-      >
-        <motion.div
-          initial={{ scale: 0.8, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.5 }}
-          className='flex flex-col items-center'
-        >
-          <MdErrorOutline className='mb-4 text-5xl text-red-500' />
-          <h2 className='mb-2 text-2xl font-bold text-gray-800'>Missing Information</h2>
-          <p className='mb-6 text-center text-gray-600'>
-            We couldn&apos;t find your symptom information.
-            <br />
-            Please go back and provide the necessary details.
-          </p>
-          <motion.button
-            className='flex items-center gap-2 rounded-full bg-red-600 px-6 py-2 font-bold text-white shadow transition hover:bg-red-700'
-            onClick={() => window.history.back()}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <MdArrowBack className='text-lg' /> Go Back
-          </motion.button>
-        </motion.div>
-      </motion.div>
+      <div className='flex min-h-screen flex-col items-center justify-center bg-gray-50'>
+        <MdErrorOutline className='mb-4 text-5xl text-red-500' />
+        <h2 className='mb-2 text-2xl font-bold text-gray-800'>Error</h2>
+        <p className='mb-6 text-center text-gray-600'>"First Aid 요청에 실패했습니다."</p>
+      </div>
     );
   }
 
@@ -168,7 +147,7 @@ export default function FirstAidResult() {
         />
       </motion.div>
 
-      <div ref={contentRef} className='w-full max-w-2xl'>
+      <div className='w-full max-w-2xl'>
         <motion.div
           className='mb-8 flex flex-col items-center rounded-3xl border-t-8 border-red-500 bg-white p-8 shadow-2xl'
           initial={{ y: 30, opacity: 0 }}
@@ -198,9 +177,7 @@ export default function FirstAidResult() {
           >
             Symptom: <span className='font-bold text-red-600'>{symptomType}</span>
           </motion.div>
-          {result && typeof result === 'object' && (
-            <ProgressCircle percent={Math.round((result.confidence || 0) * 100)} />
-          )}
+          <ProgressCircle percent={Math.round((result?.confidence || 0) * 100)} />
         </motion.div>
 
         <motion.div
@@ -217,7 +194,7 @@ export default function FirstAidResult() {
           initial='hidden'
           animate='visible'
         >
-          {loading ? (
+          {isPending ? (
             <motion.div
               className='flex flex-col items-center justify-center rounded-2xl bg-white py-16 shadow-lg'
               animate={{

@@ -1,16 +1,11 @@
+import { FirstAid } from '@/src/features/firstAid/type/firstAid';
 import { getValidAccessToken } from '@/src/shared/utils/cookieService';
 import { httpServer } from '@/src/shared/utils/httpServer';
 import { NextRequest, NextResponse } from 'next/server';
 
 interface FirstAidResponse {
   message: string;
-  data: {
-    content: string;
-    summary: string;
-    recommendedAction: string;
-    confidence: number;
-    blogLinks: string[];
-  };
+  data: FirstAid;
   errorCode: string;
 }
 
