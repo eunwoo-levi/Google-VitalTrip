@@ -22,16 +22,16 @@ export const validatePassword = (password: string): string => {
   return '';
 };
 
-export const validateRePassword = (password: string, rePassword: string): string => {
-  if (!rePassword) {
+export const validatePasswordConfirm = (password: string, passwordConfirm: string): string => {
+  if (!passwordConfirm) {
     return 'Please enter your password.';
-  } else if (rePassword !== password) {
+  } else if (passwordConfirm !== password) {
     return 'Passwords do not match.';
   }
   return '';
 };
 
-export const validateNickname = (nickname: string): string => {
+export const validateName = (nickname: string): string => {
   if (!nickname) {
     return 'Please enter your nickname.';
   } else if (nickname.length < 2) {
@@ -55,9 +55,9 @@ export const validateSignupField = (
     case 'password':
       return validatePassword(value);
     case 'passwordConfirm':
-      return validateRePassword(signupData.password, value);
+      return validatePasswordConfirm(signupData.password, value);
     case 'name':
-      return validateNickname(value);
+      return validateName(value);
     default:
       return '';
   }
@@ -74,8 +74,8 @@ export const validateSignupForm = (data: SignupForm): SignupErrors => {
   return {
     email: validateEmail(data.email),
     password: validatePassword(data.password),
-    passwordConfirm: validateRePassword(data.password, data.passwordConfirm),
-    name: validateNickname(data.name),
+    passwordConfirm: validatePasswordConfirm(data.password, data.passwordConfirm),
+    name: validateName(data.name),
   };
 };
 
