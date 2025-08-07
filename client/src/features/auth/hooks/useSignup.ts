@@ -2,10 +2,16 @@ import { APIError } from '@/src/shared/utils/apiError';
 import { useState } from 'react';
 import { useSignupGoogleMutation } from '../api/useSignupGoogleMutation';
 import { useSignupMutation } from '../api/useSignupMutation';
-import type { SignupFormData } from '../types/signup';
+import type { SignupErrors, SignupForm } from '../types/signup';
+import {
+  validateEmail,
+  validateName,
+  validatePassword,
+  validatePasswordConfirm,
+} from '../utils/validateAuth';
 
 export const useSignup = () => {
-  const [formData, setFormData] = useState<SignupFormData>({
+  const [signupForm, setSignupForm] = useState<SignupForm>({
     email: '',
     password: '',
     passwordConfirm: '',
@@ -14,7 +20,12 @@ export const useSignup = () => {
     countryCode: '',
     phoneNumber: '',
   });
-
+  const [invalidErrors, setInvalidErrors] = useState<SignupErrors>({
+    email: '',
+    password: '',
+    passwordConfirm: '',
+    name: '',
+  });
   const { mutateAsync: signupUser, isPending, error: signupError } = useSignupMutation();
   const {
     mutateAsync: signupGoogleUser,
@@ -22,8 +33,38 @@ export const useSignup = () => {
     error: signupGoogleError,
   } = useSignupGoogleMutation();
 
-  const handleFormChange = (field: keyof SignupFormData, value: string) => {
-    setFormData((prev) => ({
+  const handleFormChange = (field: keyof SignupForm, value: string) => {
+    if (field === 'email') {
+      setInvalidErrors((prev) => {
+        return {
+          ...prev,
+          email: validateEmail(value),
+        };
+      });
+    } else if (field === 'password') {
+      setInvalidErrors((prev) => {
+        return {
+          ...prev,
+          password: validatePassword(value),
+        };
+      });
+    } else if (field === 'passwordConfirm') {
+      setInvalidErrors((prev) => {
+        return {
+          ...prev,
+          passwordConfirm: validatePasswordConfirm(signupForm.password, value),
+        };
+      });
+    } else if (field === 'name') {
+      setInvalidErrors((prev) => {
+        return {
+          ...prev,
+          name: validateName(value),
+        };
+      });
+    }
+
+    setSignupForm((prev) => ({
       ...prev,
       [field]: value,
     }));
@@ -33,14 +74,14 @@ export const useSignup = () => {
     try {
       if (isGoogleSignup) {
         const googleFormData = {
-          name: formData.name,
-          birthDate: formData.birthDate,
-          countryCode: formData.countryCode,
-          phoneNumber: formData.phoneNumber,
+          name: signupForm.name,
+          birthDate: signupForm.birthDate,
+          countryCode: signupForm.countryCode,
+          phoneNumber: signupForm.phoneNumber,
         };
         await signupGoogleUser(googleFormData);
       } else {
-        await signupUser(formData);
+        await signupUser(signupForm);
       }
     } catch (error) {
       if (error instanceof APIError) {
@@ -51,11 +92,29 @@ export const useSignup = () => {
     }
   };
 
+  const isFirstStepValid =
+    invalidErrors.email === '' &&
+    invalidErrors.password === '' &&
+    invalidErrors.passwordConfirm === '' &&
+    signupForm.email !== '' &&
+    signupForm.password !== '' &&
+    signupForm.passwordConfirm !== '';
+
+  const isSecondStepValid =
+    invalidErrors.name === '' &&
+    signupForm.name !== '' &&
+    signupForm.birthDate !== '' &&
+    signupForm.countryCode !== '' &&
+    signupForm.phoneNumber !== '';
+
   return {
-    formData,
+    signupForm,
     isLoading: isPending || isGooglePending,
     error: signupError || signupGoogleError,
     handleFormChange,
     handleSubmit,
+    isFirstStepValid,
+    isSecondStepValid,
+    invalidErrors,
   };
 };

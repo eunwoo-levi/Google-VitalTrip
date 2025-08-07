@@ -1,4 +1,4 @@
-export interface SignupFormData {
+export interface SignupForm {
   email: string;
   password: string;
   passwordConfirm: string;
@@ -6,4 +6,21 @@ export interface SignupFormData {
   birthDate: string;
   countryCode: string;
   phoneNumber: string;
+}
+
+export interface LoginForm {
+  email: string;
+  password: string;
+}
+
+export interface LoginErrors {
+  email: string;
+  password: string;
+}
+
+export interface SignupErrors {
+  email: string;
+  password: string;
+  passwordConfirm: string;
+  name: string;
 }

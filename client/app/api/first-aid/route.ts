@@ -1,38 +1,31 @@
+import { FirstAid } from '@/src/features/firstAid/type/firstAid';
+import { getValidAccessToken } from '@/src/shared/utils/cookieService';
+import { httpServer } from '@/src/shared/utils/httpServer';
 import { NextRequest, NextResponse } from 'next/server';
 
+interface FirstAidResponse {
+  message: string;
+  data: FirstAid;
+  errorCode: string;
+}
+
 export async function POST(req: NextRequest) {
+  const accessToken = await getValidAccessToken();
+
+  if (!accessToken) {
+    return NextResponse.json({ message: '로그인 후 이용해주세요.' }, { status: 401 });
+  }
+
   try {
     const body = await req.json();
-    const { symptomType, symptomDetail } = body;
-
-    if (!symptomType || !symptomDetail) {
-      return NextResponse.json(
-        { error: 'symptomType 혹은 symptomDetail을 입력해야 합니다.' },
-        { status: 400 },
-      );
-    }
-
-    const response = await fetch(`${process.env.API_BASE_URL}/first-aid/chat`, {
-      method: 'POST',
+    const response: FirstAidResponse = await httpServer.post('/first-aid/advice', body, {
       headers: {
-        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
       },
-      body: JSON.stringify({ emergencyType: symptomType, userMessage: symptomDetail }),
     });
 
-    const responseData = await response.json();
-
-    if (!response.ok || responseData.result !== 'SUCCESS') {
-      return NextResponse.json(
-        { error: responseData.message || 'POST 요청에 실패했습니다.' },
-        { status: response.status },
-      );
-    }
-
-    return NextResponse.json({ result: responseData.data }, { status: 200 });
+    return NextResponse.json(response.data, { status: 200 });
   } catch {
-    // 보안상 상세한 에러 정보는 로깅하지 않음
-    console.error('First aid API 요청 실패');
-    return new Response('Internal Server Error', { status: 500 });
+    return NextResponse.json({ message: 'first-aid POST 요청에 실패했습니다.' }, { status: 500 });
   }
 }

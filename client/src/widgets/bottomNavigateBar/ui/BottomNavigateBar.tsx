@@ -1,6 +1,7 @@
 'use client';
 
 import Chatbot from '@/src/features/chatbot/ui/Chatbot';
+import { SYMPTOMS } from '@/src/features/firstAid/data/symptom';
 import { useSymptomStore } from '@/src/features/firstAid/store/useSymptomStore';
 import { UserProfileInfo } from '@/src/features/profile/ui/UserProfileInfo';
 import { useOutsideClick } from '@/src/shared/hooks/useOutsideClick';
@@ -12,7 +13,7 @@ import { useRouter } from 'next/navigation';
 import { FaMapMarkedAlt, FaRegHospital } from 'react-icons/fa';
 import { MdGTranslate } from 'react-icons/md';
 import { TiThMenu } from 'react-icons/ti';
-import { MENU_ITEMS, SYMPTOMS } from '../data/BottomNavigateBarData';
+import { MENU_ITEMS } from '../data/BottomNavigateBarData';
 import { useBottonNavigateBarModals } from '../hooks/useBottonNavigateBarModals';
 import { useTempSymptomData } from '../hooks/useTempSymptomData';
 import Contact from './Contact';
