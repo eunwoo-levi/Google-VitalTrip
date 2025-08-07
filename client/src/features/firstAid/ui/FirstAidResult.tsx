@@ -48,7 +48,7 @@ export const FirstAidResult = () => {
           </motion.div>
           <h2 className='mb-3 text-2xl font-bold text-gray-900'>Analysis Failed</h2>
           <p className='mb-8 text-gray-600'>
-            We couldn't complete the emergency analysis. Please try again.
+            We couldn&apos;t complete the emergency analysis. Please try again.
           </p>
           <motion.button
             onClick={() => window.location.reload()}
