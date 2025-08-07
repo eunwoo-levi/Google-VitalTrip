@@ -1,0 +1,1 @@
+export { FirstAidResult } from './FirstAidResult';
