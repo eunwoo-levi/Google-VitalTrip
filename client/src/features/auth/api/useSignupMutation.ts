@@ -2,7 +2,7 @@ import { APIError } from '@/src/shared/utils/apiError';
 import { httpClient } from '@/src/shared/utils/httpClient';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import type { SignupFormData } from '../types/signup';
+import type { SignupForm } from '../types/signup';
 
 export const useSignupMutation = () => {
   const router = useRouter();
@@ -19,6 +19,6 @@ export const useSignupMutation = () => {
   });
 };
 
-const signupUser = async (formData: SignupFormData) => {
+const signupUser = async (formData: SignupForm) => {
   return await httpClient.post('/api/auth/signup', formData);
 };
