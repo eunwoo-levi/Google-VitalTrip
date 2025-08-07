@@ -9,7 +9,16 @@ const SIGNUP_STEPS = ['step1', 'step2', 'step3'] as const;
 export default function SignupForm() {
   const { Funnel, Step, useStep } = useFunnel(SIGNUP_STEPS);
   const { step, setStep } = useStep();
-  const { formData, error, isLoading, handleFormChange, handleSubmit } = useSignup();
+  const {
+    signupForm,
+    invalidErrors,
+    error,
+    isLoading,
+    handleFormChange,
+    handleSubmit,
+    isFirstStepValid,
+    isSecondStepValid,
+  } = useSignup();
 
   const handleNext = (nextStep: (typeof SIGNUP_STEPS)[number]) => {
     setStep(nextStep);
@@ -32,24 +41,28 @@ export default function SignupForm() {
       <Funnel>
         <Step name='step1'>
           <Signup1
-            formData={formData}
+            formData={signupForm}
             onFormChange={handleFormChange}
             onNext={() => handleNext('step2')}
+            invalidErrors={invalidErrors}
+            isFirstStepValid={isFirstStepValid}
           />
         </Step>
 
         <Step name='step2'>
           <Signup2
-            formData={formData}
+            formData={signupForm}
             onFormChange={handleFormChange}
             onNext={() => handleNext('step3')}
             onPrev={() => handlePrev('step1')}
+            invalidErrors={invalidErrors}
+            isSecondStepValid={isSecondStepValid}
           />
         </Step>
 
         <Step name='step3'>
           <Signup3
-            formData={formData}
+            formData={signupForm}
             onPrev={() => handlePrev('step2')}
             onSubmit={handleSubmit}
             isLoading={isLoading}

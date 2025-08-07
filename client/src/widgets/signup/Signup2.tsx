@@ -1,5 +1,6 @@
 'use client';
 
+import type { SignupErrors } from '@/src/features/auth/types/signup';
 import { countries } from '../bottomNavigateBar/data/countryCode';
 
 interface FormData {
@@ -17,9 +18,18 @@ interface Signup2Props {
   onFormChange: (field: keyof FormData, value: string) => void;
   onNext: () => void;
   onPrev: () => void;
+  invalidErrors: SignupErrors;
+  isSecondStepValid: boolean;
 }
 
-export default function Signup2({ formData, onFormChange, onNext, onPrev }: Signup2Props) {
+export default function Signup2({
+  formData,
+  onFormChange,
+  onNext,
+  onPrev,
+  invalidErrors,
+  isSecondStepValid,
+}: Signup2Props) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -45,6 +55,7 @@ export default function Signup2({ formData, onFormChange, onNext, onPrev }: Sign
             className='w-full rounded-md border border-gray-300 p-3 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-400'
             required
           />
+          {invalidErrors.name && <p className='text-sm text-red-600'>{invalidErrors.name}</p>}
         </div>
 
         <div>
@@ -115,6 +126,7 @@ export default function Signup2({ formData, onFormChange, onNext, onPrev }: Sign
           <button
             type='submit'
             className='w-full rounded-md bg-blue-500 py-3 font-semibold text-white transition duration-200 hover:bg-blue-600 disabled:bg-gray-400'
+            disabled={!isSecondStepValid}
           >
             Continue
           </button>
