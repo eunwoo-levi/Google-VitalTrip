@@ -2,11 +2,6 @@
 
 import { useLogin } from '../hooks/useLogin';
 
-interface FormData {
-  email: string;
-  password: string;
-}
-
 export default function LoginForm() {
   const {
     loginForm,
