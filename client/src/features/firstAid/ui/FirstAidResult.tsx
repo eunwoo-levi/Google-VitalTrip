@@ -64,7 +64,7 @@ export const FirstAidResult = () => {
   }
 
   return (
-    <div className='mx-auto max-w-6xl px-6 py-10'>
+    <div className='mx-auto max-w-6xl px-6 py-10 pb-[100px]'>
       <AnimatedSection delay={0.1}>
         <EmergencyCallBanner />
       </AnimatedSection>
