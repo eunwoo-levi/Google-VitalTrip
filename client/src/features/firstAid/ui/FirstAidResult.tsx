@@ -15,10 +15,8 @@ import { ConfidenceIndicator } from './ConfidenceIndicator';
 import { LoadingSpinner } from './LoadingSpinner';
 
 export const FirstAidResult = () => {
-  const { mutateAsync, data: result, isPending, isError, error } = useFirstAidMutation();
+  const { mutateAsync, data: result, isPending, isError } = useFirstAidMutation();
   const { symptomType, symptomDetail } = useSymptomStore();
-
-  console.log('임시', mutateAsync, symptomDetail);
 
   useEffect(() => {
     try {
