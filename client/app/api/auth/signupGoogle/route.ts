@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    const { accessToken, refreshToken, user } = response.data;
+    const { accessToken, refreshToken } = response.data;
 
     const res = NextResponse.json({ message: 'Google signup success' }, { status: 201 });
 
@@ -46,12 +46,12 @@ export async function POST(req: NextRequest) {
       maxAge: 60 * 60 * 24 * 7, // 7일
     });
 
-    return NextResponse.json(user, { status: 201 });
+    return res;
   } catch (error) {
     if (error instanceof APIError) {
       if (error.status === 400) {
         return NextResponse.json(
-          { message: 'Please enter a valid email address' },
+          { message: 'Please enter a valid user information' },
           { status: 400 },
         );
       } else if (error.status === 401) {
