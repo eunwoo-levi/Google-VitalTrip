@@ -2,6 +2,7 @@ import * as Sentry from '@sentry/nextjs';
 
 Sentry.init({
   dsn: process.env.SENTRY_DSN,
+  enabled: process.env.NODE_ENV === 'production',
   sendDefaultPii: true,
   tracesSampleRate: 1, // 0에서 1 사이의 숫자로 주어진 트랜잭션이 Sentry로 전송 될 확률을 제어
   debug: false,

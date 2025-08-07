@@ -1,374 +1,300 @@
 'use client';
 
-import { Variants, motion } from 'motion/react';
-import Image from 'next/image';
-import { useEffect } from 'react';
-
 import EmergencyCallBanner from '@/src/features/firstAid/ui/EmergencyCallBanner';
-import { AiOutlineLoading3Quarters } from 'react-icons/ai';
+import { motion } from 'motion/react';
+import { useEffect } from 'react';
 import { BsCheckCircle } from 'react-icons/bs';
-import { FaRegLightbulb } from 'react-icons/fa';
-import { HiOutlineChartBar } from 'react-icons/hi';
+import { FiActivity, FiExternalLink, FiInfo } from 'react-icons/fi';
+import { HiOutlineDocumentText } from 'react-icons/hi';
 import { MdArrowForward, MdErrorOutline, MdMedicalServices } from 'react-icons/md';
 import { useFirstAidMutation } from '../api/firstAid';
+import { slideInLeft, staggerChildren } from '../data/animationEffect';
 import { useSymptomStore } from '../store/useSymptomStore';
+import { AnimatedSection } from './AnimatedSection';
+import { ConfidenceIndicator } from './ConfidenceIndicator';
+import { LoadingSpinner } from './LoadingSpinner';
 
-const fadeInUp = {
-  hidden: { opacity: 0, y: 20 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: {
-      delay: i * 0.15,
-      duration: 0.5,
-      ease: 'easeOut',
-    },
-  }),
-} as const satisfies Variants;
-
-const staggerContainer = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.2,
-      delayChildren: 0.3,
-    },
-  },
-} as const satisfies Variants;
-
-const pulse = {
-  hidden: { scale: 0.9, opacity: 0 },
-  visible: {
-    scale: 1,
-    opacity: 1,
-    transition: {
-      duration: 0.5,
-      ease: 'easeOut',
-    },
-  },
-} as const satisfies Variants;
-
-const slideIn = {
-  hidden: { x: -60, opacity: 0 },
-  visible: {
-    x: 0,
-    opacity: 1,
-    transition: {
-      duration: 0.5,
-      ease: 'easeOut',
-    },
-  },
-} as const satisfies Variants;
-
-function ProgressCircle({ percent }: { percent: number }) {
-  return (
-    <motion.div
-      className='relative flex h-20 w-20 items-center justify-center'
-      initial={{ scale: 0.5, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
-      transition={{ duration: 0.7, delay: 0.2, type: 'spring', stiffness: 100 }}
-    >
-      <svg className='absolute top-0 left-0' width='80' height='80'>
-        <circle cx='40' cy='40' r='34' stroke='#e5e7eb' strokeWidth='8' fill='none' />
-        <motion.circle
-          cx='40'
-          cy='40'
-          r='34'
-          stroke='#ef4444'
-          strokeWidth='8'
-          fill='none'
-          strokeDasharray={2 * Math.PI * 34}
-          initial={{ strokeDashoffset: 2 * Math.PI * 34 }}
-          animate={{ strokeDashoffset: 2 * Math.PI * 34 * (1 - percent / 100) }}
-          transition={{ duration: 1.5, delay: 0.5, ease: 'easeOut' }}
-          strokeLinecap='round'
-        />
-      </svg>
-      <motion.span
-        className='absolute text-xl font-bold text-red-600'
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5, delay: 1.8 }}
-      >
-        {percent}%
-      </motion.span>
-    </motion.div>
-  );
-}
-
-export default function FirstAidResult() {
+export const FirstAidResult = () => {
   const { mutateAsync, data: result, isPending, isError, error } = useFirstAidMutation();
   const { symptomType, symptomDetail } = useSymptomStore();
 
   console.log('임시', mutateAsync, symptomDetail);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    try {
+      mutateAsync({ symptomType: symptomType, symptomDetail: symptomDetail });
+    } catch (error) {
+      console.error(error);
+    }
   }, []);
 
   if (isPending) {
-    return (
-      <div className='flex min-h-screen flex-col items-center justify-center bg-gray-50'>
-        <AiOutlineLoading3Quarters className='mb-4 animate-spin text-4xl text-red-500' />
-        <p className='text-lg font-semibold text-gray-600'>Loading...</p>
-      </div>
-    );
+    return <LoadingSpinner />;
   }
 
-  if (isError) {
-    console.error(error.message);
+  if (isError || !result) {
     return (
-      <div className='flex min-h-screen flex-col items-center justify-center bg-gray-50'>
-        <MdErrorOutline className='mb-4 text-5xl text-red-500' />
-        <h2 className='mb-2 text-2xl font-bold text-gray-800'>Error</h2>
-        <p className='mb-6 text-center text-gray-600'>First Aid 요청에 실패했습니다.</p>
+      <div className='flex min-h-screen items-center justify-center bg-gradient-to-br from-red-50 to-pink-50'>
+        <motion.div
+          className='mx-4 w-full max-w-md rounded-2xl border bg-white p-10 text-center shadow-xl'
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <motion.div
+            initial={{ scale: 0.5 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 0.2, type: 'spring', stiffness: 100 }}
+          >
+            <MdErrorOutline className='mx-auto mb-6 text-6xl text-red-500' />
+          </motion.div>
+          <h2 className='mb-3 text-2xl font-bold text-gray-900'>Analysis Failed</h2>
+          <p className='mb-8 text-gray-600'>
+            We couldn't complete the emergency analysis. Please try again.
+          </p>
+          <motion.button
+            onClick={() => window.location.reload()}
+            className='rounded-xl bg-red-500 px-8 py-3 font-semibold text-white shadow-lg transition-all duration-200 hover:bg-red-600 hover:shadow-xl'
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            Try Again
+          </motion.button>
+        </motion.div>
       </div>
     );
   }
 
   return (
-    <motion.div
-      className='flex min-h-screen flex-col items-center bg-gradient-to-br from-white via-red-50 to-blue-50 px-2 py-10'
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.7 }}
-    >
-      <motion.div
-        className='mb-8 flex justify-center'
-        initial={{ y: -50, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.7, type: 'spring', stiffness: 100 }}
-      >
-        <Image
-          src='/VitalTrip.svg'
-          alt='VitalTrip Logo'
-          width={64}
-          height={64}
-          className='h-16 w-auto'
+    <div className='mx-auto max-w-6xl px-6 py-10'>
+      <AnimatedSection delay={0.1}>
+        <EmergencyCallBanner />
+      </AnimatedSection>
+
+      <div className='mt-10 space-y-8'>
+        <SymptomSummary
+          symptomType={symptomType}
+          symptomDetail={symptomDetail}
+          confidence={result.confidence}
         />
-      </motion.div>
-
-      <div className='w-full max-w-2xl'>
-        <motion.div
-          className='mb-8 flex flex-col items-center rounded-3xl border-t-8 border-red-500 bg-white p-8 shadow-2xl'
-          initial={{ y: 30, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.7, delay: 0.2, type: 'spring' }}
-        >
-          <motion.div
-            initial={{ scale: 0, rotate: -180 }}
-            animate={{ scale: 1, rotate: 0 }}
-            transition={{ duration: 0.7, type: 'spring', stiffness: 200 }}
-          >
-            <MdMedicalServices className='mb-2 text-5xl text-red-600 drop-shadow' />
-          </motion.div>
-          <motion.h1
-            className='mb-2 text-3xl font-extrabold tracking-tight text-gray-900'
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.7, delay: 0.3 }}
-          >
-            First Aid Guide
-          </motion.h1>
-          <motion.div
-            className='mb-4 text-base font-medium text-gray-500'
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.7, delay: 0.4 }}
-          >
-            Symptom: <span className='font-bold text-red-600'>{symptomType}</span>
-          </motion.div>
-          <ProgressCircle percent={Math.round((result?.confidence || 0) * 100)} />
-        </motion.div>
-
-        <motion.div
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.5 }}
-        >
-          <EmergencyCallBanner />
-        </motion.div>
-
-        <motion.div
-          className='flex flex-col gap-8'
-          variants={staggerContainer}
-          initial='hidden'
-          animate='visible'
-        >
-          {isPending ? (
-            <motion.div
-              className='flex flex-col items-center justify-center rounded-2xl bg-white py-16 shadow-lg'
-              animate={{
-                boxShadow: [
-                  '0px 4px 16px rgba(0,0,0,0.1)',
-                  '0px 8px 24px rgba(255,100,100,0.2)',
-                  '0px 4px 16px rgba(0,0,0,0.1)',
-                ],
-              }}
-              transition={{ duration: 2, repeat: Infinity }}
-            >
-              <AiOutlineLoading3Quarters className='mb-4 animate-spin text-4xl text-red-500' />
-              <motion.p
-                className='text-lg font-semibold text-gray-700'
-                animate={{ opacity: [0.7, 1, 0.7] }}
-                transition={{ duration: 1.5, repeat: Infinity }}
-              >
-                Analyzing your symptoms...
-              </motion.p>
-              <p className='text-sm text-gray-400'>This may take a moment</p>
-            </motion.div>
-          ) : result ? (
-            typeof result === 'object' ? (
-              <>
-                <motion.div
-                  className='rounded-2xl border-l-8 border-blue-500 bg-white p-8 shadow-lg'
-                  variants={slideIn}
-                >
-                  <h2 className='mb-6 flex items-center gap-2 text-xl font-bold text-blue-700'>
-                    <motion.div
-                      animate={{ rotate: [0, 10, -10, 0] }}
-                      transition={{ duration: 0.5, delay: 1 }}
-                    >
-                      <BsCheckCircle className='text-2xl text-blue-500' />
-                    </motion.div>
-                    Step-by-step First Aid
-                  </h2>
-                  <motion.ol
-                    className='relative ml-4 border-l-2 border-blue-200'
-                    variants={staggerContainer}
-                    initial='hidden'
-                    animate='visible'
-                  >
-                    {result.content.split(/(?<=[.!?])\s+/).map((sentence, idx) => (
-                      <motion.li key={idx} className='mb-8 ml-6' variants={fadeInUp} custom={idx}>
-                        <motion.span
-                          className='absolute -left-4 flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 ring-4 ring-white'
-                          initial={{ scale: 0.5, opacity: 0 }}
-                          animate={{ scale: 1, opacity: 1 }}
-                          transition={{ delay: 0.3 + idx * 0.1, duration: 0.5 }}
-                        >
-                          <span className='font-bold text-blue-600'>{idx + 1}</span>
-                        </motion.span>
-                        <span className='text-base font-medium text-gray-800'>{sentence}</span>
-                      </motion.li>
-                    ))}
-                  </motion.ol>
-                </motion.div>
-                <motion.div
-                  className='flex items-center gap-4 rounded-2xl border-l-8 border-green-500 bg-white p-8 shadow-lg'
-                  variants={pulse}
-                >
-                  <motion.div
-                    animate={{ rotate: [0, -5, 5, 0] }}
-                    transition={{ duration: 0.5, delay: 1.5 }}
-                  >
-                    <HiOutlineChartBar className='text-3xl text-green-500' />
-                  </motion.div>
-                  <div>
-                    <h2 className='mb-1 text-lg font-bold text-green-700'>Recommended Action</h2>
-                    <motion.div
-                      className='rounded-lg bg-green-50 p-3 font-semibold text-gray-800'
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.3, duration: 0.5 }}
-                    >
-                      {result.recommendedAction}
-                    </motion.div>
-                  </div>
-                </motion.div>
-                {/* Additional Resources */}
-                <motion.div
-                  className='rounded-2xl border-l-8 border-purple-500 bg-white p-8 shadow-lg'
-                  variants={fadeInUp}
-                  custom={3}
-                >
-                  <h2 className='mb-3 flex items-center gap-2 text-lg font-bold text-purple-700'>
-                    <motion.div
-                      animate={{ y: [0, -5, 0], opacity: [0.7, 1, 0.7] }}
-                      transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 2 }}
-                    >
-                      <FaRegLightbulb className='text-2xl text-purple-500' />
-                    </motion.div>
-                    Additional Resources
-                  </h2>
-                  {result.blogLinks && result.blogLinks.length > 0 ? (
-                    <motion.ul
-                      className='space-y-2'
-                      variants={staggerContainer}
-                      initial='hidden'
-                      animate='visible'
-                    >
-                      {result.blogLinks.map((link, index) => (
-                        <motion.li key={index} variants={fadeInUp} custom={index}>
-                          <motion.a
-                            href={link}
-                            target='_blank'
-                            rel='noopener noreferrer'
-                            className='flex items-center justify-between rounded-lg bg-purple-50 p-3 font-medium text-purple-700 shadow-sm transition hover:bg-purple-100'
-                            whileHover={{ x: 5, backgroundColor: '#f3e8ff' }}
-                            whileTap={{ scale: 0.98 }}
-                          >
-                            <span className='truncate'>
-                              {decodeURIComponent(link).replace(/^https?:\/\//, '')}
-                            </span>
-                            <motion.div
-                              animate={{ x: [0, 3, 0] }}
-                              transition={{ duration: 1, repeat: Infinity, repeatDelay: 1 }}
-                            >
-                              <MdArrowForward className='text-purple-400' />
-                            </motion.div>
-                          </motion.a>
-                        </motion.li>
-                      ))}
-                    </motion.ul>
-                  ) : (
-                    <div className='text-sm text-gray-400'>No additional resources found.</div>
-                  )}
-                </motion.div>
-                <motion.div
-                  className='mt-8 flex flex-col items-center'
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 1.5, duration: 1 }}
-                >
-                  <div className='mb-16 flex items-center gap-2 text-xs text-gray-400'>
-                    <MdErrorOutline className='text-lg' />
-                    <span>
-                      This is a preliminary assessment. Always consult a medical professional.
-                    </span>
-                  </div>
-                </motion.div>
-              </>
-            ) : (
-              <motion.div
-                className='flex flex-col items-center rounded-2xl border-l-8 border-red-500 bg-white p-8 shadow-lg'
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-              >
-                <motion.div
-                  initial={{ scale: 0.5 }}
-                  animate={{ scale: [0.5, 1.1, 1] }}
-                  transition={{ duration: 0.5, type: 'spring' }}
-                >
-                  <MdErrorOutline className='mb-2 text-3xl text-red-600' />
-                </motion.div>
-                <h2 className='mb-2 font-bold text-red-700'>Error</h2>
-                <p className='mb-4 text-gray-700'>{result}</p>
-                <motion.button
-                  className='rounded-full bg-red-600 px-5 py-2 font-bold text-white shadow transition hover:bg-red-700'
-                  onClick={() => window.location.reload()}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  Try Again
-                </motion.button>
-              </motion.div>
-            )
-          ) : null}
-        </motion.div>
+        <FirstAidSteps firstAidSteps={result.content} />
+        <RecommendedAction recommendedAction={result.recommendedAction} />
+        <AdditionalResources blogLinks={result.blogLinks} />
+        <AlertDisclaimer />
       </div>
-    </motion.div>
+    </div>
   );
-}
+};
+
+const SymptomSummary = ({
+  symptomType,
+  symptomDetail,
+  confidence,
+}: {
+  symptomType: string;
+  symptomDetail: string;
+  confidence: number;
+}) => {
+  return (
+    <AnimatedSection delay={0.2}>
+      <div className='rounded-2xl border border-white/50 bg-white/90 p-8 shadow-xl backdrop-blur-sm'>
+        <div className='mb-6 flex items-start justify-between'>
+          <div className='flex items-center gap-4'>
+            <motion.div
+              className='rounded-2xl border border-red-100 bg-gradient-to-br from-red-50 to-pink-50 p-4'
+              whileHover={{ scale: 1.05 }}
+              transition={{ type: 'spring', stiffness: 300 }}
+            >
+              <MdMedicalServices className='text-2xl text-red-600' />
+            </motion.div>
+            <div>
+              <h2 className='mb-1 text-2xl font-bold text-gray-900'>Symptom Analysis Complete</h2>
+              <p className='text-lg font-medium text-gray-700'>{symptomType}</p>
+            </div>
+          </div>
+          <ConfidenceIndicator confidence={Math.round((confidence || 0) * 100)} />
+        </div>
+
+        {symptomDetail && (
+          <motion.div
+            className='rounded-xl border border-blue-100 bg-gradient-to-r from-blue-50 to-indigo-50 p-6'
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6, duration: 0.5 }}
+          >
+            <p className='leading-relaxed text-gray-800'>
+              <strong className='text-blue-700'>Detailed Symptoms:</strong> {symptomDetail}
+            </p>
+          </motion.div>
+        )}
+      </div>
+    </AnimatedSection>
+  );
+};
+
+const FirstAidSteps = ({ firstAidSteps }: { firstAidSteps: string }) => {
+  return (
+    <AnimatedSection delay={0.3}>
+      <div className='overflow-hidden rounded-2xl border border-white/50 bg-white/90 shadow-xl backdrop-blur-sm'>
+        <div className='bg-gradient-to-r from-blue-500 to-indigo-600 px-8 py-6 text-white'>
+          <div className='flex items-center gap-3'>
+            <BsCheckCircle className='text-2xl' />
+            <h2 className='text-2xl font-bold'>Emergency First Aid Protocol</h2>
+          </div>
+          <p className='mt-2 text-blue-100'>Follow these steps carefully and in order</p>
+        </div>
+
+        <div className='p-8'>
+          <motion.div
+            className='space-y-6'
+            variants={staggerChildren}
+            initial='hidden'
+            animate='visible'
+          >
+            {firstAidSteps
+              .split(/(?<=[.!?])\s+/)
+              .filter((sentence) => sentence.trim())
+              .map((sentence, idx) => (
+                <motion.div key={idx} className='group flex gap-6' variants={slideInLeft}>
+                  <div className='flex-shrink-0'>
+                    <motion.div
+                      className='flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 shadow-lg transition-shadow duration-300 group-hover:shadow-xl'
+                      whileHover={{ scale: 1.1 }}
+                      transition={{ type: 'spring', stiffness: 300 }}
+                    >
+                      <span className='text-lg font-bold text-white'>{idx + 1}</span>
+                    </motion.div>
+                  </div>
+                  <div className='flex-1 pt-2'>
+                    <p className='text-lg leading-relaxed font-medium text-gray-800'>{sentence}</p>
+                  </div>
+                </motion.div>
+              ))}
+          </motion.div>
+        </div>
+      </div>
+    </AnimatedSection>
+  );
+};
+
+const RecommendedAction = ({ recommendedAction }: { recommendedAction: string }) => {
+  return (
+    <AnimatedSection delay={0.4}>
+      <div className='overflow-hidden rounded-2xl border border-white/50 bg-white/90 shadow-xl backdrop-blur-sm'>
+        <div className='bg-gradient-to-r from-emerald-500 to-green-600 px-8 py-6 text-white'>
+          <div className='flex items-center gap-3'>
+            <FiActivity className='text-2xl' />
+            <h2 className='text-2xl font-bold'>Recommended Next Steps</h2>
+          </div>
+          <p className='mt-2 text-emerald-100'>Important actions to take immediately</p>
+        </div>
+
+        <div className='p-8'>
+          <motion.div
+            className='rounded-xl border-l-4 border-emerald-500 bg-gradient-to-r from-emerald-50 to-green-50 p-6'
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.6, duration: 0.5 }}
+          >
+            <p className='text-lg leading-relaxed font-semibold text-gray-800'>
+              {recommendedAction}
+            </p>
+          </motion.div>
+        </div>
+      </div>
+    </AnimatedSection>
+  );
+};
+
+const AdditionalResources = ({ blogLinks }: { blogLinks: string[] }) => {
+  return (
+    <AnimatedSection delay={0.5}>
+      <div className='overflow-hidden rounded-2xl border border-white/50 bg-white/90 shadow-xl backdrop-blur-sm'>
+        <div className='bg-gradient-to-r from-purple-500 to-violet-600 px-8 py-6 text-white'>
+          <div className='flex items-center gap-3'>
+            <HiOutlineDocumentText className='text-2xl' />
+            <h2 className='text-2xl font-bold'>Additional Medical Resources</h2>
+          </div>
+          <p className='mt-2 text-purple-100'>Trusted sources for more information</p>
+        </div>
+
+        <div className='p-8'>
+          <motion.div
+            className='grid gap-4'
+            variants={staggerChildren}
+            initial='hidden'
+            animate='visible'
+          >
+            {blogLinks.map((link, index) => (
+              <motion.a
+                key={index}
+                href={link}
+                target='_blank'
+                rel='noopener noreferrer'
+                className='group flex items-center justify-between rounded-xl border-2 border-gray-100 p-6 transition-all duration-300 hover:border-purple-300 hover:bg-gradient-to-r hover:from-purple-50 hover:to-violet-50'
+                variants={slideInLeft}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <div className='flex items-center gap-4'>
+                  <div className='rounded-lg bg-purple-100 p-2 transition-colors duration-200 group-hover:bg-purple-200'>
+                    <FiExternalLink className='text-lg text-purple-600' />
+                  </div>
+                  <div>
+                    <span className='block text-lg font-semibold text-gray-900'>
+                      {
+                        decodeURIComponent(link)
+                          .replace(/^https?:\/\//, '')
+                          .split('/')[0]
+                      }
+                    </span>
+                    <span className='text-sm text-gray-500'>Medical Resource</span>
+                  </div>
+                </div>
+                <MdArrowForward className='text-xl text-gray-400 transition-colors duration-200 group-hover:text-purple-500' />
+              </motion.a>
+            ))}
+          </motion.div>
+        </div>
+      </div>
+    </AnimatedSection>
+  );
+};
+
+const AlertDisclaimer = () => {
+  return (
+    <AnimatedSection delay={0.6}>
+      <div className='rounded-2xl border-2 border-amber-200 bg-gradient-to-r from-amber-50 to-yellow-50 p-8 shadow-lg'>
+        <div className='flex gap-4'>
+          <motion.div
+            initial={{ scale: 0.8 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 0.2, type: 'spring', stiffness: 100 }}
+          >
+            <FiInfo className='mt-1 flex-shrink-0 text-3xl text-amber-600' />
+          </motion.div>
+          <div>
+            <h3 className='mb-4 text-xl font-bold text-amber-800'>Important Medical Disclaimer</h3>
+            <div className='space-y-3 leading-relaxed text-amber-700'>
+              <p className='font-medium'>
+                • This analysis is provided by AI for preliminary guidance only and cannot replace
+                professional medical diagnosis.
+              </p>
+              <p className='font-medium'>
+                • In emergency situations or if symptoms are severe, seek immediate medical
+                attention or call emergency services.
+              </p>
+              <p className='font-medium'>
+                • Always consult with qualified healthcare professionals for proper medical advice
+                and treatment.
+              </p>
+              <p className='font-medium'>
+                • This tool is designed to supplement, not replace, professional medical judgment.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </AnimatedSection>
+  );
+};
