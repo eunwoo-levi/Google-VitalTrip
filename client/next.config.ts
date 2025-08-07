@@ -4,6 +4,7 @@ import type { NextConfig } from 'next';
 const nextConfig: NextConfig = {
   compress: true,
   poweredByHeader: false,
+  reactStrictMode: false, // 개발 환경에서 Strict Mode 비활성화
 
   images: {
     formats: ['image/webp', 'image/avif'],
@@ -70,10 +71,12 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default withSentryConfig(nextConfig, {
-  org: 'eunwoo',
-  project: 'vitaltrip',
-  disableLogger: true,
-  authToken: process.env.SENTRY_AUTH_TOKEN,
-  silent: !process.env.CI,
-});
+export default process.env.NODE_ENV === 'production'
+  ? withSentryConfig(nextConfig, {
+      org: 'eunwoo',
+      project: 'vitaltrip',
+      disableLogger: true,
+      authToken: process.env.SENTRY_AUTH_TOKEN,
+      silent: !process.env.CI,
+    })
+  : nextConfig;

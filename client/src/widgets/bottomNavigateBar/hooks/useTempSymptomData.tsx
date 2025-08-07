@@ -12,7 +12,7 @@ export const useTempSymptomData = () => {
     setSymptomData((prev) => {
       return {
         ...prev,
-        [name]: value.trim(),
+        [name]: value,
       };
     });
   };
