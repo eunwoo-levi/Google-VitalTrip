@@ -1,5 +1,7 @@
 import { httpClient } from '@/src/shared/utils/httpClient';
 import { useQuery } from '@tanstack/react-query';
+import { useEffect, useState } from 'react';
+import { checkIfLoggedIn } from '../../auth/api/checkIfLoggedIn';
 import { Profile } from '../types/profile';
 
 interface ProfileResponse {
@@ -10,10 +12,20 @@ interface ProfileResponse {
 }
 
 export const useProfileQuery = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  useEffect(() => {
+    const checkingLoggedin = async () => {
+      const result = await checkIfLoggedIn();
+      setIsLoggedIn(result);
+    };
+    checkingLoggedin();
+  }, []);
+
   return useQuery<ProfileResponse>({
     queryKey: ['me'],
     queryFn: getProfile,
-    staleTime: 1000 * 60 * 5, // 5분
+    enabled: isLoggedIn,
+    staleTime: 1000 * 60 * 10, // 10분
     retry: 1,
     refetchOnWindowFocus: false,
   });
