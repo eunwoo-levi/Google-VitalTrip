@@ -1,4 +1,4 @@
-import { FeaturesSection, Footer, HeroSection, VideoSection } from '@/src/widgets/about';
+import { FeaturesSection, Footer, HeroSection, VideoSection } from '@/app/about/_components';
 import Navbar from '@/src/widgets/navbar/Navbar';
 import { Metadata } from 'next';
 
