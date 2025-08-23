@@ -1,5 +1,11 @@
 import { useEffect, useState } from 'react';
 
+// 나중에 제거하기!
+const coordsMock = {
+  latitude: 37.5665,
+  longitude: 126.978,
+};
+
 export const useCurrentLocation = () => {
   const [coords, setCoords] = useState<{ latitude: number; longitude: number } | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -32,5 +38,5 @@ export const useCurrentLocation = () => {
     );
   }, []);
 
-  return { coords, isLoading, error };
+  return { coords: coordsMock, isLoading, error };
 };
