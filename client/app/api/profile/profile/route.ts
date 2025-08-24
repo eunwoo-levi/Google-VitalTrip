@@ -4,6 +4,11 @@ import { getValidAccessToken } from '@/src/shared/utils/cookieService';
 import { httpServer } from '@/src/shared/utils/httpServer';
 import { NextResponse } from 'next/server';
 
+interface ProfileResponse {
+  message: string;
+  data: Profile;
+}
+
 export async function GET() {
   const accessToken = await getValidAccessToken();
   if (!accessToken) {
@@ -11,17 +16,17 @@ export async function GET() {
   }
 
   try {
-    const response: Profile = await httpServer.get('/auth/me', {
+    const response: ProfileResponse = await httpServer.get('/user/profile', {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
     });
 
-    return NextResponse.json({ isAuthenticated: true, data: response });
+    return NextResponse.json(response.data);
   } catch (error) {
     if (error instanceof APIError && error.status === 401) {
       return NextResponse.json({ message: 'Please login again' }, { status: 401 });
     }
-    return NextResponse.json({ isAuthenticated: false }, { status: 500 });
+    return NextResponse.json({ message: 'Please login again' }, { status: 500 });
   }
 }

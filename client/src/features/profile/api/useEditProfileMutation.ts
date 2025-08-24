@@ -1,9 +1,10 @@
 import { APIError } from '@/src/shared/utils/apiError';
 import { httpClient } from '@/src/shared/utils/httpClient';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { EditProfile } from '../types/editProfile';
 
 export const useEditProfileMutation = () => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: editProfile,
     onError: (error) => {
@@ -14,10 +15,11 @@ export const useEditProfileMutation = () => {
     onSuccess: () => {
       // TODO: 토스트로 변경 필요
       alert('Profile updated successfully');
+      queryClient.invalidateQueries({ queryKey: ['profile'] });
     },
   });
 };
 
 const editProfile = async (profileData: EditProfile) => {
-  return httpClient.put('/api/profile/edit', profileData);
+  return await httpClient.put('/api/profile/edit', profileData);
 };
