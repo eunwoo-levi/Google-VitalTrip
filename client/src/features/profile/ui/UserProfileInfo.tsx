@@ -3,23 +3,18 @@ import Image from 'next/image';
 import { MdCalendarToday, MdEmail, MdError, MdFlag, MdPerson, MdPhone } from 'react-icons/md';
 import { AuthButton } from '../../auth/ui/AuthButton';
 import { useProfileQuery } from '../api/useProfileQuery';
-import { Profile, ProfileResponse } from '../types/profile';
+import { Profile } from '../types/profile';
 import { EditProfileForm } from './EditProfileForm';
 
 export const UserProfileInfo = () => {
-  const { data, isLoading, isError, error } = useProfileQuery();
-
-  const profile = data?.data?.data;
+  const { data: profile, isLoading, isError, error } = useProfileQuery();
 
   if (isLoading) {
     return <ProfileLoading />;
   }
-  if (isError) {
-    console.error('Error fetching profile:', error.message);
-    return <ProfileError data={data} />;
-  }
-  if (!profile) {
-    return <ProfileError data={data} />;
+  if (isError || !profile) {
+    console.error('Error fetching profile:', error?.message);
+    return <ProfileError />;
   }
 
   return (
@@ -50,7 +45,7 @@ export const UserProfileInfo = () => {
 
           <div className='mt-6 flex flex-col gap-2 border-t border-gray-200 pt-6'>
             <EditProfileForm profile={profile} />
-            <AuthButton data={data} />
+            <AuthButton />
           </div>
         </div>
       </div>
@@ -162,7 +157,7 @@ const ProfileLoading = () => {
   );
 };
 
-const ProfileError = ({ data }: { data: ProfileResponse | undefined }) => {
+const ProfileError = () => {
   return (
     <div className='flex min-h-[400px] items-center justify-center'>
       <div className='rounded-lg bg-red-50 p-6 text-center'>
@@ -171,7 +166,7 @@ const ProfileError = ({ data }: { data: ProfileResponse | undefined }) => {
         </div>
         <div className='mb-2 text-lg font-medium text-red-800'>Unable to load profile</div>
         <div className='mt-4 text-sm text-gray-500'>Please log in to set up your profile.</div>
-        <AuthButton data={data} />
+        <AuthButton />
 
         <span className='mt-2 text-sm text-gray-500'>
           If the problem persists, please contact customer support.

@@ -9,7 +9,7 @@ import { useState } from 'react';
 import { FaBars, FaTimes } from 'react-icons/fa';
 
 export default function Navbar() {
-  const { data, isError, error } = useProfileQuery();
+  const { data: profile, isError, error } = useProfileQuery();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   if (isError) {
@@ -62,8 +62,8 @@ export default function Navbar() {
           </div>
 
           <div className='flex items-center justify-center md:space-x-2'>
-            <span className='text-lg font-semibold'>{data?.data?.data.name}</span>
-            <AuthButton data={data} closeMenu={closeMenu} mobileHidden={true} />
+            <span className='text-lg font-semibold'>{profile?.name}</span>
+            <AuthButton closeMenu={closeMenu} mobileHidden={true} />
           </div>
 
           <div className='md:hidden'>
