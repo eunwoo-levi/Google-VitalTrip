@@ -6,8 +6,6 @@ import { Profile } from '../types/profile';
 export const useProfileQuery = () => {
   const { data: isLoggedIn, isLoading: isCheckingLoggedIn } = useCheckIfLoggedInQuery();
 
-  console.log('isLoggedIn', isLoggedIn);
-  console.log('isCheckingLoggedIn', isCheckingLoggedIn);
   return useQuery<Profile>({
     queryKey: ['profile'],
     queryFn: getProfile,
