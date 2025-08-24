@@ -1,5 +1,5 @@
 /**
- * @description: 주변 약국 및 병원 검색 (반경 1km 이내)
+ * @description: 주변 약국, 병원, 응급실 검색 (반경 1km 이내)
  * @param {google.maps.places.PlacesService} placesService - Google Places API 서비스 객체
  * @param {google.maps.LatLngLiteral} location - 검색할 위치 (위도, 경도)
  * @param {google.maps.Map} map - Google Maps 객체
@@ -9,7 +9,15 @@ export const findNearbyPlaces = (
   location: google.maps.LatLngLiteral,
   map: google.maps.Map,
 ) => {
+  // 현재 열린 InfoWindow들을 추적하기 위한 배열
+  const openInfoWindows: google.maps.InfoWindow[] = [];
   const types = ['pharmacy', 'hospital'];
+
+  // 지도 클릭 시 모든 InfoWindow 닫기
+  map.addListener('click', () => {
+    openInfoWindows.forEach((window) => window.close());
+    openInfoWindows.length = 0;
+  });
 
   types.forEach((type) => {
     const request: google.maps.places.PlaceSearchRequest = {
@@ -80,7 +88,13 @@ export const findNearbyPlaces = (
             });
 
             marker.addListener('click', () => {
+              // 다른 열린 InfoWindow들을 모두 닫기
+              openInfoWindows.forEach((window) => window.close());
+              openInfoWindows.length = 0;
+
+              // 새 InfoWindow 열기
               infoWindow.open(map, marker);
+              openInfoWindows.push(infoWindow);
             });
           }
         });

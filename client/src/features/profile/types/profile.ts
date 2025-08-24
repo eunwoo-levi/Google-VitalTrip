@@ -7,10 +7,3 @@ export interface Profile {
   phoneNumber: string;
   profileImageUrl: string | null;
 }
-
-export interface ProfileResponse {
-  isAuthenticated: boolean;
-  data: {
-    data: Profile;
-  };
-}

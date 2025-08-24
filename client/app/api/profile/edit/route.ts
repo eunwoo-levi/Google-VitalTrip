@@ -7,18 +7,18 @@ export async function PUT(req: NextRequest) {
   const accessToken = await getValidAccessToken();
 
   if (!accessToken) {
-    return NextResponse.json({ message: '프로필 수정 실패' }, { status: 401 });
+    return NextResponse.json({ message: 'Please login again' }, { status: 401 });
   }
 
   try {
     const body = await req.json();
-    await httpServer.put('/auth/profile', body, {
+    await httpServer.put('/user/profile', body, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
     });
 
-    return NextResponse.json({ message: '프로필 수정 성공' }, { status: 200 });
+    return NextResponse.json({ message: 'Profile updated successfully' }, { status: 200 });
   } catch (error) {
     if (error instanceof APIError) {
       if (error.status === 400) {

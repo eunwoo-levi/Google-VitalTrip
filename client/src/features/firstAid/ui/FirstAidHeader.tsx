@@ -1,6 +1,7 @@
 'use client';
 import { motion } from 'motion/react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { FiActivity } from 'react-icons/fi';
 
 export const FirstAidHeader = () => {
@@ -19,13 +20,15 @@ export const FirstAidHeader = () => {
               animate={{ scale: 1, rotate: 0 }}
               transition={{ delay: 0.2, type: 'spring', stiffness: 120 }}
             >
-              <Image
-                src='/VitalTrip.svg'
-                alt='VitalTrip'
-                width={48}
-                height={48}
-                className='h-12 w-auto'
-              />
+              <Link href='/' className='cursor-pointer'>
+                <Image
+                  src='/VitalTrip.svg'
+                  alt='VitalTrip'
+                  width={48}
+                  height={48}
+                  className='h-12 w-auto'
+                />
+              </Link>
             </motion.div>
             <div>
               <motion.h1
