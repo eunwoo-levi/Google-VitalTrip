@@ -11,7 +11,7 @@ const initializeI18n = async () => {
     .init({
       fallbackLng: 'en',
       debug: false,
-      lng: 'en', // 기본 언어를 명시적으로 설정
+      lng: 'en', // 기본 언어 설정
 
       backend: {
         loadPath: '/locales/{{lng}}/{{ns}}.json',
@@ -41,7 +41,6 @@ const initializeI18n = async () => {
         transKeepBasicHtmlNodesFor: ['br', 'strong', 'i'],
       },
 
-      // 리소스 프리로딩
       resources: {
         en: {
           common: {
@@ -80,7 +79,6 @@ const initializeI18n = async () => {
             'footer.medical_translation': 'Medical Translation',
             'footer.ai_first_aid_assistant': 'AI First Aid Assistant',
             'footer.copyright': 'VitalTrip. All rights reserved.',
-            // Menu 및 Common 번역
             'menu.about_us': 'Home Page',
             'menu.emergency': 'Emergency Call',
             'menu.contact': 'Contact Us',
@@ -146,7 +144,6 @@ const initializeI18n = async () => {
             'footer.medical_translation': '의료 번역',
             'footer.ai_first_aid_assistant': 'AI 응급처치 도우미',
             'footer.copyright': 'VitalTrip. 모든 권리 보유.',
-            // Menu 및 Common 번역
             'menu.about_us': '홈페이지',
             'menu.emergency': '응급 전화',
             'menu.contact': '문의하기',
@@ -178,7 +175,6 @@ const initializeI18n = async () => {
       },
     });
 
-  // 현재 언어의 리소스 미리 로드
   const currentLang = i18n.language || 'en';
   await i18n.loadLanguages([currentLang, 'en', 'ko']);
 };
