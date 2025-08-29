@@ -22,7 +22,7 @@ export const findNearbyPlaces = (
   types.forEach((type) => {
     const request: google.maps.places.PlaceSearchRequest = {
       location,
-      radius: 1000,
+      radius: 5000,
       type,
     };
 
