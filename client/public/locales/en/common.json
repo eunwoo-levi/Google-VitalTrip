@@ -66,5 +66,27 @@
     "submit": "Submit",
     "select": "Select",
     "close": "Close"
+  },
+  "medical": {
+    "title": "Medical Facilities",
+    "subtitle": "Find healthcare services near you",
+    "facility_type": "Facility Type",
+    "search_radius": "Search Radius",
+    "searching": "Searching nearby facilities",
+    "please_wait": "Please wait a moment...",
+    "something_wrong": "Something went wrong",
+    "try_again": "Please try again later",
+    "no_facilities_found": "No {{type}}s found nearby",
+    "try_increase_radius": "Try increasing the search radius or check another area",
+    "facilities_found": "{{count}} {{type}}{{plural}} found",
+    "within_radius": "Within {{radius}}km radius",
+    "open_now": "Open Now",
+    "closed": "Closed",
+    "visit_website": "Visit Website",
+    "types": {
+      "hospital": "Hospital",
+      "pharmacy": "Pharmacy",
+      "emergency": "Emergency"
+    }
   }
 }

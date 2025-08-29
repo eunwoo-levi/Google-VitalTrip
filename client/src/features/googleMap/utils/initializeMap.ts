@@ -1,4 +1,5 @@
 'use client';
+import { i18n } from '@/src/shared/lib/i18n';
 import { Loader } from '@googlemaps/js-api-loader';
 
 type InitializeMapParams = {
@@ -22,11 +23,25 @@ export const initializeMap = async ({
   setService,
   findNearbyPlaces,
 }: InitializeMapParams) => {
+  const currentLanguage = i18n.language || 'en';
+
+  // Google Maps 스크립트가 이미 다른 언어로 로드되어 있는지 확인
+  const existingScript = document.querySelector('script[src*="maps.googleapis.com"]');
+  if (existingScript) {
+    const currentScriptLang = new URL(existingScript.getAttribute('src') || '').searchParams.get(
+      'language',
+    );
+    if (currentScriptLang && currentScriptLang !== currentLanguage) {
+      window.location.reload();
+      return;
+    }
+  }
+
   const loader = new Loader({
     apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string,
     version: 'quarterly',
     libraries: ['places'],
-    language: 'ko',
+    language: currentLanguage,
   });
 
   const { Map } = await loader.importLibrary('maps');

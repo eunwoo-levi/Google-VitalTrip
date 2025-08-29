@@ -1,3 +1,5 @@
+import { i18n } from '@/src/shared/lib/i18n';
+
 type SearchPlaceParams = {
   service: google.maps.places.PlacesService;
   mapInstance: google.maps.Map;
@@ -5,11 +7,13 @@ type SearchPlaceParams = {
 };
 
 export const searchPlaceAndMove = ({ service, mapInstance, query }: SearchPlaceParams) => {
+  const currentLanguage = i18n.language || 'en';
+
   const request: google.maps.places.TextSearchRequest = {
     query,
     location: mapInstance.getCenter(),
     radius: 3000,
-    language: 'ko',
+    language: currentLanguage,
   };
 
   service.textSearch(request, (results, status) => {
