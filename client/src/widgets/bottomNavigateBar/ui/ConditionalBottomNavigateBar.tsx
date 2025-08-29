@@ -6,14 +6,15 @@ import BottomNavigateBar from './BottomNavigateBar';
 export default function ConditionalBottomNavigateBar() {
   const pathname = usePathname();
 
-  if (
+  const shouldHide =
     pathname === '/about' ||
     pathname === '/login' ||
     pathname === '/signup' ||
-    pathname === '/auth/callback'
-  ) {
-    return null;
-  }
+    pathname === '/auth/callback';
 
-  return <BottomNavigateBar />;
+  return (
+    <div className={shouldHide ? 'hidden' : 'block'}>
+      <BottomNavigateBar />
+    </div>
+  );
 }
