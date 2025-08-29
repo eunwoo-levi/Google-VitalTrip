@@ -1,0 +1,20 @@
+{
+  "symptoms": {
+    "title": "Describe your symptom",
+    "selectPlaceholder": "Select symptom",
+    "detailPlaceholder": "Describe your symptoms in detail",
+    "types": {
+      "BLEEDING": "Bleeding",
+      "BURNS": "Burns",
+      "FRACTURE": "Fracture",
+      "ALLERGIC_REACTION": "Allergic Reaction",
+      "SEIZURE": "Seizure",
+      "HEATSTROKE": "Heatstroke",
+      "HYPOTHERMIA": "Hypothermia",
+      "POISONING": "Poisoning",
+      "BREATHING_DIFFICULTY": "Breathing Difficulty",
+      "ANIMAL_BITE": "Animal Bite",
+      "FALL_INJURY": "Fall Injury"
+    }
+  }
+}

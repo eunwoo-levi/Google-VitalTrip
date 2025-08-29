@@ -1,10 +1,13 @@
 'use client';
 
+import { useTranslation } from '@/src/shared/lib/i18n';
 import { motion } from 'motion/react';
 import Image from 'next/image';
 import Link from 'next/link';
 
 export default function HeroSection() {
+  const { t } = useTranslation();
+
   return (
     <section className='relative flex min-h-screen items-center justify-center overflow-hidden md:h-screen md:items-start'>
       <Image
@@ -38,10 +41,10 @@ export default function HeroSection() {
           className='mb-8'
         >
           <p className='mb-4 text-xl font-semibold text-blue-100 md:text-2xl'>
-            Hospital Finder • Medical Translation • AI First Aid
+            {t('about.hero.tagline')}
           </p>
           <p className='mx-auto max-w-2xl text-lg leading-relaxed text-gray-200 md:text-xl'>
-            Everything you need for medical emergencies abroad
+            {t('about.hero.description')}
           </p>
         </motion.div>
 
@@ -62,7 +65,7 @@ export default function HeroSection() {
             href='/'
             className='cursor-pointer rounded-full bg-gradient-to-r from-blue-600 to-blue-700 px-8 py-4 text-lg font-semibold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:from-blue-700 hover:to-blue-800 hover:shadow-xl'
           >
-            Find Help Nearby
+            {t('about.hero.cta_button')}
           </Link>
         </motion.div>
       </div>
