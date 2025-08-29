@@ -1,19 +1,29 @@
 import { motion } from 'motion/react';
 import Image from 'next/image';
 import { MdCalendarToday, MdEmail, MdError, MdFlag, MdPerson, MdPhone } from 'react-icons/md';
+import { useCheckIfLoggedInQuery } from '../../auth/api/checkIfLoggedIn';
 import { AuthButton } from '../../auth/ui/AuthButton';
 import { useProfileQuery } from '../api/useProfileQuery';
 import { Profile } from '../types/profile';
 import { EditProfileForm } from './EditProfileForm';
 
 export const UserProfileInfo = () => {
+  const { data: isLoggedIn, isLoading: isCheckingLoggedIn } = useCheckIfLoggedInQuery();
   const { data: profile, isLoading, isError, error } = useProfileQuery();
+
+  if (isCheckingLoggedIn) {
+    return <ProfileLoading />;
+  }
+
+  if (!isLoggedIn) {
+    return <ProfileError />;
+  }
 
   if (isLoading) {
     return <ProfileLoading />;
   }
   if (isError || !profile) {
-    console.error('Error fetching profile:', error?.message);
+    console.warn('Error fetching profile:', error?.message);
     return <ProfileError />;
   }
 

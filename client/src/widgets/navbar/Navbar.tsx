@@ -1,5 +1,6 @@
 'use client';
 
+import { useCheckIfLoggedInQuery } from '@/src/features/auth/api/checkIfLoggedIn';
 import { AuthButton } from '@/src/features/auth/ui/AuthButton';
 import { useProfileQuery } from '@/src/features/profile/api/useProfileQuery';
 
@@ -68,12 +69,9 @@ const LanguageDropdown = () => {
 export default function Navbar() {
   const { t } = useTranslation();
 
-  const { data: profile, isError, error } = useProfileQuery();
+  const { data: isLoggedIn, isLoading: isCheckingLoggedIn } = useCheckIfLoggedInQuery();
+  const { data: profile } = useProfileQuery();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  if (isError) {
-    console.warn('Profile fetch failed (user likely not logged in):', error?.message);
-  }
 
   const toggleMenu = () => {
     setIsMenuOpen((prev) => !prev);
@@ -122,7 +120,9 @@ export default function Navbar() {
 
           <div className='flex items-center justify-center gap-2 md:space-x-2'>
             <LanguageDropdown />
-            {profile?.name && <span className='text-lg font-semibold'>{profile.name}</span>}
+            {isLoggedIn && profile?.name && (
+              <span className='text-lg font-semibold'>{profile.name}</span>
+            )}
             <AuthButton closeMenu={closeMenu} mobileHidden={true} />
           </div>
 
