@@ -26,6 +26,7 @@ export const initializeMap = async ({
     apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string,
     version: 'quarterly',
     libraries: ['places'],
+    language: 'ko',
   });
 
   const { Map } = await loader.importLibrary('maps');

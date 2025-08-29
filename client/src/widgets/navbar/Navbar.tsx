@@ -113,13 +113,9 @@ export default function Navbar() {
                 >
                   <span>First Aid</span>
                 </Link>
-                <Link
-                  href='/login'
-                  onClick={closeMenu}
-                  className='mx-2 mt-2 flex items-center justify-center space-x-2 rounded-md bg-blue-600 px-3 py-2 text-white transition-colors duration-200 hover:bg-blue-700'
-                >
-                  <span>로그인</span>
-                </Link>
+                <div className='flex items-center justify-center'>
+                  <AuthButton closeMenu={closeMenu} mobileHidden={false} />
+                </div>
               </motion.div>
             </motion.div>
           )}
