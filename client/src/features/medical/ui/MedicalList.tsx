@@ -1,11 +1,15 @@
 'use client';
 
+import { useHydration } from '../../../shared/hooks/useHydration';
+import { useTranslation } from '../../../shared/lib/i18n';
 import { useMedicalList } from '../hooks/useMedicalList';
 import { MedicalType } from '../types/medical';
 import { formatDistance } from '../utils/formatDistance';
 import { getMedicalTypeLabel } from '../utils/getMedicalTypeLabel';
 
 export default function MedicalList() {
+  const { t } = useTranslation();
+  const hydrated = useHydration();
   const {
     medicalList,
     medicalType,
@@ -16,19 +20,23 @@ export default function MedicalList() {
     handleRadiusChange,
   } = useMedicalList();
 
+  if (!hydrated) {
+    return <div className='flex h-full flex-col bg-gray-50' />;
+  }
+
   return (
     <div className='flex h-full flex-col bg-gray-50'>
       <div className='border-b border-gray-200 bg-white shadow-sm'>
         <div className='px-6 py-5'>
           <div className='mb-6'>
-            <h1 className='text-2xl font-bold text-gray-900'>Medical Facilities</h1>
-            <p className='mt-1 text-sm text-gray-600'>Find healthcare services near you</p>
+            <h1 className='text-2xl font-bold text-gray-900'>{t('medical.title')}</h1>
+            <p className='mt-1 text-sm text-gray-600'>{t('medical.subtitle')}</p>
           </div>
 
           <div className='grid grid-cols-1 gap-6'>
             <div>
               <label className='mb-3 block text-sm font-semibold text-gray-700'>
-                Facility Type
+                {t('medical.facility_type')}
               </label>
               <div className='flex gap-1.5'>
                 {(['hospital', 'pharmacy', 'emergency'] as MedicalType[]).map((type) => (
@@ -49,7 +57,9 @@ export default function MedicalList() {
 
             <div>
               <div className='mb-3 flex items-center justify-between'>
-                <label className='text-sm font-semibold text-gray-700'>Search Radius</label>
+                <label className='text-sm font-semibold text-gray-700'>
+                  {t('medical.search_radius')}
+                </label>
                 <span className='text-lg font-bold text-blue-600'>{radius / 1000}km</span>
               </div>
               <div className='relative'>
@@ -78,28 +88,28 @@ export default function MedicalList() {
             <div className='relative mb-4'>
               <div className='h-10 w-10 animate-spin rounded-full border-4 border-blue-200 border-t-blue-600'></div>
             </div>
-            <h3 className='mb-1 text-lg font-semibold text-gray-900'>
-              Searching nearby facilities
-            </h3>
-            <p className='text-sm text-gray-600'>Please wait a moment...</p>
+            <h3 className='mb-1 text-lg font-semibold text-gray-900'>{t('medical.searching')}</h3>
+            <p className='text-sm text-gray-600'>{t('medical.please_wait')}</p>
           </div>
         )}
 
         {error && (
           <div className='mx-6 mt-8 rounded-lg border border-red-200 bg-red-50 p-6 text-center'>
-            <h3 className='mb-1 text-lg font-semibold text-red-800'>Something went wrong</h3>
-            <p className='text-sm text-red-600'>Please try again later</p>
+            <h3 className='mb-1 text-lg font-semibold text-red-800'>
+              {t('medical.something_wrong')}
+            </h3>
+            <p className='text-sm text-red-600'>{t('medical.try_again')}</p>
           </div>
         )}
 
         {medicalList && medicalList.length === 0 && !isLoading && (
           <div className='mx-6 mt-8 rounded-lg border border-gray-200 bg-white p-8 text-center'>
             <h3 className='mb-1 text-lg font-semibold text-gray-900'>
-              No {getMedicalTypeLabel(medicalType).toLowerCase()}s found nearby
+              {t('medical.no_facilities_found', {
+                type: getMedicalTypeLabel(medicalType).toLowerCase(),
+              })}
             </h3>
-            <p className='text-sm text-gray-600'>
-              Try increasing the search radius or check another area
-            </p>
+            <p className='text-sm text-gray-600'>{t('medical.try_increase_radius')}</p>
           </div>
         )}
 
@@ -107,11 +117,14 @@ export default function MedicalList() {
           <div className='w-full space-y-4 px-2 py-4'>
             <div className='mb-4 flex w-full items-center justify-between gap-2'>
               <h2 className='flex-shrink-0 text-lg font-semibold whitespace-nowrap text-gray-900'>
-                {medicalList.length} {getMedicalTypeLabel(medicalType).toLowerCase()}
-                {medicalList.length !== 1 ? 's' : ''} found
+                {t('medical.facilities_found', {
+                  count: medicalList.length,
+                  type: getMedicalTypeLabel(medicalType).toLowerCase(),
+                  plural: medicalList.length !== 1 ? 's' : '',
+                })}
               </h2>
               <span className='flex-shrink-0 text-sm text-gray-600'>
-                Within {radius / 1000}km radius
+                {t('medical.within_radius', { radius: radius / 1000 })}
               </span>
             </div>
 
@@ -138,7 +151,7 @@ export default function MedicalList() {
                           : 'border border-red-200 bg-red-100 text-red-800'
                       }`}
                     >
-                      {medical.openNow ? 'Open Now' : 'Closed'}
+                      {medical.openNow ? t('medical.open_now') : t('medical.closed')}
                     </span>
                   </div>
 
@@ -165,7 +178,7 @@ export default function MedicalList() {
                       onClick={(e) => e.stopPropagation()}
                       className='text-sm font-medium text-blue-600 transition-colors hover:text-blue-800'
                     >
-                      Visit Website
+                      {t('medical.visit_website')}
                     </a>
                   )}
                 </div>

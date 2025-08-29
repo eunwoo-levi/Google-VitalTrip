@@ -1,6 +1,12 @@
+import { useTranslation } from '../../../shared/lib/i18n';
 import { MedicalType } from '../types/medical';
 
-export const getMedicalTypeLabel = (type: MedicalType) => {
+export const getMedicalTypeLabel = (type: MedicalType, t?: any) => {
+  if (t) {
+    return t(`medical.types.${type}`);
+  }
+
+  // Fallback for when translation function is not available
   switch (type) {
     case 'hospital':
       return 'Hospital';
@@ -11,4 +17,10 @@ export const getMedicalTypeLabel = (type: MedicalType) => {
     default:
       return type;
   }
+};
+
+export const useMedicalTypeLabel = () => {
+  const { t } = useTranslation();
+
+  return (type: MedicalType) => getMedicalTypeLabel(type, t);
 };
