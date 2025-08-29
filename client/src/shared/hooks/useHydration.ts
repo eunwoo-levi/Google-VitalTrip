@@ -1,13 +1,26 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useSyncExternalStore } from 'react';
+
+const hydrationStore = {
+  subscribe: (callback: () => void) => {
+    if (typeof window !== 'undefined') {
+      callback();
+    }
+    return () => {};
+  },
+  getSnapshot: () => {
+    return typeof window !== 'undefined';
+  },
+  getServerSnapshot: () => {
+    return false;
+  },
+};
 
 export function useHydration() {
-  const [hydrated, setHydrated] = useState(false);
-
-  useEffect(() => {
-    setHydrated(true);
-  }, []);
-
-  return hydrated;
+  return useSyncExternalStore(
+    hydrationStore.subscribe,
+    hydrationStore.getSnapshot,
+    hydrationStore.getServerSnapshot,
+  );
 }

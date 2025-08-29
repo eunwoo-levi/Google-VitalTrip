@@ -66,5 +66,27 @@
     "submit": "제출",
     "select": "선택",
     "close": "닫기"
+  },
+  "medical": {
+    "title": "의료 시설",
+    "subtitle": "근처의 의료 서비스를 찾아보세요",
+    "facility_type": "시설 유형",
+    "search_radius": "검색 반경",
+    "searching": "근처 시설을 검색 중",
+    "please_wait": "잠시만 기다려 주세요...",
+    "something_wrong": "문제가 발생했습니다",
+    "try_again": "나중에 다시 시도해 주세요",
+    "no_facilities_found": "근처에 {{type}}이(가) 없습니다",
+    "try_increase_radius": "검색 반경을 늘리거나 다른 지역을 확인해 보세요",
+    "facilities_found": "{{count}}개의 {{type}}을 찾았습니다",
+    "within_radius": "반경 {{radius}}km 내",
+    "open_now": "영업 중",
+    "closed": "영업 종료",
+    "visit_website": "웹사이트 방문",
+    "types": {
+      "hospital": "병원",
+      "pharmacy": "약국",
+      "emergency": "응급실"
+    }
   }
 }

@@ -1,3 +1,4 @@
+import { APIError } from '@/src/shared/utils/apiError';
 import { httpClient } from '@/src/shared/utils/httpClient';
 import { useQuery } from '@tanstack/react-query';
 import { useCheckIfLoggedInQuery } from '../../auth/api/checkIfLoggedIn';
@@ -9,9 +10,14 @@ export const useProfileQuery = () => {
   return useQuery<Profile>({
     queryKey: ['profile'],
     queryFn: getProfile,
-    enabled: isLoggedIn && !isCheckingLoggedIn,
+    enabled: Boolean(isLoggedIn) && !isCheckingLoggedIn,
     staleTime: 1000 * 60 * 10, // 10분
-    retry: 1,
+    retry: (failureCount, error: unknown) => {
+      if (error instanceof APIError && (error.status === 401 || error.status === 404)) {
+        return false;
+      }
+      return failureCount < 1;
+    },
     refetchOnWindowFocus: false,
   });
 };

@@ -66,7 +66,7 @@ export default function BottomNavigateBar() {
         </button>
         {isProfileModalOpen && (
           <Modal key='profile-modal' onClose={() => setIsProfileModalOpen(false)}>
-            <UserProfileInfo />
+            <UserProfileInfo onClose={() => setIsProfileModalOpen(false)} />
           </Modal>
         )}
 
