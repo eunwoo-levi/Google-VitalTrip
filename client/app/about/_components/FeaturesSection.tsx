@@ -1,9 +1,12 @@
 'use client';
 
+import { useTranslation } from '@/src/shared/lib/i18n';
 import { motion } from 'motion/react';
-import { FaMapMarkedAlt, FaLanguage, FaRobot, FaHospitalAlt } from 'react-icons/fa';
+import { FaHospitalAlt, FaLanguage, FaMapMarkedAlt, FaRobot } from 'react-icons/fa';
 
 export default function FeaturesSection() {
+  const { t } = useTranslation();
+
   return (
     <section className='bg-white py-20'>
       <div className='mx-auto max-w-6xl px-4 md:px-6'>
@@ -24,14 +27,12 @@ export default function FeaturesSection() {
             <div className='mb-4 inline-flex items-center rounded-full bg-gradient-to-r from-yellow-400 to-orange-500 px-6 py-3 text-white shadow-lg'>
               <span className='text-lg font-bold'>🏆</span>
               <span className='ml-2 text-sm font-semibold md:text-base'>
-                2025 Google Asia-Pacific Solution Challenge - Top 10 Finalists
+                {t('about.features.google_challenge')}
               </span>
             </div>
           </motion.div>
-          <h2 className='mb-4 text-4xl font-bold text-gray-900'>Why Choose VitalTrip?</h2>
-          <p className='mx-auto max-w-2xl text-xl text-gray-600'>
-            Overcoming language barriers and quickly locating healthcare facilities worldwide
-          </p>
+          <h2 className='mb-4 text-4xl font-bold text-gray-900'>{t('about.title')}</h2>
+          <p className='mx-auto max-w-2xl text-xl text-gray-600'>{t('about.subtitle')}</p>
         </motion.div>
 
         <div className='mb-16'>
@@ -39,10 +40,8 @@ export default function FeaturesSection() {
             <div className='absolute top-0 right-0 h-32 w-32 translate-x-16 -translate-y-16 rounded-full bg-white/10'></div>
             <div className='relative z-10'>
               <FaRobot className='mx-auto mb-6 text-5xl' />
-              <h3 className='mb-4 text-3xl font-bold'>AI First Aid</h3>
-              <p className='text-xl text-red-100'>
-                Get AI-powered emergency response advice and first aid guidance
-              </p>
+              <h3 className='mb-4 text-3xl font-bold'>{t('about.features.ai_first_aid.title')}</h3>
+              <p className='text-xl text-red-100'>{t('about.features.ai_first_aid.description')}</p>
             </div>
           </div>
         </div>
@@ -56,9 +55,11 @@ export default function FeaturesSection() {
             className='border-l-4 border-green-500 bg-white p-6 text-center shadow-lg transition-shadow hover:shadow-xl'
           >
             <FaLanguage className='mx-auto mb-4 text-3xl text-green-500' />
-            <h3 className='mb-2 text-lg font-bold text-gray-900'>Smart Translation</h3>
+            <h3 className='mb-2 text-lg font-bold text-gray-900'>
+              {t('about.features.smart_translation.title')}
+            </h3>
             <p className='text-sm text-gray-600'>
-              Translate symptoms and communicate clearly with medical staff
+              {t('about.features.smart_translation.description')}
             </p>
           </motion.div>
 
@@ -70,9 +71,11 @@ export default function FeaturesSection() {
             className='rounded-2xl bg-blue-500 p-6 text-center text-white shadow-lg transition-shadow hover:shadow-xl'
           >
             <FaHospitalAlt className='mx-auto mb-4 text-3xl' />
-            <h3 className='mb-2 text-lg font-bold'>Emergency Locations</h3>
+            <h3 className='mb-2 text-lg font-bold'>
+              {t('about.features.emergency_locations.title')}
+            </h3>
             <p className='text-sm text-blue-100'>
-              Find nearby hospitals & pharmacies with real-time location data
+              {t('about.features.emergency_locations.description')}
             </p>
           </motion.div>
 
@@ -85,10 +88,10 @@ export default function FeaturesSection() {
           >
             <div className='absolute top-2 right-2 h-3 w-3 rounded-full bg-purple-500'></div>
             <FaMapMarkedAlt className='mx-auto mb-4 text-3xl text-purple-500' />
-            <h3 className='mb-2 text-lg font-bold text-gray-900'>24/7 Support</h3>
-            <p className='text-sm text-gray-600'>
-              Access travel chatbot and emergency contacts anytime, anywhere
-            </p>
+            <h3 className='mb-2 text-lg font-bold text-gray-900'>
+              {t('about.features.support_24_7.title')}
+            </h3>
+            <p className='text-sm text-gray-600'>{t('about.features.support_24_7.description')}</p>
           </motion.div>
         </div>
       </div>

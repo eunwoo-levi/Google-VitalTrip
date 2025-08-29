@@ -17,7 +17,7 @@ export default function Dropdown({ direction = 'bottom', children, ref }: Dropdo
   return (
     <div
       ref={ref}
-      className={`absolute left-1/2 -translate-x-1/2 ${positionClass} w-33 rounded-md border bg-white shadow-md md:w-44 ${animationClass} z-[100] cursor-pointer`}
+      className={`absolute right-0 ${positionClass} w-48 rounded-md border bg-white shadow-md md:w-52 ${animationClass} z-[100] cursor-pointer`}
     >
       {children}
     </div>

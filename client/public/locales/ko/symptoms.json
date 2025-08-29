@@ -1,0 +1,20 @@
+{
+  "symptoms": {
+    "title": "증상을 설명해주세요",
+    "selectPlaceholder": "증상 선택",
+    "detailPlaceholder": "증상을 자세히 설명해주세요",
+    "types": {
+      "BLEEDING": "출혈",
+      "BURNS": "화상",
+      "FRACTURE": "골절",
+      "ALLERGIC_REACTION": "알레르기 반응",
+      "SEIZURE": "발작",
+      "HEATSTROKE": "열사병",
+      "HYPOTHERMIA": "저체온증",
+      "POISONING": "중독",
+      "BREATHING_DIFFICULTY": "호흡곤란",
+      "ANIMAL_BITE": "동물 교상",
+      "FALL_INJURY": "낙상 부상"
+    }
+  }
+}

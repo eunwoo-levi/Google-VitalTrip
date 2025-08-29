@@ -1,8 +1,11 @@
 'use client';
 
+import { useTranslation } from '@/src/shared/lib/i18n';
 import { motion } from 'motion/react';
 
 export default function VideoSection() {
+  const { t } = useTranslation();
+
   return (
     <section className='bg-white py-20'>
       <div className='mx-auto max-w-4xl px-4 md:px-6'>
@@ -13,10 +16,8 @@ export default function VideoSection() {
           viewport={{ once: true }}
           className='mb-12 text-center'
         >
-          <h2 className='mb-4 text-4xl font-bold text-gray-900'>See VitalTrip in Action</h2>
-          <p className='text-xl text-gray-600'>
-            Watch how VitalTrip helps travelers in emergency situations
-          </p>
+          <h2 className='mb-4 text-4xl font-bold text-gray-900'>{t('video.title')}</h2>
+          <p className='text-xl text-gray-600'>{t('video.description')}</p>
         </motion.div>
 
         <motion.div

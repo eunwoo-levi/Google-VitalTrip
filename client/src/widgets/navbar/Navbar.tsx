@@ -2,18 +2,77 @@
 
 import { AuthButton } from '@/src/features/auth/ui/AuthButton';
 import { useProfileQuery } from '@/src/features/profile/api/useProfileQuery';
+
+import { useTranslation } from '@/src/shared/lib/i18n';
+import Dropdown from '@/src/shared/ui/Dropdown';
 import { AnimatePresence, motion } from 'motion/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
-import { FaBars, FaTimes } from 'react-icons/fa';
+import { FaBars, FaChevronDown, FaTimes } from 'react-icons/fa';
+
+const LanguageDropdown = () => {
+  const { i18n } = useTranslation();
+  const [isOpen, setIsOpen] = useState(false);
+  const currentLang = i18n.language;
+
+  const languages = [
+    { code: 'en', name: 'English', flag: '🇺🇸' },
+    { code: 'ko', name: '한국어', flag: '🇰🇷' },
+  ];
+
+  const currentLanguage = languages.find((lang) => lang.code === currentLang) || languages[0];
+
+  const handleLanguageChange = (langCode: string) => {
+    i18n.changeLanguage(langCode);
+    setIsOpen(false);
+  };
+
+  return (
+    <div className='relative'>
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className='flex items-center gap-1 rounded-md px-2 py-2 text-sm font-medium text-gray-700 transition-colors duration-200 hover:bg-blue-50 hover:text-blue-600'
+      >
+        <span className='text-xl'>{currentLanguage.flag}</span>
+        <FaChevronDown
+          className={`h-3 w-3 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+        />
+      </button>
+
+      {isOpen && (
+        <>
+          <div className='fixed inset-0 z-10' onClick={() => setIsOpen(false)} />
+          <Dropdown direction='bottom'>
+            <div className='py-1'>
+              {languages.map((language) => (
+                <button
+                  key={language.code}
+                  onClick={() => handleLanguageChange(language.code)}
+                  className={`flex w-full items-center gap-3 px-4 py-2 text-sm transition-colors duration-200 hover:bg-blue-50 ${
+                    currentLang === language.code ? 'bg-blue-50 text-blue-600' : 'text-gray-700'
+                  }`}
+                >
+                  <span className='text-lg'>{language.flag}</span>
+                  <span>{language.name}</span>
+                </button>
+              ))}
+            </div>
+          </Dropdown>
+        </>
+      )}
+    </div>
+  );
+};
 
 export default function Navbar() {
+  const { t } = useTranslation();
+
   const { data: profile, isError, error } = useProfileQuery();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   if (isError) {
-    console.error('Error fetching profile:', error.message);
+    console.warn('Profile fetch failed (user likely not logged in):', error?.message);
   }
 
   const toggleMenu = () => {
@@ -45,24 +104,25 @@ export default function Navbar() {
               href='/'
               className='flex items-center space-x-1 rounded-md px-3 py-2 text-gray-700 transition-colors duration-200 hover:bg-blue-50 hover:text-blue-600'
             >
-              <span>Home</span>
+              <span>{t('navbar.home')}</span>
             </Link>
             <Link
               href='/translate'
               className='flex items-center space-x-1 rounded-md px-3 py-2 text-gray-700 transition-colors duration-200 hover:bg-blue-50 hover:text-blue-600'
             >
-              <span>Translate</span>
+              <span>{t('navbar.translate')}</span>
             </Link>
             <Link
               href='/first-aid'
               className='flex items-center space-x-1 rounded-md px-3 py-2 text-gray-700 transition-colors duration-200 hover:bg-blue-50 hover:text-blue-600'
             >
-              <span>First Aid</span>
+              <span>{t('navbar.first_aid')}</span>
             </Link>
           </div>
 
-          <div className='flex items-center justify-center md:space-x-2'>
-            <span className='text-lg font-semibold'>{profile?.name}</span>
+          <div className='flex items-center justify-center gap-2 md:space-x-2'>
+            <LanguageDropdown />
+            {profile?.name && <span className='text-lg font-semibold'>{profile.name}</span>}
             <AuthButton closeMenu={closeMenu} mobileHidden={true} />
           </div>
 
@@ -97,23 +157,24 @@ export default function Navbar() {
                   onClick={closeMenu}
                   className='flex items-center justify-center space-x-2 rounded-md px-3 py-2 text-gray-700 transition-colors duration-200 hover:bg-blue-50 hover:text-blue-600'
                 >
-                  <span>Hospital & Pharmacy Nearby</span>
+                  <span>{t('navbar.hospital_pharmacy_nearby')}</span>
                 </Link>
                 <Link
                   href='/translate'
                   onClick={closeMenu}
                   className='flex items-center justify-center space-x-2 rounded-md px-3 py-2 text-gray-700 transition-colors duration-200 hover:bg-blue-50 hover:text-blue-600'
                 >
-                  <span>Translate</span>
+                  <span>{t('navbar.translate')}</span>
                 </Link>
                 <Link
                   href='/first-aid'
                   onClick={closeMenu}
                   className='flex items-center justify-center space-x-2 rounded-md px-3 py-2 text-gray-700 transition-colors duration-200 hover:bg-blue-50 hover:text-blue-600'
                 >
-                  <span>First Aid</span>
+                  <span>{t('navbar.first_aid')}</span>
                 </Link>
-                <div className='flex items-center justify-center'>
+                <div className='flex items-center justify-center gap-4'>
+                  <LanguageDropdown />
                   <AuthButton closeMenu={closeMenu} mobileHidden={false} />
                 </div>
               </motion.div>
