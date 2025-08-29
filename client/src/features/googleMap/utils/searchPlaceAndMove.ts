@@ -9,7 +9,7 @@ export const searchPlaceAndMove = ({ service, mapInstance, query }: SearchPlaceP
     query,
     location: mapInstance.getCenter(),
     radius: 3000,
-    language: 'en',
+    language: 'ko',
   };
 
   service.textSearch(request, (results, status) => {

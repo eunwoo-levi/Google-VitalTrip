@@ -61,6 +61,8 @@ const ProfileHeader = ({ profile }: { profile: Profile }) => {
           <Image
             src={profile.profileImageUrl}
             alt='프로필 이미지'
+            width={80}
+            height={80}
             className='h-20 w-20 rounded-full border-4 border-white object-cover'
           />
         ) : (
