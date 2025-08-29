@@ -35,11 +35,8 @@ export const findNearbyPlaces = (
               position: place.geometry.location,
               title: place.name,
               icon: {
-                url:
-                  type === 'pharmacy'
-                    ? 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png'
-                    : 'https://maps.google.com/mapfiles/ms/icons/red-dot.png', // 병원: 빨강, 약국: 파랑
-                scaledSize: new google.maps.Size(40, 40), // 아이콘 크기 조정
+                url: type === 'pharmacy' ? '/pharmacy-marker.webp' : '/hospital-marker.webp',
+                scaledSize: new google.maps.Size(40, 40),
               },
             });
 
