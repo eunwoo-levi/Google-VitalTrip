@@ -7,7 +7,11 @@ import { useProfileQuery } from '../api/useProfileQuery';
 import { Profile } from '../types/profile';
 import { EditProfileForm } from './EditProfileForm';
 
-export const UserProfileInfo = () => {
+interface UserProfileInfoProps {
+  onClose?: () => void;
+}
+
+export const UserProfileInfo = ({ onClose }: UserProfileInfoProps) => {
   const { data: isLoggedIn, isLoading: isCheckingLoggedIn } = useCheckIfLoggedInQuery();
   const { data: profile, isLoading, isError, error } = useProfileQuery();
 
@@ -16,7 +20,7 @@ export const UserProfileInfo = () => {
   }
 
   if (!isLoggedIn) {
-    return <ProfileError />;
+    return <ProfileError onClose={onClose} />;
   }
 
   if (isLoading) {
@@ -24,7 +28,7 @@ export const UserProfileInfo = () => {
   }
   if (isError || !profile) {
     console.warn('Error fetching profile:', error?.message);
-    return <ProfileError />;
+    return <ProfileError onClose={onClose} />;
   }
 
   return (
@@ -55,7 +59,7 @@ export const UserProfileInfo = () => {
 
           <div className='mt-6 flex flex-col gap-2 border-t border-gray-200 pt-6'>
             <EditProfileForm profile={profile} />
-            <AuthButton />
+            <AuthButton closeMenu={onClose} />
           </div>
         </div>
       </div>
@@ -169,7 +173,7 @@ const ProfileLoading = () => {
   );
 };
 
-const ProfileError = () => {
+const ProfileError = ({ onClose }: { onClose?: () => void }) => {
   return (
     <div className='flex min-h-[400px] items-center justify-center'>
       <div className='rounded-lg bg-red-50 p-6 text-center'>
@@ -178,7 +182,7 @@ const ProfileError = () => {
         </div>
         <div className='mb-2 text-lg font-medium text-red-800'>Unable to load profile</div>
         <div className='mt-4 text-sm text-gray-500'>Please log in to set up your profile.</div>
-        <AuthButton />
+        <AuthButton closeMenu={onClose} />
 
         <span className='mt-2 text-sm text-gray-500'>
           If the problem persists, please contact customer support.

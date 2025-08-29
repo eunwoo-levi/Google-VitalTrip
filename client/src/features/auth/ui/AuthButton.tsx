@@ -16,6 +16,7 @@ export const AuthButton = ({ closeMenu, mobileHidden }: AuthButtonProps) => {
 
   const handleLogout = async () => {
     await logoutUser();
+    closeMenu?.();
   };
 
   if (isAuthenticated) {
