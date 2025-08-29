@@ -3,6 +3,8 @@ import type { Metadata } from 'next';
 
 import Analytics from '@/src/apps/lib/Analytics';
 import ReactQueryProvider from '@/src/apps/provider/ReactQueryProvider';
+import { I18nProvider } from '@/src/shared/providers/I18nProvider';
+import { LanguageSelectionModal } from '@/src/shared/ui/LanguageSelectionModal';
 import StructuredData, {
   medicalWebsiteStructuredData,
   organizationStructuredData,
@@ -158,17 +160,20 @@ export default function RootLayout({
         <meta name='color-scheme' content='light dark' />
       </head>
       <body className={`${iansui.className} antialiased`}>
-        <ReactQueryProvider>
-          <StructuredData data={websiteStructuredData} />
-          <StructuredData data={organizationStructuredData} />
-          <StructuredData data={medicalWebsiteStructuredData} />
-          {children}
-          <ConditionalBottomNavigateBar />
-          <Suspense fallback={null}>
-            <Analytics />
-          </Suspense>
-          {GA_ID && <GoogleAnalytics gaId={GA_ID} />}
-        </ReactQueryProvider>
+        <I18nProvider>
+          <ReactQueryProvider>
+            <StructuredData data={websiteStructuredData} />
+            <StructuredData data={organizationStructuredData} />
+            <StructuredData data={medicalWebsiteStructuredData} />
+            {children}
+            <ConditionalBottomNavigateBar />
+            <LanguageSelectionModal />
+            <Suspense fallback={null}>
+              <Analytics />
+            </Suspense>
+            {GA_ID && <GoogleAnalytics gaId={GA_ID} />}
+          </ReactQueryProvider>
+        </I18nProvider>
       </body>
     </html>
   );
