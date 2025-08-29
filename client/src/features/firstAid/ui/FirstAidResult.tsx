@@ -1,6 +1,7 @@
 'use client';
 
 import EmergencyCallBanner from '@/src/features/firstAid/ui/EmergencyCallBanner';
+import { useCurrentLocation } from '@/src/shared/hooks/useCurrentLocation';
 import { motion } from 'motion/react';
 import { useEffect } from 'react';
 import { BsCheckCircle } from 'react-icons/bs';
@@ -17,20 +18,28 @@ import { LoadingSpinner } from './LoadingSpinner';
 export const FirstAidResult = () => {
   const { mutateAsync, data: result, isPending, isError } = useFirstAidMutation();
   const { symptomType, symptomDetail } = useSymptomStore();
+  const { coords, isLoading: isLocationLoading, error: locationError } = useCurrentLocation();
 
   useEffect(() => {
-    try {
-      mutateAsync({ symptomType: symptomType, symptomDetail: symptomDetail });
-    } catch (error) {
-      console.error(error);
+    if (!isLocationLoading && coords && !locationError) {
+      try {
+        mutateAsync({
+          symptomType: symptomType,
+          symptomDetail: symptomDetail,
+          latitude: coords.latitude,
+          longitude: coords.longitude,
+        });
+      } catch (error) {
+        console.error(error);
+      }
     }
-  }, []);
+  }, [isLocationLoading, coords, locationError, mutateAsync, symptomType, symptomDetail]);
 
-  if (isPending) {
+  if (isPending || isLocationLoading) {
     return <LoadingSpinner />;
   }
 
-  if (isError || !result) {
+  if (isError || !result || locationError) {
     return (
       <div className='flex min-h-screen items-center justify-center bg-gradient-to-br from-red-50 to-pink-50'>
         <motion.div
@@ -48,7 +57,9 @@ export const FirstAidResult = () => {
           </motion.div>
           <h2 className='mb-3 text-2xl font-bold text-gray-900'>Analysis Failed</h2>
           <p className='mb-8 text-gray-600'>
-            We couldn&apos;t complete the emergency analysis. Please try again.
+            {locationError
+              ? 'Unable to access your location. Please enable location services and try again.'
+              : 'We couldn&apos;t complete the emergency analysis. Please try again.'}
           </p>
           <motion.button
             onClick={() => window.location.reload()}
@@ -75,10 +86,11 @@ export const FirstAidResult = () => {
           symptomDetail={symptomDetail}
           confidence={result.confidence}
         />
+        <SymptomSummaryResult summary={result.summary} />
         <FirstAidSteps firstAidSteps={result.content} />
         <RecommendedAction recommendedAction={result.recommendedAction} />
         <AdditionalResources blogLinks={result.blogLinks} />
-        <AlertDisclaimer />
+        <AlertDisclaimer disclaimer={result.disclaimer} />
       </div>
     </div>
   );
@@ -110,7 +122,7 @@ const SymptomSummary = ({
               <p className='text-lg font-medium text-gray-700'>{symptomType}</p>
             </div>
           </div>
-          <ConfidenceIndicator confidence={Math.round((confidence || 0) * 100)} />
+          <ConfidenceIndicator confidence={confidence || 0} />
         </div>
 
         {symptomDetail && (
@@ -259,7 +271,31 @@ const AdditionalResources = ({ blogLinks }: { blogLinks: string[] }) => {
   );
 };
 
-const AlertDisclaimer = () => {
+const SymptomSummaryResult = ({ summary }: { summary: string }) => {
+  return (
+    <AnimatedSection delay={0.25}>
+      <div className='rounded-2xl border border-white/50 bg-white/90 p-8 shadow-xl backdrop-blur-sm'>
+        <div className='mb-4 flex items-center gap-3'>
+          <div className='rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 p-3'>
+            <FiInfo className='text-xl text-white' />
+          </div>
+          <h2 className='text-2xl font-bold text-gray-900'>Situation Summary</h2>
+        </div>
+
+        <motion.div
+          className='rounded-xl border border-blue-100 bg-gradient-to-r from-blue-50 to-indigo-50 p-6'
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4, duration: 0.5 }}
+        >
+          <p className='text-lg leading-relaxed text-gray-800'>{summary}</p>
+        </motion.div>
+      </div>
+    </AnimatedSection>
+  );
+};
+
+const AlertDisclaimer = ({ disclaimer }: { disclaimer: string }) => {
   return (
     <AnimatedSection delay={0.6}>
       <div className='rounded-2xl border-2 border-amber-200 bg-gradient-to-r from-amber-50 to-yellow-50 p-8 shadow-lg'>
@@ -273,22 +309,8 @@ const AlertDisclaimer = () => {
           </motion.div>
           <div>
             <h3 className='mb-4 text-xl font-bold text-amber-800'>Important Medical Disclaimer</h3>
-            <div className='space-y-3 leading-relaxed text-amber-700'>
-              <p className='font-medium'>
-                • This analysis is provided by AI for preliminary guidance only and cannot replace
-                professional medical diagnosis.
-              </p>
-              <p className='font-medium'>
-                • In emergency situations or if symptoms are severe, seek immediate medical
-                attention or call emergency services.
-              </p>
-              <p className='font-medium'>
-                • Always consult with qualified healthcare professionals for proper medical advice
-                and treatment.
-              </p>
-              <p className='font-medium'>
-                • This tool is designed to supplement, not replace, professional medical judgment.
-              </p>
+            <div className='leading-relaxed text-amber-700'>
+              <p className='text-lg font-medium'>{disclaimer}</p>
             </div>
           </div>
         </div>

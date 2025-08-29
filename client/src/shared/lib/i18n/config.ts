@@ -175,8 +175,6 @@ const initializeI18n = async () => {
     });
 
   const currentLang = i18n.language || 'en';
-  console.log('i18n initialized with language:', currentLang);
-  console.log('localStorage i18nextLng:', localStorage.getItem('i18nextLng'));
   await i18n.loadLanguages([currentLang, 'en', 'ko']);
 };
 
