@@ -29,7 +29,7 @@ export async function getValidAccessToken(): Promise<string | null> {
       });
 
       return accessToken;
-    } catch (error) {
+    } catch {
       // refreshToken이 유효하지 않으면 모든 토큰 쿠키를 정리
       cookieStore.delete('accessToken');
       cookieStore.delete('refreshToken');

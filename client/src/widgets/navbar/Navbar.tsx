@@ -69,7 +69,7 @@ const LanguageDropdown = () => {
 export default function Navbar() {
   const { t } = useTranslation();
 
-  const { data: isLoggedIn, isLoading: isCheckingLoggedIn } = useCheckIfLoggedInQuery();
+  const { data: isLoggedIn } = useCheckIfLoggedInQuery();
   const { data: profile } = useProfileQuery();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 

@@ -1,7 +1,8 @@
+import { TFunction } from 'i18next';
 import { useTranslation } from '../../../shared/lib/i18n';
 import { MedicalType } from '../types/medical';
 
-export const getMedicalTypeLabel = (type: MedicalType, t?: any) => {
+export const getMedicalTypeLabel = (type: MedicalType, t?: TFunction) => {
   if (t) {
     return t(`medical.types.${type}`);
   }

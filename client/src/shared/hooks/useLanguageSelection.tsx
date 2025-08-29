@@ -4,8 +4,6 @@ import { useTranslation } from '@/src/shared/lib/i18n';
 import { useOverlay } from '@vitaltrip/shared';
 import { useEffect, useState } from 'react';
 
-const LANGUAGE_PREFERENCE_KEY = 'i18nextLng';
-
 export const useLanguageSelection = () => {
   const { i18n } = useTranslation();
   const [hasLanguagePreference, setHasLanguagePreference] = useState<boolean | null>(null);
