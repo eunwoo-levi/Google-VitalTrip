@@ -88,5 +88,34 @@
       "pharmacy": "약국",
       "emergency": "응급실"
     }
+  },
+  "firstaid": {
+    "reported_symptoms": "설명하신 증상",
+    "emergency_numbers": "응급 번호",
+    "tip_112": "Tip: 많은 국가에서 112는 모든 응급 서비스와 연결됩니다.",
+    "police": "경찰",
+    "ambulance": "구급차",
+    "fire": "소방",
+    "emergency": "응급",
+    "call": "전화",
+    "situation_summary": "상황 요약",
+    "protocol_title": "응급처치 절차",
+    "protocol_subtitle": "아래 순서를 주의 깊게 따라주세요",
+    "recommended_title": "권장 조치",
+    "recommended_subtitle": "즉시 수행해야 하는 중요한 행동",
+    "resources_title": "추가 의학 자료",
+    "resources_subtitle": "신뢰할 수 있는 참고 자료",
+    "disclaimer_title": "주의 사항",
+    "resource_label": "의학 자료",
+    "nearby_facilities": "근처 의료시설",
+    "nearest_facilities_description": "가장 가까운 병원 {{hospitalCount}}곳과 약국 {{pharmacyCount}}곳",
+    "hospitals": "병원 ({{count}}곳)",
+    "pharmacies": "약국 ({{count}}곳)",
+    "emergency_summary": "응급조치 요약",
+    "step": "{{number}}단계",
+    "analysis_failed": "분석 실패",
+    "location_error": "위치에 액세스할 수 없습니다. 위치 서비스를 활성화하고 다시 시도해주세요.",
+    "analysis_error": "응급 상황 분석을 완료할 수 없습니다. 다시 시도해주세요.",
+    "try_again": "다시 시도"
   }
 }

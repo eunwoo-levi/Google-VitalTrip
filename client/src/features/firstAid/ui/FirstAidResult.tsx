@@ -18,6 +18,7 @@ import { CircularConfidence } from './CircularConfidence';
 import { LoadingSpinner } from './LoadingSpinner';
 
 export const FirstAidResult = () => {
+  const { t } = useTranslation('common');
   const { symptomType, symptomDetail } = useSymptomStore();
   const { combined, isPending, isError, locationError } = useFirstAidCombined();
   const hydrated = useHydration();
@@ -46,11 +47,9 @@ export const FirstAidResult = () => {
           >
             <MdErrorOutline className='mx-auto mb-6 text-6xl text-red-500' />
           </motion.div>
-          <h2 className='mb-3 text-2xl font-bold text-gray-900'>Analysis Failed</h2>
+          <h2 className='mb-3 text-2xl font-bold text-gray-900'>{t('firstaid.analysis_failed')}</h2>
           <p className='mb-8 text-gray-600'>
-            {locationError
-              ? 'Unable to access your location. Please enable location services and try again.'
-              : "We couldn't complete the emergency analysis. Please try again."}
+            {locationError ? t('firstaid.location_error') : t('firstaid.analysis_error')}
           </p>
           <motion.button
             onClick={() => window.location.reload()}
@@ -58,7 +57,7 @@ export const FirstAidResult = () => {
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
-            Try Again
+            {t('firstaid.try_again')}
           </motion.button>
         </motion.div>
       </div>
@@ -136,10 +135,13 @@ const NearbyFacilitiesCombined = ({
             <div className='rounded-lg bg-white/20 p-2'>
               <span className='text-2xl'>🏥</span>
             </div>
-            <h2 className='text-2xl font-bold'>근처 의료시설</h2>
+            <h2 className='text-2xl font-bold'>{t('firstaid.nearby_facilities')}</h2>
           </div>
           <p className='mt-2 text-red-100'>
-            가장 가까운 병원 {topHospitals.length}곳과 약국 {topPharmacies.length}곳
+            {t('firstaid.nearest_facilities_description', {
+              hospitalCount: topHospitals.length,
+              pharmacyCount: topPharmacies.length,
+            })}
           </p>
         </div>
 
@@ -148,7 +150,7 @@ const NearbyFacilitiesCombined = ({
             <div>
               <h3 className='mb-4 flex items-center gap-2 text-xl font-bold text-gray-900'>
                 <span className='text-2xl'>🏥</span>
-                병원 ({topHospitals.length}곳)
+                {t('firstaid.hospitals', { count: topHospitals.length })}
               </h3>
               <ul className='space-y-3'>
                 {topHospitals.map((hospital, idx) => (
@@ -176,7 +178,7 @@ const NearbyFacilitiesCombined = ({
                         </span>
                         {hospital.openNow && (
                           <span className='inline-flex items-center rounded-full bg-red-100 px-2 py-1 text-xs font-medium text-red-700'>
-                            영업중
+                            {t('medical.open_now')}
                           </span>
                         )}
                       </div>
@@ -200,7 +202,7 @@ const NearbyFacilitiesCombined = ({
             <div>
               <h3 className='mb-4 flex items-center gap-2 text-xl font-bold text-gray-900'>
                 <span className='text-2xl'>💊</span>
-                약국 ({topPharmacies.length}곳)
+                {t('firstaid.pharmacies', { count: topPharmacies.length })}
               </h3>
               <ul className='space-y-3'>
                 {topPharmacies.map((pharmacy, idx) => (
@@ -228,7 +230,7 @@ const NearbyFacilitiesCombined = ({
                         </span>
                         {pharmacy.openNow && (
                           <span className='inline-flex items-center rounded-full bg-red-100 px-2 py-1 text-xs font-medium text-red-700'>
-                            영업중
+                            {t('medical.open_now')}
                           </span>
                         )}
                       </div>
@@ -307,19 +309,16 @@ const SymptomSummary = ({
 };
 
 const FirstAidSteps = ({ firstAidSteps }: { firstAidSteps: string }) => {
+  const { t } = useTranslation('common');
   return (
     <AnimatedSection delay={0.3}>
       <div className='overflow-hidden rounded-2xl border border-white/50 bg-white/90 shadow-xl backdrop-blur-sm'>
         <div className='bg-gradient-to-r from-red-500 to-red-600 px-8 py-6 text-white'>
           <div className='flex items-center gap-3'>
             <BsCheckCircle className='text-2xl' />
-            <h2 className='text-2xl font-bold'>
-              {useTranslation('common').t('firstaid.protocol_title')}
-            </h2>
+            <h2 className='text-2xl font-bold'>{t('firstaid.protocol_title')}</h2>
           </div>
-          <p className='mt-2 text-red-100'>
-            {useTranslation('common').t('firstaid.protocol_subtitle')}
-          </p>
+          <p className='mt-2 text-red-100'>{t('firstaid.protocol_subtitle')}</p>
         </div>
 
         <div className='p-8'>
@@ -359,19 +358,16 @@ const FirstAidSteps = ({ firstAidSteps }: { firstAidSteps: string }) => {
 };
 
 const AdditionalResources = ({ blogLinks }: { blogLinks: string[] }) => {
+  const { t } = useTranslation('common');
   return (
     <AnimatedSection delay={0.5}>
       <div className='overflow-hidden rounded-2xl border border-white/50 bg-white/90 shadow-xl backdrop-blur-sm'>
         <div className='bg-gradient-to-r from-red-500 to-red-600 px-8 py-6 text-white'>
           <div className='flex items-center gap-3'>
             <HiOutlineDocumentText className='text-2xl' />
-            <h2 className='text-2xl font-bold'>
-              {useTranslation('common').t('firstaid.resources_title')}
-            </h2>
+            <h2 className='text-2xl font-bold'>{t('firstaid.resources_title')}</h2>
           </div>
-          <p className='mt-2 text-red-100'>
-            {useTranslation('common').t('firstaid.resources_subtitle')}
-          </p>
+          <p className='mt-2 text-red-100'>{t('firstaid.resources_subtitle')}</p>
         </div>
 
         <div className='p-8'>
@@ -404,7 +400,7 @@ const AdditionalResources = ({ blogLinks }: { blogLinks: string[] }) => {
                           .split('/')[0]
                       }
                     </span>
-                    <span className='text-sm text-gray-500'>Medical Resource</span>
+                    <span className='text-sm text-gray-500'>{t('firstaid.resource_label')}</span>
                   </div>
                 </div>
                 <MdArrowForward className='text-xl text-gray-400 transition-colors duration-200 group-hover:text-red-500' />
@@ -418,6 +414,7 @@ const AdditionalResources = ({ blogLinks }: { blogLinks: string[] }) => {
 };
 
 const SymptomSummaryResult = ({ summary }: { summary: string }) => {
+  const { t } = useTranslation('common');
   return (
     <AnimatedSection delay={0.25}>
       <div className='rounded-2xl border border-white/50 bg-white/90 p-8 shadow-xl backdrop-blur-sm'>
@@ -425,7 +422,7 @@ const SymptomSummaryResult = ({ summary }: { summary: string }) => {
           <div className='rounded-xl bg-gradient-to-br from-red-500 to-red-600 p-3'>
             <FiActivity className='text-xl text-white' />
           </div>
-          <h2 className='text-2xl font-bold text-gray-900'>응급조치 요약</h2>
+          <h2 className='text-2xl font-bold text-gray-900'>{t('firstaid.emergency_summary')}</h2>
         </div>
 
         <motion.div
@@ -442,6 +439,7 @@ const SymptomSummaryResult = ({ summary }: { summary: string }) => {
 };
 
 const AlertDisclaimer = ({ disclaimer }: { disclaimer: string }) => {
+  const { t } = useTranslation('common');
   return (
     <AnimatedSection delay={0.6}>
       <div className='rounded-2xl border-2 border-amber-200 bg-gradient-to-r from-amber-50 to-yellow-50 p-8 shadow-lg'>
@@ -455,7 +453,7 @@ const AlertDisclaimer = ({ disclaimer }: { disclaimer: string }) => {
           </motion.div>
           <div>
             <h3 className='mb-4 text-xl font-bold text-amber-800'>
-              {useTranslation('common').t('firstaid.disclaimer_title')}
+              {t('firstaid.disclaimer_title')}
             </h3>
             <div className='leading-relaxed text-amber-700'>
               <p className='text-lg font-medium'>{disclaimer}</p>
