@@ -14,7 +14,6 @@ import { slideInLeft, staggerChildren } from '../data/animationEffect';
 import { useFirstAidCombined } from '../hooks/useFirstAidCombined';
 import { useSymptomStore } from '../store/useSymptomStore';
 import { AnimatedSection } from './AnimatedSection';
-import { CircularConfidence } from './CircularConfidence';
 import { LoadingSpinner } from './LoadingSpinner';
 
 export const FirstAidResult = () => {
@@ -279,11 +278,6 @@ const SymptomSummary = ({
             </motion.div>
             <div>
               <h2 className='text-2xl font-bold text-gray-900'>{symptomType}</h2>
-            </div>
-          </div>
-          <div className='shrink-0'>
-            <div className='scale-90 sm:scale-100'>
-              <CircularConfidence confidence={confidence || 0} />
             </div>
           </div>
         </div>
