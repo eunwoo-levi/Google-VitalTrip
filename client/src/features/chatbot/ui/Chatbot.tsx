@@ -8,7 +8,7 @@ export default function Chatbot() {
     <>
       <button
         onClick={() => setIsOpen((prev) => !prev)}
-        className='fixed right-1 bottom-25 z-30 cursor-pointer rounded-full bg-blue-600 p-3 text-white shadow-xl transition-all duration-200 hover:scale-110 hover:bg-blue-700 active:scale-95'
+        className='fixed right-1 bottom-25 z-30 cursor-pointer rounded-full bg-red-600 p-3 text-white shadow-xl transition-all duration-200 hover:scale-110 hover:bg-red-700 active:scale-95'
         aria-label='Open Chatbot'
       >
         <RiRobot3Line size={24} />
@@ -16,8 +16,8 @@ export default function Chatbot() {
 
       {isOpen && (
         <div className='animate-slideFadeUp fixed right-15 bottom-24 z-30 flex h-96 w-75 flex-col rounded-2xl border border-gray-200 bg-white shadow-2xl md:w-80'>
-          <div className='flex items-center justify-between rounded-t-2xl border-b bg-blue-50 px-4 py-2'>
-            <h2 className='text-sm font-semibold text-blue-700'>AI ChatBot</h2>
+          <div className='flex items-center justify-between rounded-t-2xl border-b bg-red-50 px-4 py-2'>
+            <h2 className='text-sm font-semibold text-red-700'>AI ChatBot</h2>
             <button
               className='text-xs text-gray-400 hover:text-gray-600'
               onClick={() => setIsOpen(false)}
@@ -34,7 +34,7 @@ export default function Chatbot() {
               >
                 <div
                   className={`max-w-[70%] rounded-lg px-3 py-2 ${
-                    msg.type === 'user' ? 'bg-blue-500 text-white' : 'bg-gray-100 text-gray-800'
+                    msg.type === 'user' ? 'bg-red-500 text-white' : 'bg-gray-100 text-gray-800'
                   }`}
                 >
                   {msg.text}
@@ -45,7 +45,7 @@ export default function Chatbot() {
 
           <div className='flex w-full gap-2 border-t px-3 py-2'>
             <input
-              className='min-w-0 flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:ring-2 focus:ring-blue-400 focus:outline-none'
+              className='min-w-0 flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:ring-2 focus:ring-red-400 focus:outline-none'
               value={userText}
               onChange={(e) => setUserText(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
@@ -53,7 +53,7 @@ export default function Chatbot() {
             />
             <button
               onClick={sendMessage}
-              className='min-w-fit rounded-lg bg-blue-500 px-4 py-2 text-sm text-white transition-all hover:bg-blue-600 active:bg-blue-700'
+              className='min-w-fit rounded-lg bg-red-500 px-4 py-2 text-sm text-white transition-all hover:bg-red-600 active:bg-red-700'
             >
               Send
             </button>

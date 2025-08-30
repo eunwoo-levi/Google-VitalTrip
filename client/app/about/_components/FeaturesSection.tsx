@@ -68,13 +68,13 @@ export default function FeaturesSection() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
             viewport={{ once: true }}
-            className='rounded-2xl bg-blue-500 p-6 text-center text-white shadow-lg transition-shadow hover:shadow-xl'
+            className='rounded-2xl bg-red-500 p-6 text-center text-white shadow-lg transition-shadow hover:shadow-xl'
           >
             <FaHospitalAlt className='mx-auto mb-4 text-3xl' />
             <h3 className='mb-2 text-lg font-bold'>
               {t('about.features.emergency_locations.title')}
             </h3>
-            <p className='text-sm text-blue-100'>
+            <p className='text-sm text-red-100'>
               {t('about.features.emergency_locations.description')}
             </p>
           </motion.div>

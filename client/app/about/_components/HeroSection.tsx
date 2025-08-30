@@ -40,7 +40,7 @@ export default function HeroSection() {
           transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
           className='mb-8'
         >
-          <p className='mb-4 text-xl font-semibold text-blue-100 md:text-2xl'>
+          <p className='mb-4 text-xl font-semibold text-red-100 md:text-2xl'>
             {t('about.hero.tagline')}
           </p>
           <p className='mx-auto max-w-2xl text-lg leading-relaxed text-gray-200 md:text-xl'>
@@ -63,7 +63,7 @@ export default function HeroSection() {
         >
           <Link
             href='/'
-            className='cursor-pointer rounded-full bg-gradient-to-r from-blue-600 to-blue-700 px-8 py-4 text-lg font-semibold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:from-blue-700 hover:to-blue-800 hover:shadow-xl'
+            className='cursor-pointer rounded-full bg-gradient-to-r from-red-600 to-red-700 px-8 py-4 text-lg font-semibold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:from-red-700 hover:to-red-800 hover:shadow-xl'
           >
             {t('about.hero.cta_button')}
           </Link>

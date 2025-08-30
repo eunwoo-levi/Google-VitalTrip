@@ -93,7 +93,7 @@ export default function TranslatePage() {
   };
 
   return (
-    <main className='flex min-h-screen flex-col bg-gradient-to-b from-blue-50 to-gray-50 px-4 py-8'>
+    <main className='flex min-h-screen flex-col bg-gradient-to-b from-red-50 to-gray-50 px-4 py-8'>
       <div className='mx-auto w-full max-w-7xl'>
         <div className='mb-6 flex items-center gap-3'>
           <Link href='/'>
@@ -113,12 +113,12 @@ export default function TranslatePage() {
             <div className='relative w-full sm:w-auto sm:flex-1' ref={sourceDropdownRef}>
               <button
                 onClick={() => setIsSourceDropdownOpen((prev) => !prev)}
-                className='flex w-full items-center justify-between rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 transition-all hover:border-blue-300 hover:bg-blue-50'
+                className='flex w-full items-center justify-between rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 transition-all hover:border-red-300 hover:bg-red-50'
               >
                 <span className='flex items-center'>
                   {sourceLanguage === 'auto' && (
                     <svg
-                      className='mr-1.5 h-4 w-4 text-blue-500'
+                      className='mr-1.5 h-4 w-4 text-red-500'
                       xmlns='http://www.w3.org/2000/svg'
                       fill='none'
                       viewBox='0 0 24 24'
@@ -158,7 +158,7 @@ export default function TranslatePage() {
                       placeholder='Search language...'
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      className='w-full border-b border-gray-200 px-4 py-3 focus:border-blue-300 focus:ring-blue-300 focus:outline-none'
+                      className='w-full border-b border-gray-200 px-4 py-3 focus:border-red-300 focus:ring-red-300 focus:outline-none'
                     />
                   </div>
                   <ul className='max-h-60 overflow-y-auto'>
@@ -170,9 +170,9 @@ export default function TranslatePage() {
                           setIsSourceDropdownOpen(false);
                           setSearchQuery('');
                         }}
-                        className={`cursor-pointer px-4 py-2.5 text-sm transition-colors hover:bg-blue-50 ${
+                        className={`cursor-pointer px-4 py-2.5 text-sm transition-colors hover:bg-red-50 ${
                           sourceLanguage === lang.language
-                            ? 'bg-blue-100 font-medium text-blue-700'
+                            ? 'bg-red-100 font-medium text-red-700'
                             : 'text-gray-700'
                         }`}
                       >
@@ -189,7 +189,7 @@ export default function TranslatePage() {
               className={`mx-2 rounded-full p-2.5 transition-all ${
                 sourceLanguage === 'auto'
                   ? 'cursor-not-allowed bg-gray-100 text-gray-400'
-                  : 'text-blue-600 hover:bg-blue-100 active:bg-blue-200'
+                  : 'text-red-600 hover:bg-red-100 active:bg-red-200'
               }`}
               disabled={sourceLanguage === 'auto'}
               title={sourceLanguage === 'auto' ? "Can't swap with auto-detect" : 'Swap languages'}
@@ -213,7 +213,7 @@ export default function TranslatePage() {
             <div className='relative w-full sm:w-auto sm:flex-1' ref={targetDropdownRef}>
               <button
                 onClick={() => setIsTargetDropdownOpen((prev) => !prev)}
-                className='flex w-full items-center justify-between rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 transition-all hover:border-blue-300 hover:bg-blue-50'
+                className='flex w-full items-center justify-between rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 transition-all hover:border-red-300 hover:bg-red-50'
               >
                 <span>{getLanguageName(targetLanguage)}</span>
                 <svg
@@ -240,7 +240,7 @@ export default function TranslatePage() {
                       placeholder='Search language...'
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      className='w-full border-b border-gray-200 px-4 py-3 focus:border-blue-300 focus:ring-blue-300 focus:outline-none'
+                      className='w-full border-b border-gray-200 px-4 py-3 focus:border-red-300 focus:ring-red-300 focus:outline-none'
                     />
                   </div>
                   <ul className='max-h-60 overflow-y-auto'>
@@ -254,9 +254,9 @@ export default function TranslatePage() {
                             setIsTargetDropdownOpen(false);
                             setSearchQuery('');
                           }}
-                          className={`cursor-pointer px-4 py-2.5 text-sm transition-colors hover:bg-blue-50 ${
+                          className={`cursor-pointer px-4 py-2.5 text-sm transition-colors hover:bg-red-50 ${
                             targetLanguage === lang.language
-                              ? 'bg-blue-100 font-medium text-blue-700'
+                              ? 'bg-red-100 font-medium text-red-700'
                               : 'text-gray-700'
                           }`}
                         >
@@ -277,7 +277,7 @@ export default function TranslatePage() {
                 <span className='flex items-center text-sm font-medium text-gray-700'>
                   {sourceLanguage === 'auto' && (
                     <svg
-                      className='mr-1.5 h-4 w-4 text-blue-500'
+                      className='mr-1.5 h-4 w-4 text-red-500'
                       xmlns='http://www.w3.org/2000/svg'
                       fill='none'
                       viewBox='0 0 24 24'
@@ -341,7 +341,7 @@ export default function TranslatePage() {
                 <button
                   onClick={handleTranslate}
                   disabled={isTranslating || !sourceText.trim()}
-                  className={`rounded-lg bg-blue-600 px-5 py-2 text-sm font-medium text-white shadow-sm transition-all hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none ${
+                  className={`rounded-lg bg-red-600 px-5 py-2 text-sm font-medium text-white shadow-sm transition-all hover:bg-red-700 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:outline-none ${
                     isTranslating || !sourceText.trim()
                       ? 'cursor-not-allowed opacity-50'
                       : 'cursor-pointer hover:shadow'
@@ -395,7 +395,7 @@ export default function TranslatePage() {
                       onClick={() => {
                         navigator.clipboard.writeText(translatedText);
                       }}
-                      className='group relative rounded p-1.5 text-gray-400 transition-colors hover:bg-blue-50 hover:text-blue-600'
+                      className='group relative rounded p-1.5 text-gray-400 transition-colors hover:bg-red-50 hover:text-red-600'
                       title='Copy to clipboard'
                     >
                       <svg
@@ -424,7 +424,7 @@ export default function TranslatePage() {
                         utterance.lang = targetLanguage;
                         window.speechSynthesis.speak(utterance);
                       }}
-                      className='rounded p-1.5 text-gray-400 transition-colors hover:bg-blue-50 hover:text-blue-600'
+                      className='rounded p-1.5 text-gray-400 transition-colors hover:bg-red-50 hover:text-red-600'
                       title='Listen'
                     >
                       <svg
@@ -449,7 +449,7 @@ export default function TranslatePage() {
             <div className='h-[250px] overflow-y-auto p-4'>
               {isTranslating ? (
                 <div className='flex h-full items-center justify-center'>
-                  <div className='h-10 w-10 animate-spin rounded-full border-4 border-gray-200 border-t-blue-600'></div>
+                  <div className='h-10 w-10 animate-spin rounded-full border-4 border-gray-200 border-t-red-600'></div>
                 </div>
               ) : translatedText ? (
                 <p className='whitespace-pre-wrap text-gray-800'>{translatedText}</p>
