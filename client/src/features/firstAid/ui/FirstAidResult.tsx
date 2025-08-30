@@ -152,9 +152,22 @@ const NearbyFacilitiesCombined = ({
               </h3>
               <ul className='space-y-3'>
                 {topHospitals.map((hospital, idx) => (
-                  <li
+                  <motion.li
                     key={`h-${idx}`}
-                    className='group rounded-xl border border-gray-100 bg-white p-4 transition-all duration-200 hover:border-red-300 hover:shadow-md'
+                    className='group cursor-pointer rounded-xl border border-gray-100 bg-white p-4 transition-all duration-200 hover:border-red-300 hover:shadow-md'
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => {
+                      if (hospital.websiteUrl) {
+                        window.open(hospital.websiteUrl, '_blank');
+                      } else {
+                        const query = encodeURIComponent(`${hospital.name} ${hospital.address}`);
+                        window.open(
+                          `https://www.google.com/maps/search/?api=1&query=${query}`,
+                          '_blank',
+                        );
+                      }
+                    }}
                   >
                     <div className='mb-2 flex items-center justify-between'>
                       <div className='flex items-center gap-2'>
@@ -177,7 +190,7 @@ const NearbyFacilitiesCombined = ({
                         📞 {hospital.phoneNumber}
                       </div>
                     )}
-                  </li>
+                  </motion.li>
                 ))}
               </ul>
             </div>
@@ -191,9 +204,22 @@ const NearbyFacilitiesCombined = ({
               </h3>
               <ul className='space-y-3'>
                 {topPharmacies.map((pharmacy, idx) => (
-                  <li
+                  <motion.li
                     key={`p-${idx}`}
-                    className='group rounded-xl border border-gray-100 bg-white p-4 transition-all duration-200 hover:border-red-300 hover:shadow-md'
+                    className='group cursor-pointer rounded-xl border border-gray-100 bg-white p-4 transition-all duration-200 hover:border-red-300 hover:shadow-md'
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => {
+                      if (pharmacy.websiteUrl) {
+                        window.open(pharmacy.websiteUrl, '_blank');
+                      } else {
+                        const query = encodeURIComponent(`${pharmacy.name} ${pharmacy.address}`);
+                        window.open(
+                          `https://www.google.com/maps/search/?api=1&query=${query}`,
+                          '_blank',
+                        );
+                      }
+                    }}
                   >
                     <div className='mb-2 flex items-center justify-between'>
                       <div className='flex items-center gap-2'>
@@ -216,7 +242,7 @@ const NearbyFacilitiesCombined = ({
                         📞 {pharmacy.phoneNumber}
                       </div>
                     )}
-                  </li>
+                  </motion.li>
                 ))}
               </ul>
             </div>
@@ -399,9 +425,7 @@ const SymptomSummaryResult = ({ summary }: { summary: string }) => {
           <div className='rounded-xl bg-gradient-to-br from-red-500 to-red-600 p-3'>
             <FiActivity className='text-xl text-white' />
           </div>
-          <h2 className='text-2xl font-bold text-gray-900'>
-            응급조치 요약
-          </h2>
+          <h2 className='text-2xl font-bold text-gray-900'>응급조치 요약</h2>
         </div>
 
         <motion.div
