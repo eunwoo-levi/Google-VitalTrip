@@ -34,7 +34,7 @@ export const MenuDropdown = ({
         }}
         className={linkClassName}
       >
-        <TiThMenu size={25} className='text-blue-500' />
+        <TiThMenu size={25} className='text-red-500' />
       </button>
       {isMenuOpen && (
         <Dropdown direction='top'>
@@ -44,7 +44,7 @@ export const MenuDropdown = ({
                 {item.code === 'ABOUT_US' ? (
                   <Link
                     href='/about'
-                    className='mb-2 block w-full rounded-md p-2 text-center font-semibold text-blue-500 transition-all duration-200 ease-in-out hover:scale-105 hover:bg-blue-50'
+                    className='mb-2 block w-full rounded-md p-2 text-center font-semibold text-red-500 transition-all duration-200 ease-in-out hover:scale-105 hover:bg-red-50'
                     onClick={() => setIsMenuOpen(false)}
                   >
                     {t(`menu.${item.code.toLowerCase()}`)}
@@ -52,7 +52,7 @@ export const MenuDropdown = ({
                 ) : (
                   <button
                     onClick={() => setInfoModalCode(item.code)}
-                    className='mb-2 w-full rounded-md p-2 transition-all duration-200 hover:bg-gray-100 hover:text-blue-500'
+                    className='mb-2 w-full rounded-md p-2 transition-all duration-200 hover:bg-gray-100 hover:text-red-500'
                   >
                     {t(`menu.${item.code.toLowerCase()}`)}
                   </button>
