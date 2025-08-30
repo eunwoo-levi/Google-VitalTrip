@@ -1,11 +1,42 @@
-import React from 'react';
+import { useIdentifyCountryMutation } from '@/src/features/medical/api/useIdentifyCountryMutation';
+import { useCurrentLocation } from '@/src/shared/hooks/useCurrentLocation';
 import { motion } from 'motion/react';
-import { MdLocalPolice, MdLocalHospital, MdLocalFireDepartment, MdWarning } from 'react-icons/md';
+import { useEffect, useState } from 'react';
 import { FaGlobeAmericas } from 'react-icons/fa';
-import { useEmergencyNumbers } from '@/src/features/firstAid/hooks/useEmergencyNumbers';
+import { MdLocalFireDepartment, MdLocalHospital, MdLocalPolice, MdWarning } from 'react-icons/md';
+
+interface EmergencyNumbers {
+  country: string;
+  police: string;
+  ambulance: string;
+  fire: string;
+}
 
 export default function EmergencyCall() {
-  const { emergencyInfo, isLoading, error } = useEmergencyNumbers();
+  const [emergencyInfo, setEmergencyInfo] = useState<EmergencyNumbers | null>(null);
+  const { coords } = useCurrentLocation();
+  const identifyCountryMutation = useIdentifyCountryMutation();
+
+  useEffect(() => {
+    if (coords) {
+      identifyCountryMutation.mutate(coords, {
+        onSuccess: (result) => {
+          if (result.data.emergencyContact) {
+            const { emergencyContact } = result.data;
+            const emergencyNumbers: EmergencyNumbers = {
+              country: result.data.countryName,
+              police: emergencyContact.police || '112',
+              ambulance: emergencyContact.medical || '112',
+              fire: emergencyContact.fire || '112',
+            };
+            setEmergencyInfo(emergencyNumbers);
+          }
+        },
+      });
+    }
+  }, [coords]);
+
+  const isLoading = identifyCountryMutation.isPending;
 
   return (
     <motion.div
@@ -21,11 +52,10 @@ export default function EmergencyCall() {
           {emergencyInfo ? emergencyInfo.country : 'Detecting country...'}
         </span>
       </div>
-      {error ? (
-        <div className='p-6 text-center text-lg font-bold text-red-600'>⚠️ {error}</div>
-      ) : isLoading || !emergencyInfo ? (
+      {isLoading || !emergencyInfo ? (
         <div className='p-6 text-center text-lg font-semibold text-gray-600'>
-          🔍 Detecting your emergency contact info...
+          <div className='mr-2 inline-block h-6 w-6 animate-spin rounded-full border-2 border-gray-400 border-t-transparent'></div>
+          🔍 Detecting your location and emergency contact info...
         </div>
       ) : (
         <div className='mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3'>
