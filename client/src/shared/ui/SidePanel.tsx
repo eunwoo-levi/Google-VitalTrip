@@ -11,7 +11,7 @@ export default function SidePanel({ isOpen, onToggle, children }: SidePanelProps
     <>
       <button
         onClick={onToggle}
-        className={`fixed top-1/6 left-0 z-50 rounded-lg border-2 border-blue-300 bg-white px-2 py-8 font-bold transition-all duration-300 hover:bg-gray-200 ${
+        className={`fixed top-1/6 left-0 z-50 rounded-lg border-2 border-red-300 bg-white px-2 py-8 font-bold transition-all duration-300 hover:bg-gray-200 ${
           isOpen ? 'translate-x-80' : 'translate-x-0'
         }`}
       >

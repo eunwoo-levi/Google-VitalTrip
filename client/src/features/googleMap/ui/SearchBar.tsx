@@ -34,7 +34,7 @@ export default function SearchBar({
         />
         <button
           onClick={() => handleSearch(searchTerm)}
-          className='rounded-r-md bg-blue-500 px-4 py-2 text-sm text-white hover:bg-blue-600'
+          className='rounded-r-md bg-red-500 px-4 py-2 text-sm text-white hover:bg-red-600'
         >
           Search
         </button>

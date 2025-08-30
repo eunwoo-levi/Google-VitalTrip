@@ -54,11 +54,11 @@ export default function BottomNavigateBar() {
     <>
       <div className='fixed bottom-2 left-1/2 z-10 flex h-[60px] w-[98%] -translate-x-1/2 items-center justify-evenly gap-2 rounded-t-xl bg-white shadow-xl'>
         <Link href='/' className={linkClassName}>
-          <FaMapMarkedAlt size={25} className='text-blue-500' />
+          <FaMapMarkedAlt size={25} className='text-red-500' />
         </Link>
 
         <Link href='/translate' className={linkClassName}>
-          <MdGTranslate size={25} className='text-blue-500' />
+          <MdGTranslate size={25} className='text-red-500' />
         </Link>
 
         <button onClick={() => setIsProfileModalOpen(true)} className={linkClassName}>
@@ -71,7 +71,7 @@ export default function BottomNavigateBar() {
         )}
 
         <button onClick={() => setIsSymptomModalOpen((prev) => !prev)} className={linkClassName}>
-          <FaRegHospital size={25} className='text-blue-500' />
+          <FaRegHospital size={25} className='text-red-500' />
         </button>
 
         <MenuDropdown

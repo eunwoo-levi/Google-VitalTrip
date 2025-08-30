@@ -30,23 +30,23 @@ export default function Footer() {
           </div>
 
           <div className='space-y-4'>
-            <h3 className='text-lg font-semibold text-blue-400'>{t('footer.features_title')}</h3>
+            <h3 className='text-lg font-semibold text-red-400'>{t('footer.features_title')}</h3>
             <ul className='space-y-2 text-gray-300'>
               <li>
-                <Link href='/' className='transition-colors duration-200 hover:text-blue-400'>
+                <Link href='/' className='transition-colors duration-200 hover:text-red-400'>
                   {t('navbar.hospital_pharmacy_nearby')}
                 </Link>
               </li>
               <li>
                 <Link
                   href='/translate'
-                  className='transition-colors duration-200 hover:text-blue-400'
+                  className='transition-colors duration-200 hover:text-red-400'
                 >
                   {t('footer.medical_translation')}
                 </Link>
               </li>
               <li>
-                <Link href='/' className='transition-colors duration-200 hover:text-blue-400'>
+                <Link href='/' className='transition-colors duration-200 hover:text-red-400'>
                   {t('footer.ai_first_aid_assistant')}
                 </Link>
               </li>
@@ -54,11 +54,11 @@ export default function Footer() {
           </div>
 
           <div className='space-y-4'>
-            <h3 className='text-lg font-semibold text-blue-400'>{t('footer.contact_title')}</h3>
+            <h3 className='text-lg font-semibold text-red-400'>{t('footer.contact_title')}</h3>
             <div className='flex flex-col gap-2 space-x-4'>
               <a
                 href='mailto:eunwoo1341@gmail.com'
-                className='flex items-center space-x-2 text-gray-300 transition-colors duration-200 hover:text-blue-400'
+                className='flex items-center space-x-2 text-gray-300 transition-colors duration-200 hover:text-red-400'
               >
                 <FaEnvelope size={18} />
                 <span>{t('footer.contact_us')}</span>
