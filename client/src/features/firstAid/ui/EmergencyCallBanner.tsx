@@ -22,7 +22,7 @@ export default function EmergencyCallBanner({
 
   return (
     <motion.div
-      className='mx-auto my-6 flex w-full max-w-2xl flex-col gap-6 rounded-2xl border border-gray-100 bg-white p-6 shadow-xl'
+      className='mx-auto my-6 flex w-full max-w-2xl flex-col gap-6 rounded-2xl border-2 border-red-500 bg-white p-6 shadow-xl'
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}

@@ -90,7 +90,6 @@ export const FirstAidResult = () => {
         />
         <SymptomSummaryResult summary={combined.firstAid?.summary || ''} />
         <FirstAidSteps firstAidSteps={combined.firstAid?.content || ''} />
-        <RecommendedAction recommendedAction={combined.firstAid?.recommendedAction || ''} />
         <NearbyFacilitiesCombined
           hospitals={combined.hospitals || []}
           pharmacies={combined.pharmacies || []}
@@ -132,14 +131,14 @@ const NearbyFacilitiesCombined = ({
   return (
     <AnimatedSection delay={0.45}>
       <div className='overflow-hidden rounded-2xl border border-white/50 bg-white/90 shadow-xl backdrop-blur-sm'>
-        <div className='bg-gradient-to-r from-blue-500 to-green-500 px-8 py-6 text-white'>
+        <div className='bg-gradient-to-r from-red-500 to-red-600 px-8 py-6 text-white'>
           <div className='flex items-center gap-3'>
             <div className='rounded-lg bg-white/20 p-2'>
               <span className='text-2xl'>🏥</span>
             </div>
             <h2 className='text-2xl font-bold'>근처 의료시설</h2>
           </div>
-          <p className='mt-2 text-blue-100'>
+          <p className='mt-2 text-red-100'>
             가장 가까운 병원 {topHospitals.length}곳과 약국 {topPharmacies.length}곳
           </p>
         </div>
@@ -155,26 +154,26 @@ const NearbyFacilitiesCombined = ({
                 {topHospitals.map((hospital, idx) => (
                   <li
                     key={`h-${idx}`}
-                    className='group rounded-xl border border-gray-100 bg-white p-4 transition-all duration-200 hover:border-blue-300 hover:shadow-md'
+                    className='group rounded-xl border border-gray-100 bg-white p-4 transition-all duration-200 hover:border-red-300 hover:shadow-md'
                   >
                     <div className='mb-2 flex items-center justify-between'>
                       <div className='flex items-center gap-2'>
-                        <span className='inline-flex items-center rounded-full bg-blue-100 px-2 py-1 text-xs font-medium text-blue-700'>
+                        <span className='inline-flex items-center rounded-full bg-red-100 px-2 py-1 text-xs font-medium text-red-700'>
                           {formatDistance(hospital.distance)}
                         </span>
                         {hospital.openNow && (
-                          <span className='inline-flex items-center rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-700'>
+                          <span className='inline-flex items-center rounded-full bg-red-100 px-2 py-1 text-xs font-medium text-red-700'>
                             영업중
                           </span>
                         )}
                       </div>
                     </div>
-                    <div className='text-lg font-semibold text-gray-900 group-hover:text-blue-600'>
+                    <div className='text-lg font-semibold text-gray-900 group-hover:text-red-600'>
                       {hospital.name}
                     </div>
                     <div className='text-sm text-gray-600'>{hospital.address}</div>
                     {hospital.phoneNumber && (
-                      <div className='mt-2 text-sm font-medium text-blue-600'>
+                      <div className='mt-2 text-sm font-medium text-red-600'>
                         📞 {hospital.phoneNumber}
                       </div>
                     )}
@@ -194,26 +193,26 @@ const NearbyFacilitiesCombined = ({
                 {topPharmacies.map((pharmacy, idx) => (
                   <li
                     key={`p-${idx}`}
-                    className='group rounded-xl border border-gray-100 bg-white p-4 transition-all duration-200 hover:border-green-300 hover:shadow-md'
+                    className='group rounded-xl border border-gray-100 bg-white p-4 transition-all duration-200 hover:border-red-300 hover:shadow-md'
                   >
                     <div className='mb-2 flex items-center justify-between'>
                       <div className='flex items-center gap-2'>
-                        <span className='inline-flex items-center rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-700'>
+                        <span className='inline-flex items-center rounded-full bg-red-100 px-2 py-1 text-xs font-medium text-red-700'>
                           {formatDistance(pharmacy.distance)}
                         </span>
                         {pharmacy.openNow && (
-                          <span className='inline-flex items-center rounded-full bg-blue-100 px-2 py-1 text-xs font-medium text-blue-700'>
+                          <span className='inline-flex items-center rounded-full bg-red-100 px-2 py-1 text-xs font-medium text-red-700'>
                             영업중
                           </span>
                         )}
                       </div>
                     </div>
-                    <div className='text-lg font-semibold text-gray-900 group-hover:text-green-600'>
+                    <div className='text-lg font-semibold text-gray-900 group-hover:text-red-600'>
                       {pharmacy.name}
                     </div>
                     <div className='text-sm text-gray-600'>{pharmacy.address}</div>
                     {pharmacy.phoneNumber && (
-                      <div className='mt-2 text-sm font-medium text-green-600'>
+                      <div className='mt-2 text-sm font-medium text-red-600'>
                         📞 {pharmacy.phoneNumber}
                       </div>
                     )}
@@ -263,12 +262,12 @@ const SymptomSummary = ({
 
         {symptomDetail && (
           <motion.div
-            className='rounded-xl border-2 border-blue-200 bg-gradient-to-r from-blue-50 to-indigo-50 p-6'
+            className='rounded-xl border-2 border-red-200 bg-gradient-to-r from-red-50 to-red-50 p-6'
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6, duration: 0.5 }}
           >
-            <div className='mb-2 inline-flex items-center gap-2 rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-700'>
+            <div className='mb-2 inline-flex items-center gap-2 rounded-full bg-red-100 px-3 py-1 text-xs font-semibold text-red-700'>
               {t('firstaid.reported_symptoms')}
             </div>
             <p className='text-lg leading-relaxed font-semibold whitespace-pre-line text-gray-900'>
@@ -285,14 +284,14 @@ const FirstAidSteps = ({ firstAidSteps }: { firstAidSteps: string }) => {
   return (
     <AnimatedSection delay={0.3}>
       <div className='overflow-hidden rounded-2xl border border-white/50 bg-white/90 shadow-xl backdrop-blur-sm'>
-        <div className='bg-gradient-to-r from-blue-500 to-indigo-600 px-8 py-6 text-white'>
+        <div className='bg-gradient-to-r from-red-500 to-red-600 px-8 py-6 text-white'>
           <div className='flex items-center gap-3'>
             <BsCheckCircle className='text-2xl' />
             <h2 className='text-2xl font-bold'>
               {useTranslation('common').t('firstaid.protocol_title')}
             </h2>
           </div>
-          <p className='mt-2 text-blue-100'>
+          <p className='mt-2 text-red-100'>
             {useTranslation('common').t('firstaid.protocol_subtitle')}
           </p>
         </div>
@@ -312,7 +311,7 @@ const FirstAidSteps = ({ firstAidSteps }: { firstAidSteps: string }) => {
                 <motion.div key={idx} className='group flex gap-6' variants={slideInLeft}>
                   <div className='flex-shrink-0'>
                     <motion.div
-                      className='flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 shadow-lg transition-shadow duration-300 group-hover:shadow-xl'
+                      className='flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-red-500 to-red-600 shadow-lg transition-shadow duration-300 group-hover:shadow-xl'
                       whileHover={{ scale: 1.1 }}
                       transition={{ type: 'spring', stiffness: 300 }}
                     >
@@ -333,51 +332,18 @@ const FirstAidSteps = ({ firstAidSteps }: { firstAidSteps: string }) => {
   );
 };
 
-const RecommendedAction = ({ recommendedAction }: { recommendedAction: string }) => {
-  return (
-    <AnimatedSection delay={0.4}>
-      <div className='overflow-hidden rounded-2xl border border-white/50 bg-white/90 shadow-xl backdrop-blur-sm'>
-        <div className='bg-gradient-to-r from-emerald-500 to-green-600 px-8 py-6 text-white'>
-          <div className='flex items-center gap-3'>
-            <FiActivity className='text-2xl' />
-            <h2 className='text-2xl font-bold'>
-              {useTranslation('common').t('firstaid.recommended_title')}
-            </h2>
-          </div>
-          <p className='mt-2 text-emerald-100'>
-            {useTranslation('common').t('firstaid.recommended_subtitle')}
-          </p>
-        </div>
-
-        <div className='p-8'>
-          <motion.div
-            className='rounded-xl border-l-4 border-emerald-500 bg-gradient-to-r from-emerald-50 to-green-50 p-6'
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.6, duration: 0.5 }}
-          >
-            <p className='text-lg leading-relaxed font-semibold text-gray-800'>
-              {recommendedAction}
-            </p>
-          </motion.div>
-        </div>
-      </div>
-    </AnimatedSection>
-  );
-};
-
 const AdditionalResources = ({ blogLinks }: { blogLinks: string[] }) => {
   return (
     <AnimatedSection delay={0.5}>
       <div className='overflow-hidden rounded-2xl border border-white/50 bg-white/90 shadow-xl backdrop-blur-sm'>
-        <div className='bg-gradient-to-r from-purple-500 to-violet-600 px-8 py-6 text-white'>
+        <div className='bg-gradient-to-r from-red-500 to-red-600 px-8 py-6 text-white'>
           <div className='flex items-center gap-3'>
             <HiOutlineDocumentText className='text-2xl' />
             <h2 className='text-2xl font-bold'>
               {useTranslation('common').t('firstaid.resources_title')}
             </h2>
           </div>
-          <p className='mt-2 text-purple-100'>
+          <p className='mt-2 text-red-100'>
             {useTranslation('common').t('firstaid.resources_subtitle')}
           </p>
         </div>
@@ -395,14 +361,14 @@ const AdditionalResources = ({ blogLinks }: { blogLinks: string[] }) => {
                 href={link}
                 target='_blank'
                 rel='noopener noreferrer'
-                className='group flex items-center justify-between rounded-xl border-2 border-gray-100 p-6 transition-all duration-300 hover:border-purple-300 hover:bg-gradient-to-r hover:from-purple-50 hover:to-violet-50'
+                className='group flex items-center justify-between rounded-xl border-2 border-gray-100 p-6 transition-all duration-300 hover:border-red-300 hover:bg-gradient-to-r hover:from-red-50 hover:to-red-50'
                 variants={slideInLeft}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
                 <div className='flex items-center gap-4'>
-                  <div className='rounded-lg bg-purple-100 p-2 transition-colors duration-200 group-hover:bg-purple-200'>
-                    <FiExternalLink className='text-lg text-purple-600' />
+                  <div className='rounded-lg bg-red-100 p-2 transition-colors duration-200 group-hover:bg-red-200'>
+                    <FiExternalLink className='text-lg text-red-600' />
                   </div>
                   <div>
                     <span className='block text-lg font-semibold text-gray-900'>
@@ -415,7 +381,7 @@ const AdditionalResources = ({ blogLinks }: { blogLinks: string[] }) => {
                     <span className='text-sm text-gray-500'>Medical Resource</span>
                   </div>
                 </div>
-                <MdArrowForward className='text-xl text-gray-400 transition-colors duration-200 group-hover:text-purple-500' />
+                <MdArrowForward className='text-xl text-gray-400 transition-colors duration-200 group-hover:text-red-500' />
               </motion.a>
             ))}
           </motion.div>
@@ -430,16 +396,16 @@ const SymptomSummaryResult = ({ summary }: { summary: string }) => {
     <AnimatedSection delay={0.25}>
       <div className='rounded-2xl border border-white/50 bg-white/90 p-8 shadow-xl backdrop-blur-sm'>
         <div className='mb-4 flex items-center gap-3'>
-          <div className='rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 p-3'>
-            <FiInfo className='text-xl text-white' />
+          <div className='rounded-xl bg-gradient-to-br from-red-500 to-red-600 p-3'>
+            <FiActivity className='text-xl text-white' />
           </div>
           <h2 className='text-2xl font-bold text-gray-900'>
-            {useTranslation('common').t('firstaid.situation_summary')}
+            응급조치 요약
           </h2>
         </div>
 
         <motion.div
-          className='rounded-xl border border-blue-100 bg-gradient-to-r from-blue-50 to-indigo-50 p-6'
+          className='rounded-xl border border-red-100 bg-gradient-to-r from-red-50 to-red-50 p-6'
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 0.5 }}
