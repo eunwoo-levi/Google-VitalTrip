@@ -1,45 +1,36 @@
 'use client';
 
 import EmergencyCallBanner from '@/src/features/firstAid/ui/EmergencyCallBanner';
-import { useCurrentLocation } from '@/src/shared/hooks/useCurrentLocation';
+import { useHydration } from '@/src/shared/hooks/useHydration';
 import { motion } from 'motion/react';
-import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { BsCheckCircle } from 'react-icons/bs';
 import { FiActivity, FiExternalLink, FiInfo } from 'react-icons/fi';
 import { HiOutlineDocumentText } from 'react-icons/hi';
 import { MdArrowForward, MdErrorOutline, MdMedicalServices } from 'react-icons/md';
-import { useFirstAidMutation } from '../api/firstAid';
+import { Medical } from '../../medical/types/medical';
+import { formatDistance } from '../../medical/utils/formatDistance';
 import { slideInLeft, staggerChildren } from '../data/animationEffect';
+import { useFirstAidCombined } from '../hooks/useFirstAidCombined';
 import { useSymptomStore } from '../store/useSymptomStore';
 import { AnimatedSection } from './AnimatedSection';
-import { ConfidenceIndicator } from './ConfidenceIndicator';
+import { CircularConfidence } from './CircularConfidence';
 import { LoadingSpinner } from './LoadingSpinner';
 
 export const FirstAidResult = () => {
-  const { mutateAsync, data: result, isPending, isError } = useFirstAidMutation();
   const { symptomType, symptomDetail } = useSymptomStore();
-  const { coords, isLoading: isLocationLoading, error: locationError } = useCurrentLocation();
+  const { combined, isPending, isError, locationError } = useFirstAidCombined();
+  const hydrated = useHydration();
 
-  useEffect(() => {
-    if (!isLocationLoading && coords && !locationError) {
-      try {
-        mutateAsync({
-          symptomType: symptomType,
-          symptomDetail: symptomDetail,
-          latitude: coords.latitude,
-          longitude: coords.longitude,
-        });
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  }, [isLocationLoading, coords, locationError, mutateAsync, symptomType, symptomDetail]);
+  if (!hydrated) {
+    return <div className='mx-auto max-w-6xl px-6 py-10 pb-[100px]' />;
+  }
 
-  if (isPending || isLocationLoading) {
+  if (isPending) {
     return <LoadingSpinner />;
   }
 
-  if (isError || !result || locationError) {
+  if (isError || locationError) {
     return (
       <div className='flex min-h-screen items-center justify-center bg-gradient-to-br from-red-50 to-pink-50'>
         <motion.div
@@ -59,7 +50,7 @@ export const FirstAidResult = () => {
           <p className='mb-8 text-gray-600'>
             {locationError
               ? 'Unable to access your location. Please enable location services and try again.'
-              : 'We couldn&apos;t complete the emergency analysis. Please try again.'}
+              : "We couldn't complete the emergency analysis. Please try again."}
           </p>
           <motion.button
             onClick={() => window.location.reload()}
@@ -74,25 +65,191 @@ export const FirstAidResult = () => {
     );
   }
 
+  if (!combined) {
+    return <LoadingSpinner />;
+  }
+
+  if (!combined.firstAid || !combined.firstAid.content) {
+    return <LoadingSpinner />;
+  }
+
   return (
     <div className='mx-auto max-w-6xl px-6 py-10 pb-[100px]'>
       <AnimatedSection delay={0.1}>
-        <EmergencyCallBanner />
+        <EmergencyCallBanner
+          emergencyContact={combined.firstAid?.identificationResponse?.emergencyContact || {}}
+          countryName={combined.firstAid?.identificationResponse?.countryName || 'Unknown'}
+        />
       </AnimatedSection>
 
       <div className='mt-10 space-y-8'>
         <SymptomSummary
           symptomType={symptomType}
           symptomDetail={symptomDetail}
-          confidence={result.confidence}
+          confidence={combined.firstAid?.confidence || 0}
         />
-        <SymptomSummaryResult summary={result.summary} />
-        <FirstAidSteps firstAidSteps={result.content} />
-        <RecommendedAction recommendedAction={result.recommendedAction} />
-        <AdditionalResources blogLinks={result.blogLinks} />
-        <AlertDisclaimer disclaimer={result.disclaimer} />
+        <SymptomSummaryResult summary={combined.firstAid?.summary || ''} />
+        <FirstAidSteps firstAidSteps={combined.firstAid?.content || ''} />
+        <NearbyFacilitiesCombined
+          hospitals={combined.hospitals || []}
+          pharmacies={combined.pharmacies || []}
+        />
+        <AdditionalResources blogLinks={combined.firstAid?.blogLinks || []} />
+        <AlertDisclaimer disclaimer={combined.firstAid?.disclaimer || ''} />
       </div>
     </div>
+  );
+};
+
+const NearbyFacilitiesCombined = ({
+  hospitals,
+  pharmacies,
+}: {
+  hospitals: Medical[];
+  pharmacies: Medical[];
+}) => {
+  const { t } = useTranslation('common');
+  const hydrated = useHydration();
+
+  if (!hydrated) return null;
+
+  const topHospitals = hospitals || [];
+  const topPharmacies = pharmacies || [];
+
+  if (topHospitals.length === 0 && topPharmacies.length === 0) {
+    return (
+      <AnimatedSection delay={0.45}>
+        <div className='overflow-hidden rounded-2xl border border-white/50 bg-white/90 shadow-xl backdrop-blur-sm'>
+          <div className='p-8 text-center'>
+            <p className='text-gray-500'>{t('medical.no_facilities_found')}</p>
+          </div>
+        </div>
+      </AnimatedSection>
+    );
+  }
+
+  return (
+    <AnimatedSection delay={0.45}>
+      <div className='overflow-hidden rounded-2xl border border-white/50 bg-white/90 shadow-xl backdrop-blur-sm'>
+        <div className='bg-gradient-to-r from-red-500 to-red-600 px-8 py-6 text-white'>
+          <div className='flex items-center gap-3'>
+            <div className='rounded-lg bg-white/20 p-2'>
+              <span className='text-2xl'>🏥</span>
+            </div>
+            <h2 className='text-2xl font-bold'>근처 의료시설</h2>
+          </div>
+          <p className='mt-2 text-red-100'>
+            가장 가까운 병원 {topHospitals.length}곳과 약국 {topPharmacies.length}곳
+          </p>
+        </div>
+
+        <div className='grid gap-6 p-8 sm:grid-cols-2'>
+          {topHospitals.length > 0 && (
+            <div>
+              <h3 className='mb-4 flex items-center gap-2 text-xl font-bold text-gray-900'>
+                <span className='text-2xl'>🏥</span>
+                병원 ({topHospitals.length}곳)
+              </h3>
+              <ul className='space-y-3'>
+                {topHospitals.map((hospital, idx) => (
+                  <motion.li
+                    key={`h-${idx}`}
+                    className='group cursor-pointer rounded-xl border border-gray-100 bg-white p-4 transition-all duration-200 hover:border-red-300 hover:shadow-md'
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => {
+                      if (hospital.websiteUrl) {
+                        window.open(hospital.websiteUrl, '_blank');
+                      } else {
+                        const query = encodeURIComponent(`${hospital.name} ${hospital.address}`);
+                        window.open(
+                          `https://www.google.com/maps/search/?api=1&query=${query}`,
+                          '_blank',
+                        );
+                      }
+                    }}
+                  >
+                    <div className='mb-2 flex items-center justify-between'>
+                      <div className='flex items-center gap-2'>
+                        <span className='inline-flex items-center rounded-full bg-red-100 px-2 py-1 text-xs font-medium text-red-700'>
+                          {formatDistance(hospital.distance)}
+                        </span>
+                        {hospital.openNow && (
+                          <span className='inline-flex items-center rounded-full bg-red-100 px-2 py-1 text-xs font-medium text-red-700'>
+                            영업중
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    <div className='text-lg font-semibold text-gray-900 group-hover:text-red-600'>
+                      {hospital.name}
+                    </div>
+                    <div className='text-sm text-gray-600'>{hospital.address}</div>
+                    {hospital.phoneNumber && (
+                      <div className='mt-2 text-sm font-medium text-red-600'>
+                        📞 {hospital.phoneNumber}
+                      </div>
+                    )}
+                  </motion.li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {topPharmacies.length > 0 && (
+            <div>
+              <h3 className='mb-4 flex items-center gap-2 text-xl font-bold text-gray-900'>
+                <span className='text-2xl'>💊</span>
+                약국 ({topPharmacies.length}곳)
+              </h3>
+              <ul className='space-y-3'>
+                {topPharmacies.map((pharmacy, idx) => (
+                  <motion.li
+                    key={`p-${idx}`}
+                    className='group cursor-pointer rounded-xl border border-gray-100 bg-white p-4 transition-all duration-200 hover:border-red-300 hover:shadow-md'
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => {
+                      if (pharmacy.websiteUrl) {
+                        window.open(pharmacy.websiteUrl, '_blank');
+                      } else {
+                        const query = encodeURIComponent(`${pharmacy.name} ${pharmacy.address}`);
+                        window.open(
+                          `https://www.google.com/maps/search/?api=1&query=${query}`,
+                          '_blank',
+                        );
+                      }
+                    }}
+                  >
+                    <div className='mb-2 flex items-center justify-between'>
+                      <div className='flex items-center gap-2'>
+                        <span className='inline-flex items-center rounded-full bg-red-100 px-2 py-1 text-xs font-medium text-red-700'>
+                          {formatDistance(pharmacy.distance)}
+                        </span>
+                        {pharmacy.openNow && (
+                          <span className='inline-flex items-center rounded-full bg-red-100 px-2 py-1 text-xs font-medium text-red-700'>
+                            영업중
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    <div className='text-lg font-semibold text-gray-900 group-hover:text-red-600'>
+                      {pharmacy.name}
+                    </div>
+                    <div className='text-sm text-gray-600'>{pharmacy.address}</div>
+                    {pharmacy.phoneNumber && (
+                      <div className='mt-2 text-sm font-medium text-red-600'>
+                        📞 {pharmacy.phoneNumber}
+                      </div>
+                    )}
+                  </motion.li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      </div>
+    </AnimatedSection>
   );
 };
 
@@ -105,10 +262,11 @@ const SymptomSummary = ({
   symptomDetail: string;
   confidence: number;
 }) => {
+  const { t } = useTranslation('common');
   return (
     <AnimatedSection delay={0.2}>
       <div className='rounded-2xl border border-white/50 bg-white/90 p-8 shadow-xl backdrop-blur-sm'>
-        <div className='mb-6 flex items-start justify-between'>
+        <div className='mb-6 flex items-start justify-between gap-4'>
           <div className='flex items-center gap-4'>
             <motion.div
               className='rounded-2xl border border-red-100 bg-gradient-to-br from-red-50 to-pink-50 p-4'
@@ -118,22 +276,28 @@ const SymptomSummary = ({
               <MdMedicalServices className='text-2xl text-red-600' />
             </motion.div>
             <div>
-              <h2 className='mb-1 text-2xl font-bold text-gray-900'>Symptom Analysis Complete</h2>
-              <p className='text-lg font-medium text-gray-700'>{symptomType}</p>
+              <h2 className='text-2xl font-bold text-gray-900'>{symptomType}</h2>
             </div>
           </div>
-          <ConfidenceIndicator confidence={confidence || 0} />
+          <div className='shrink-0'>
+            <div className='scale-90 sm:scale-100'>
+              <CircularConfidence confidence={confidence || 0} />
+            </div>
+          </div>
         </div>
 
         {symptomDetail && (
           <motion.div
-            className='rounded-xl border border-blue-100 bg-gradient-to-r from-blue-50 to-indigo-50 p-6'
+            className='rounded-xl border-2 border-red-200 bg-gradient-to-r from-red-50 to-red-50 p-6'
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6, duration: 0.5 }}
           >
-            <p className='leading-relaxed text-gray-800'>
-              <strong className='text-blue-700'>Detailed Symptoms:</strong> {symptomDetail}
+            <div className='mb-2 inline-flex items-center gap-2 rounded-full bg-red-100 px-3 py-1 text-xs font-semibold text-red-700'>
+              {t('firstaid.reported_symptoms')}
+            </div>
+            <p className='text-lg leading-relaxed font-semibold whitespace-pre-line text-gray-900'>
+              {symptomDetail}
             </p>
           </motion.div>
         )}
@@ -146,12 +310,16 @@ const FirstAidSteps = ({ firstAidSteps }: { firstAidSteps: string }) => {
   return (
     <AnimatedSection delay={0.3}>
       <div className='overflow-hidden rounded-2xl border border-white/50 bg-white/90 shadow-xl backdrop-blur-sm'>
-        <div className='bg-gradient-to-r from-blue-500 to-indigo-600 px-8 py-6 text-white'>
+        <div className='bg-gradient-to-r from-red-500 to-red-600 px-8 py-6 text-white'>
           <div className='flex items-center gap-3'>
             <BsCheckCircle className='text-2xl' />
-            <h2 className='text-2xl font-bold'>Emergency First Aid Protocol</h2>
+            <h2 className='text-2xl font-bold'>
+              {useTranslation('common').t('firstaid.protocol_title')}
+            </h2>
           </div>
-          <p className='mt-2 text-blue-100'>Follow these steps carefully and in order</p>
+          <p className='mt-2 text-red-100'>
+            {useTranslation('common').t('firstaid.protocol_subtitle')}
+          </p>
         </div>
 
         <div className='p-8'>
@@ -162,13 +330,14 @@ const FirstAidSteps = ({ firstAidSteps }: { firstAidSteps: string }) => {
             animate='visible'
           >
             {firstAidSteps
-              .split(/(?<=[.!?])\s+/)
-              .filter((sentence) => sentence.trim())
-              .map((sentence, idx) => (
+              .split(/\r?\n/)
+              .map((line) => line.trim())
+              .filter((line) => line.length > 0)
+              .map((line, idx) => (
                 <motion.div key={idx} className='group flex gap-6' variants={slideInLeft}>
                   <div className='flex-shrink-0'>
                     <motion.div
-                      className='flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 shadow-lg transition-shadow duration-300 group-hover:shadow-xl'
+                      className='flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-red-500 to-red-600 shadow-lg transition-shadow duration-300 group-hover:shadow-xl'
                       whileHover={{ scale: 1.1 }}
                       transition={{ type: 'spring', stiffness: 300 }}
                     >
@@ -176,39 +345,12 @@ const FirstAidSteps = ({ firstAidSteps }: { firstAidSteps: string }) => {
                     </motion.div>
                   </div>
                   <div className='flex-1 pt-2'>
-                    <p className='text-lg leading-relaxed font-medium text-gray-800'>{sentence}</p>
+                    <p className='text-lg leading-relaxed font-medium whitespace-pre-line text-gray-800'>
+                      {line}
+                    </p>
                   </div>
                 </motion.div>
               ))}
-          </motion.div>
-        </div>
-      </div>
-    </AnimatedSection>
-  );
-};
-
-const RecommendedAction = ({ recommendedAction }: { recommendedAction: string }) => {
-  return (
-    <AnimatedSection delay={0.4}>
-      <div className='overflow-hidden rounded-2xl border border-white/50 bg-white/90 shadow-xl backdrop-blur-sm'>
-        <div className='bg-gradient-to-r from-emerald-500 to-green-600 px-8 py-6 text-white'>
-          <div className='flex items-center gap-3'>
-            <FiActivity className='text-2xl' />
-            <h2 className='text-2xl font-bold'>Recommended Next Steps</h2>
-          </div>
-          <p className='mt-2 text-emerald-100'>Important actions to take immediately</p>
-        </div>
-
-        <div className='p-8'>
-          <motion.div
-            className='rounded-xl border-l-4 border-emerald-500 bg-gradient-to-r from-emerald-50 to-green-50 p-6'
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.6, duration: 0.5 }}
-          >
-            <p className='text-lg leading-relaxed font-semibold text-gray-800'>
-              {recommendedAction}
-            </p>
           </motion.div>
         </div>
       </div>
@@ -220,12 +362,16 @@ const AdditionalResources = ({ blogLinks }: { blogLinks: string[] }) => {
   return (
     <AnimatedSection delay={0.5}>
       <div className='overflow-hidden rounded-2xl border border-white/50 bg-white/90 shadow-xl backdrop-blur-sm'>
-        <div className='bg-gradient-to-r from-purple-500 to-violet-600 px-8 py-6 text-white'>
+        <div className='bg-gradient-to-r from-red-500 to-red-600 px-8 py-6 text-white'>
           <div className='flex items-center gap-3'>
             <HiOutlineDocumentText className='text-2xl' />
-            <h2 className='text-2xl font-bold'>Additional Medical Resources</h2>
+            <h2 className='text-2xl font-bold'>
+              {useTranslation('common').t('firstaid.resources_title')}
+            </h2>
           </div>
-          <p className='mt-2 text-purple-100'>Trusted sources for more information</p>
+          <p className='mt-2 text-red-100'>
+            {useTranslation('common').t('firstaid.resources_subtitle')}
+          </p>
         </div>
 
         <div className='p-8'>
@@ -241,14 +387,14 @@ const AdditionalResources = ({ blogLinks }: { blogLinks: string[] }) => {
                 href={link}
                 target='_blank'
                 rel='noopener noreferrer'
-                className='group flex items-center justify-between rounded-xl border-2 border-gray-100 p-6 transition-all duration-300 hover:border-purple-300 hover:bg-gradient-to-r hover:from-purple-50 hover:to-violet-50'
+                className='group flex items-center justify-between rounded-xl border-2 border-gray-100 p-6 transition-all duration-300 hover:border-red-300 hover:bg-gradient-to-r hover:from-red-50 hover:to-red-50'
                 variants={slideInLeft}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
                 <div className='flex items-center gap-4'>
-                  <div className='rounded-lg bg-purple-100 p-2 transition-colors duration-200 group-hover:bg-purple-200'>
-                    <FiExternalLink className='text-lg text-purple-600' />
+                  <div className='rounded-lg bg-red-100 p-2 transition-colors duration-200 group-hover:bg-red-200'>
+                    <FiExternalLink className='text-lg text-red-600' />
                   </div>
                   <div>
                     <span className='block text-lg font-semibold text-gray-900'>
@@ -261,7 +407,7 @@ const AdditionalResources = ({ blogLinks }: { blogLinks: string[] }) => {
                     <span className='text-sm text-gray-500'>Medical Resource</span>
                   </div>
                 </div>
-                <MdArrowForward className='text-xl text-gray-400 transition-colors duration-200 group-hover:text-purple-500' />
+                <MdArrowForward className='text-xl text-gray-400 transition-colors duration-200 group-hover:text-red-500' />
               </motion.a>
             ))}
           </motion.div>
@@ -276,14 +422,14 @@ const SymptomSummaryResult = ({ summary }: { summary: string }) => {
     <AnimatedSection delay={0.25}>
       <div className='rounded-2xl border border-white/50 bg-white/90 p-8 shadow-xl backdrop-blur-sm'>
         <div className='mb-4 flex items-center gap-3'>
-          <div className='rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 p-3'>
-            <FiInfo className='text-xl text-white' />
+          <div className='rounded-xl bg-gradient-to-br from-red-500 to-red-600 p-3'>
+            <FiActivity className='text-xl text-white' />
           </div>
-          <h2 className='text-2xl font-bold text-gray-900'>Situation Summary</h2>
+          <h2 className='text-2xl font-bold text-gray-900'>응급조치 요약</h2>
         </div>
 
         <motion.div
-          className='rounded-xl border border-blue-100 bg-gradient-to-r from-blue-50 to-indigo-50 p-6'
+          className='rounded-xl border border-red-100 bg-gradient-to-r from-red-50 to-red-50 p-6'
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 0.5 }}
@@ -308,7 +454,9 @@ const AlertDisclaimer = ({ disclaimer }: { disclaimer: string }) => {
             <FiInfo className='mt-1 flex-shrink-0 text-3xl text-amber-600' />
           </motion.div>
           <div>
-            <h3 className='mb-4 text-xl font-bold text-amber-800'>Important Medical Disclaimer</h3>
+            <h3 className='mb-4 text-xl font-bold text-amber-800'>
+              {useTranslation('common').t('firstaid.disclaimer_title')}
+            </h3>
             <div className='leading-relaxed text-amber-700'>
               <p className='text-lg font-medium'>{disclaimer}</p>
             </div>
