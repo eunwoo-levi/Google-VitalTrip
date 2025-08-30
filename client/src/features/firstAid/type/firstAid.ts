@@ -1,3 +1,5 @@
+import { Medical } from '../../medical/types/medical';
+
 export interface FirstAid {
   content: string;
   summary: string;
@@ -24,4 +26,10 @@ export interface Symtoms {
   symptomDetail: string;
   latitude: number;
   longitude: number;
+}
+
+export interface FirstAidCombinedResponse {
+  firstAid: FirstAid;
+  hospitals: Medical[];
+  pharmacies: Medical[];
 }
