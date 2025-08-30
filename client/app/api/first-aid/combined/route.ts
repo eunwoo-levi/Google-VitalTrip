@@ -1,4 +1,11 @@
+import { FirstAid } from '@/src/features/firstAid/type/firstAid';
+import { Medical } from '@/src/features/medical/types/medical';
 import { httpServer } from '@/src/shared/utils/httpServer';
+
+interface ApiResponse<T> {
+  data: T;
+  message?: string;
+}
 
 export async function POST(req: Request) {
   try {
@@ -58,11 +65,15 @@ export async function POST(req: Request) {
       );
     }
 
-    const firstAidData = firstAidResult.value as any;
+    const firstAidData = firstAidResult.value as ApiResponse<FirstAid>;
     const hospitalsData =
-      hospitalsResult.status === 'fulfilled' ? (hospitalsResult.value as any) : [];
+      hospitalsResult.status === 'fulfilled'
+        ? (hospitalsResult.value as ApiResponse<Medical[]>)
+        : { data: [] };
     const pharmaciesData =
-      pharmaciesResult.status === 'fulfilled' ? (pharmaciesResult.value as any) : [];
+      pharmaciesResult.status === 'fulfilled'
+        ? (pharmaciesResult.value as ApiResponse<Medical[]>)
+        : { data: [] };
 
     const hospitals = Array.isArray(hospitalsData?.data)
       ? hospitalsData.data.slice(0, 3)
