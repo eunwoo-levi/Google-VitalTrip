@@ -4,6 +4,7 @@ import EmergencyCallBanner from '@/src/features/firstAid/ui/EmergencyCallBanner'
 import { useCurrentLocation } from '@/src/shared/hooks/useCurrentLocation';
 import { motion } from 'motion/react';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { BsCheckCircle } from 'react-icons/bs';
 import { FiActivity, FiExternalLink, FiInfo } from 'react-icons/fi';
 import { HiOutlineDocumentText } from 'react-icons/hi';
@@ -12,7 +13,7 @@ import { useFirstAidMutation } from '../api/firstAid';
 import { slideInLeft, staggerChildren } from '../data/animationEffect';
 import { useSymptomStore } from '../store/useSymptomStore';
 import { AnimatedSection } from './AnimatedSection';
-import { ConfidenceIndicator } from './ConfidenceIndicator';
+import { CircularConfidence } from './CircularConfidence';
 import { LoadingSpinner } from './LoadingSpinner';
 
 export const FirstAidResult = () => {
@@ -39,7 +40,7 @@ export const FirstAidResult = () => {
     return <LoadingSpinner />;
   }
 
-  if (isError || !result || locationError) {
+  if (isError || locationError) {
     return (
       <div className='flex min-h-screen items-center justify-center bg-gradient-to-br from-red-50 to-pink-50'>
         <motion.div
@@ -59,7 +60,7 @@ export const FirstAidResult = () => {
           <p className='mb-8 text-gray-600'>
             {locationError
               ? 'Unable to access your location. Please enable location services and try again.'
-              : 'We couldn&apos;t complete the emergency analysis. Please try again.'}
+              : "We couldn't complete the emergency analysis. Please try again."}
           </p>
           <motion.button
             onClick={() => window.location.reload()}
@@ -74,10 +75,17 @@ export const FirstAidResult = () => {
     );
   }
 
+  if (!result) {
+    return <LoadingSpinner />;
+  }
+
   return (
     <div className='mx-auto max-w-6xl px-6 py-10 pb-[100px]'>
       <AnimatedSection delay={0.1}>
-        <EmergencyCallBanner />
+        <EmergencyCallBanner
+          emergencyContact={result.identificationResponse.emergencyContact}
+          countryName={result.identificationResponse.countryName}
+        />
       </AnimatedSection>
 
       <div className='mt-10 space-y-8'>
@@ -105,10 +113,11 @@ const SymptomSummary = ({
   symptomDetail: string;
   confidence: number;
 }) => {
+  const { t } = useTranslation('common');
   return (
     <AnimatedSection delay={0.2}>
       <div className='rounded-2xl border border-white/50 bg-white/90 p-8 shadow-xl backdrop-blur-sm'>
-        <div className='mb-6 flex items-start justify-between'>
+        <div className='mb-6 flex items-start justify-between gap-4'>
           <div className='flex items-center gap-4'>
             <motion.div
               className='rounded-2xl border border-red-100 bg-gradient-to-br from-red-50 to-pink-50 p-4'
@@ -118,22 +127,28 @@ const SymptomSummary = ({
               <MdMedicalServices className='text-2xl text-red-600' />
             </motion.div>
             <div>
-              <h2 className='mb-1 text-2xl font-bold text-gray-900'>Symptom Analysis Complete</h2>
-              <p className='text-lg font-medium text-gray-700'>{symptomType}</p>
+              <h2 className='text-2xl font-bold text-gray-900'>{symptomType}</h2>
             </div>
           </div>
-          <ConfidenceIndicator confidence={confidence || 0} />
+          <div className='shrink-0'>
+            <div className='scale-90 sm:scale-100'>
+              <CircularConfidence confidence={confidence || 0} />
+            </div>
+          </div>
         </div>
 
         {symptomDetail && (
           <motion.div
-            className='rounded-xl border border-blue-100 bg-gradient-to-r from-blue-50 to-indigo-50 p-6'
+            className='rounded-xl border-2 border-blue-200 bg-gradient-to-r from-blue-50 to-indigo-50 p-6'
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6, duration: 0.5 }}
           >
-            <p className='leading-relaxed text-gray-800'>
-              <strong className='text-blue-700'>Detailed Symptoms:</strong> {symptomDetail}
+            <div className='mb-2 inline-flex items-center gap-2 rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-700'>
+              {t('firstaid.reported_symptoms')}
+            </div>
+            <p className='text-lg leading-relaxed font-semibold whitespace-pre-line text-gray-900'>
+              {symptomDetail}
             </p>
           </motion.div>
         )}
@@ -149,9 +164,13 @@ const FirstAidSteps = ({ firstAidSteps }: { firstAidSteps: string }) => {
         <div className='bg-gradient-to-r from-blue-500 to-indigo-600 px-8 py-6 text-white'>
           <div className='flex items-center gap-3'>
             <BsCheckCircle className='text-2xl' />
-            <h2 className='text-2xl font-bold'>Emergency First Aid Protocol</h2>
+            <h2 className='text-2xl font-bold'>
+              {useTranslation('common').t('firstaid.protocol_title')}
+            </h2>
           </div>
-          <p className='mt-2 text-blue-100'>Follow these steps carefully and in order</p>
+          <p className='mt-2 text-blue-100'>
+            {useTranslation('common').t('firstaid.protocol_subtitle')}
+          </p>
         </div>
 
         <div className='p-8'>
@@ -162,9 +181,10 @@ const FirstAidSteps = ({ firstAidSteps }: { firstAidSteps: string }) => {
             animate='visible'
           >
             {firstAidSteps
-              .split(/(?<=[.!?])\s+/)
-              .filter((sentence) => sentence.trim())
-              .map((sentence, idx) => (
+              .split(/\r?\n/)
+              .map((line) => line.trim())
+              .filter((line) => line.length > 0)
+              .map((line, idx) => (
                 <motion.div key={idx} className='group flex gap-6' variants={slideInLeft}>
                   <div className='flex-shrink-0'>
                     <motion.div
@@ -176,7 +196,9 @@ const FirstAidSteps = ({ firstAidSteps }: { firstAidSteps: string }) => {
                     </motion.div>
                   </div>
                   <div className='flex-1 pt-2'>
-                    <p className='text-lg leading-relaxed font-medium text-gray-800'>{sentence}</p>
+                    <p className='text-lg leading-relaxed font-medium whitespace-pre-line text-gray-800'>
+                      {line}
+                    </p>
                   </div>
                 </motion.div>
               ))}
@@ -194,9 +216,13 @@ const RecommendedAction = ({ recommendedAction }: { recommendedAction: string })
         <div className='bg-gradient-to-r from-emerald-500 to-green-600 px-8 py-6 text-white'>
           <div className='flex items-center gap-3'>
             <FiActivity className='text-2xl' />
-            <h2 className='text-2xl font-bold'>Recommended Next Steps</h2>
+            <h2 className='text-2xl font-bold'>
+              {useTranslation('common').t('firstaid.recommended_title')}
+            </h2>
           </div>
-          <p className='mt-2 text-emerald-100'>Important actions to take immediately</p>
+          <p className='mt-2 text-emerald-100'>
+            {useTranslation('common').t('firstaid.recommended_subtitle')}
+          </p>
         </div>
 
         <div className='p-8'>
@@ -223,9 +249,13 @@ const AdditionalResources = ({ blogLinks }: { blogLinks: string[] }) => {
         <div className='bg-gradient-to-r from-purple-500 to-violet-600 px-8 py-6 text-white'>
           <div className='flex items-center gap-3'>
             <HiOutlineDocumentText className='text-2xl' />
-            <h2 className='text-2xl font-bold'>Additional Medical Resources</h2>
+            <h2 className='text-2xl font-bold'>
+              {useTranslation('common').t('firstaid.resources_title')}
+            </h2>
           </div>
-          <p className='mt-2 text-purple-100'>Trusted sources for more information</p>
+          <p className='mt-2 text-purple-100'>
+            {useTranslation('common').t('firstaid.resources_subtitle')}
+          </p>
         </div>
 
         <div className='p-8'>
@@ -279,7 +309,9 @@ const SymptomSummaryResult = ({ summary }: { summary: string }) => {
           <div className='rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 p-3'>
             <FiInfo className='text-xl text-white' />
           </div>
-          <h2 className='text-2xl font-bold text-gray-900'>Situation Summary</h2>
+          <h2 className='text-2xl font-bold text-gray-900'>
+            {useTranslation('common').t('firstaid.situation_summary')}
+          </h2>
         </div>
 
         <motion.div
@@ -308,7 +340,9 @@ const AlertDisclaimer = ({ disclaimer }: { disclaimer: string }) => {
             <FiInfo className='mt-1 flex-shrink-0 text-3xl text-amber-600' />
           </motion.div>
           <div>
-            <h3 className='mb-4 text-xl font-bold text-amber-800'>Important Medical Disclaimer</h3>
+            <h3 className='mb-4 text-xl font-bold text-amber-800'>
+              {useTranslation('common').t('firstaid.disclaimer_title')}
+            </h3>
             <div className='leading-relaxed text-amber-700'>
               <p className='text-lg font-medium'>{disclaimer}</p>
             </div>
