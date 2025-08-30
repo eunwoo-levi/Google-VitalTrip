@@ -81,11 +81,7 @@ export const FirstAidResult = () => {
       </AnimatedSection>
 
       <div className='mt-10 space-y-8'>
-        <SymptomSummary
-          symptomType={symptomType}
-          symptomDetail={symptomDetail}
-          confidence={combined.firstAid?.confidence || 0}
-        />
+        <SymptomSummary symptomType={symptomType} symptomDetail={symptomDetail} />
         <SymptomSummaryResult summary={combined.firstAid?.summary || ''} />
         <FirstAidSteps firstAidSteps={combined.firstAid?.content || ''} />
         <NearbyFacilitiesCombined
@@ -257,11 +253,9 @@ const NearbyFacilitiesCombined = ({
 const SymptomSummary = ({
   symptomType,
   symptomDetail,
-  confidence,
 }: {
   symptomType: string;
   symptomDetail: string;
-  confidence: number;
 }) => {
   const { t } = useTranslation('common');
   return (
