@@ -88,5 +88,34 @@
       "pharmacy": "Pharmacy",
       "emergency": "Emergency"
     }
+  },
+  "firstaid": {
+    "reported_symptoms": "Symptoms you described",
+    "emergency_numbers": "Emergency Numbers",
+    "tip_112": "Tip: In many countries, dialing 112 connects you to all emergency services.",
+    "police": "Police",
+    "ambulance": "Ambulance",
+    "fire": "Fire",
+    "emergency": "Emergency",
+    "call": "Call",
+    "situation_summary": "Situation Summary",
+    "protocol_title": "Emergency First Aid Protocol",
+    "protocol_subtitle": "Follow these steps carefully and in order",
+    "recommended_title": "Recommended Next Steps",
+    "recommended_subtitle": "Important actions to take immediately",
+    "resources_title": "Additional Medical Resources",
+    "resources_subtitle": "Trusted sources for more information",
+    "disclaimer_title": "Safety Notice",
+    "resource_label": "Medical Resource",
+    "nearby_facilities": "Nearby Medical Facilities",
+    "nearest_facilities_description": "Nearest {{hospitalCount}} hospitals and {{pharmacyCount}} pharmacies",
+    "hospitals": "Hospitals ({{count}} found)",
+    "pharmacies": "Pharmacies ({{count}} found)",
+    "emergency_summary": "Emergency Response Summary",
+    "step": "Step {{number}}",
+    "analysis_failed": "Analysis Failed",
+    "location_error": "Unable to access your location. Please enable location services and try again.",
+    "analysis_error": "We couldn't complete the emergency analysis. Please try again.",
+    "try_again": "Try Again"
   }
 }
