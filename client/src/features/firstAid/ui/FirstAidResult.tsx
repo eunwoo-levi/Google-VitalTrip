@@ -1,42 +1,32 @@
 'use client';
 
 import EmergencyCallBanner from '@/src/features/firstAid/ui/EmergencyCallBanner';
-import { useCurrentLocation } from '@/src/shared/hooks/useCurrentLocation';
+import { useHydration } from '@/src/shared/hooks/useHydration';
 import { motion } from 'motion/react';
-import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { BsCheckCircle } from 'react-icons/bs';
 import { FiActivity, FiExternalLink, FiInfo } from 'react-icons/fi';
 import { HiOutlineDocumentText } from 'react-icons/hi';
 import { MdArrowForward, MdErrorOutline, MdMedicalServices } from 'react-icons/md';
-import { useFirstAidMutation } from '../api/firstAid';
+import { Medical } from '../../medical/types/medical';
+import { formatDistance } from '../../medical/utils/formatDistance';
 import { slideInLeft, staggerChildren } from '../data/animationEffect';
+import { useFirstAidCombined } from '../hooks/useFirstAidCombined';
 import { useSymptomStore } from '../store/useSymptomStore';
 import { AnimatedSection } from './AnimatedSection';
 import { CircularConfidence } from './CircularConfidence';
 import { LoadingSpinner } from './LoadingSpinner';
 
 export const FirstAidResult = () => {
-  const { mutateAsync, data: result, isPending, isError } = useFirstAidMutation();
   const { symptomType, symptomDetail } = useSymptomStore();
-  const { coords, isLoading: isLocationLoading, error: locationError } = useCurrentLocation();
+  const { combined, isPending, isError, locationError } = useFirstAidCombined();
+  const hydrated = useHydration();
 
-  useEffect(() => {
-    if (!isLocationLoading && coords && !locationError) {
-      try {
-        mutateAsync({
-          symptomType: symptomType,
-          symptomDetail: symptomDetail,
-          latitude: coords.latitude,
-          longitude: coords.longitude,
-        });
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  }, [isLocationLoading, coords, locationError, mutateAsync, symptomType, symptomDetail]);
+  if (!hydrated) {
+    return <div className='mx-auto max-w-6xl px-6 py-10 pb-[100px]' />;
+  }
 
-  if (isPending || isLocationLoading) {
+  if (isPending) {
     return <LoadingSpinner />;
   }
 
@@ -75,7 +65,11 @@ export const FirstAidResult = () => {
     );
   }
 
-  if (!result) {
+  if (!combined) {
+    return <LoadingSpinner />;
+  }
+
+  if (!combined.firstAid || !combined.firstAid.content) {
     return <LoadingSpinner />;
   }
 
@@ -83,8 +77,8 @@ export const FirstAidResult = () => {
     <div className='mx-auto max-w-6xl px-6 py-10 pb-[100px]'>
       <AnimatedSection delay={0.1}>
         <EmergencyCallBanner
-          emergencyContact={result.identificationResponse.emergencyContact}
-          countryName={result.identificationResponse.countryName}
+          emergencyContact={combined.firstAid?.identificationResponse?.emergencyContact || {}}
+          countryName={combined.firstAid?.identificationResponse?.countryName || 'Unknown'}
         />
       </AnimatedSection>
 
@@ -92,15 +86,145 @@ export const FirstAidResult = () => {
         <SymptomSummary
           symptomType={symptomType}
           symptomDetail={symptomDetail}
-          confidence={result.confidence}
+          confidence={combined.firstAid?.confidence || 0}
         />
-        <SymptomSummaryResult summary={result.summary} />
-        <FirstAidSteps firstAidSteps={result.content} />
-        <RecommendedAction recommendedAction={result.recommendedAction} />
-        <AdditionalResources blogLinks={result.blogLinks} />
-        <AlertDisclaimer disclaimer={result.disclaimer} />
+        <SymptomSummaryResult summary={combined.firstAid?.summary || ''} />
+        <FirstAidSteps firstAidSteps={combined.firstAid?.content || ''} />
+        <RecommendedAction recommendedAction={combined.firstAid?.recommendedAction || ''} />
+        <NearbyFacilitiesCombined
+          hospitals={combined.hospitals || []}
+          pharmacies={combined.pharmacies || []}
+        />
+        <AdditionalResources blogLinks={combined.firstAid?.blogLinks || []} />
+        <AlertDisclaimer disclaimer={combined.firstAid?.disclaimer || ''} />
       </div>
     </div>
+  );
+};
+
+const NearbyFacilitiesCombined = ({
+  hospitals,
+  pharmacies,
+}: {
+  hospitals: Medical[];
+  pharmacies: Medical[];
+}) => {
+  const { t } = useTranslation('common');
+  const hydrated = useHydration();
+
+  if (!hydrated) return null;
+
+  const topHospitals = hospitals || [];
+  const topPharmacies = pharmacies || [];
+
+  if (topHospitals.length === 0 && topPharmacies.length === 0) {
+    return (
+      <AnimatedSection delay={0.45}>
+        <div className='overflow-hidden rounded-2xl border border-white/50 bg-white/90 shadow-xl backdrop-blur-sm'>
+          <div className='p-8 text-center'>
+            <p className='text-gray-500'>{t('medical.no_facilities_found')}</p>
+          </div>
+        </div>
+      </AnimatedSection>
+    );
+  }
+
+  return (
+    <AnimatedSection delay={0.45}>
+      <div className='overflow-hidden rounded-2xl border border-white/50 bg-white/90 shadow-xl backdrop-blur-sm'>
+        <div className='bg-gradient-to-r from-blue-500 to-green-500 px-8 py-6 text-white'>
+          <div className='flex items-center gap-3'>
+            <div className='rounded-lg bg-white/20 p-2'>
+              <span className='text-2xl'>🏥</span>
+            </div>
+            <h2 className='text-2xl font-bold'>근처 의료시설</h2>
+          </div>
+          <p className='mt-2 text-blue-100'>
+            가장 가까운 병원 {topHospitals.length}곳과 약국 {topPharmacies.length}곳
+          </p>
+        </div>
+
+        <div className='grid gap-6 p-8 sm:grid-cols-2'>
+          {topHospitals.length > 0 && (
+            <div>
+              <h3 className='mb-4 flex items-center gap-2 text-xl font-bold text-gray-900'>
+                <span className='text-2xl'>🏥</span>
+                병원 ({topHospitals.length}곳)
+              </h3>
+              <ul className='space-y-3'>
+                {topHospitals.map((hospital, idx) => (
+                  <li
+                    key={`h-${idx}`}
+                    className='group rounded-xl border border-gray-100 bg-white p-4 transition-all duration-200 hover:border-blue-300 hover:shadow-md'
+                  >
+                    <div className='mb-2 flex items-center justify-between'>
+                      <div className='flex items-center gap-2'>
+                        <span className='inline-flex items-center rounded-full bg-blue-100 px-2 py-1 text-xs font-medium text-blue-700'>
+                          {formatDistance(hospital.distance)}
+                        </span>
+                        {hospital.openNow && (
+                          <span className='inline-flex items-center rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-700'>
+                            영업중
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    <div className='text-lg font-semibold text-gray-900 group-hover:text-blue-600'>
+                      {hospital.name}
+                    </div>
+                    <div className='text-sm text-gray-600'>{hospital.address}</div>
+                    {hospital.phoneNumber && (
+                      <div className='mt-2 text-sm font-medium text-blue-600'>
+                        📞 {hospital.phoneNumber}
+                      </div>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {topPharmacies.length > 0 && (
+            <div>
+              <h3 className='mb-4 flex items-center gap-2 text-xl font-bold text-gray-900'>
+                <span className='text-2xl'>💊</span>
+                약국 ({topPharmacies.length}곳)
+              </h3>
+              <ul className='space-y-3'>
+                {topPharmacies.map((pharmacy, idx) => (
+                  <li
+                    key={`p-${idx}`}
+                    className='group rounded-xl border border-gray-100 bg-white p-4 transition-all duration-200 hover:border-green-300 hover:shadow-md'
+                  >
+                    <div className='mb-2 flex items-center justify-between'>
+                      <div className='flex items-center gap-2'>
+                        <span className='inline-flex items-center rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-700'>
+                          {formatDistance(pharmacy.distance)}
+                        </span>
+                        {pharmacy.openNow && (
+                          <span className='inline-flex items-center rounded-full bg-blue-100 px-2 py-1 text-xs font-medium text-blue-700'>
+                            영업중
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    <div className='text-lg font-semibold text-gray-900 group-hover:text-green-600'>
+                      {pharmacy.name}
+                    </div>
+                    <div className='text-sm text-gray-600'>{pharmacy.address}</div>
+                    {pharmacy.phoneNumber && (
+                      <div className='mt-2 text-sm font-medium text-green-600'>
+                        📞 {pharmacy.phoneNumber}
+                      </div>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      </div>
+    </AnimatedSection>
   );
 };
 
