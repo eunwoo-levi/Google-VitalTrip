@@ -6,7 +6,14 @@ import SidePanel from '@/src/shared/ui/SidePanel';
 import dynamic from 'next/dynamic';
 import { useState } from 'react';
 
-const GoogleMaps = dynamic(() => import('@/src/features/googleMap/ui/GoogleMaps'), { ssr: false });
+const GoogleMaps = dynamic(() => import('@/src/features/googleMap/ui/GoogleMaps'), {
+  ssr: false,
+  loading: () => (
+    <div className='flex h-full w-full items-center justify-center bg-gray-100'>
+      <div className='text-gray-600'>Loading...</div>
+    </div>
+  ),
+});
 
 export default function MapPage() {
   usePreventKeyboardZoom();
