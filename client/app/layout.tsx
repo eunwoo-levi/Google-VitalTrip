@@ -171,6 +171,14 @@ export default function RootLayout({
           type='font/woff2'
           crossOrigin='anonymous'
         />
+        {/* Preload local font */}
+        <link
+          rel='preload'
+          href='/fonts/iansui.woff2'
+          as='font'
+          type='font/woff2'
+          crossOrigin='anonymous'
+        />
         {/* Google Fonts optimization for external embeds */}
         <style>{`
           @font-face {
