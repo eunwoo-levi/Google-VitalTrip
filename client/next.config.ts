@@ -86,15 +86,6 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ['react-icons'],
   },
-
-  turbopack: {
-    rules: {
-      '*.css': {
-        loaders: ['css-loader'],
-        as: '*.css',
-      },
-    },
-  },
 };
 
 export default process.env.NODE_ENV === 'production'
