@@ -85,13 +85,15 @@ const nextConfig: NextConfig = {
 
   experimental: {
     optimizePackageImports: ['react-icons'],
-    optimizeCss: true, // CSS 최적화 활성화
-    craCompat: true, // Critical CSS 추출 지원
   },
 
-  // CSS 압축 및 최적화
-  compiler: {
-    removeConsole: process.env.NODE_ENV === 'production',
+  turbopack: {
+    rules: {
+      '*.css': {
+        loaders: ['css-loader'],
+        as: '*.css',
+      },
+    },
   },
 };
 
