@@ -11,7 +11,6 @@ interface LanguageDropdownProps {
 }
 
 export function LanguageDropdown({
-  languages,
   selectedLanguage,
   isSource = false,
   onSelect,
