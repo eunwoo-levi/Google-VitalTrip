@@ -1,12 +1,15 @@
 'use client';
 
-import { useTranslation } from '@/src/shared/lib/i18n';
 import { motion } from 'motion/react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-export default function HeroSection() {
-  const { t } = useTranslation();
+interface HeroSectionProps {
+  translations: ReturnType<typeof import('@/app/about/_utils/translations').getTranslations>;
+}
+
+export default function HeroSection({ translations }: HeroSectionProps) {
+  const { hero } = translations;
 
   return (
     <section className='relative flex min-h-screen items-center justify-center overflow-hidden md:h-screen md:items-start'>
@@ -40,11 +43,9 @@ export default function HeroSection() {
           transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
           className='mb-8'
         >
-          <p className='mb-4 text-xl font-semibold text-red-100 md:text-2xl'>
-            {t('about.hero.tagline')}
-          </p>
+          <p className='mb-4 text-xl font-semibold text-red-100 md:text-2xl'>{hero.tagline}</p>
           <p className='mx-auto max-w-2xl text-lg leading-relaxed text-gray-200 md:text-xl'>
-            {t('about.hero.description')}
+            {hero.description}
           </p>
         </motion.div>
 
@@ -65,7 +66,7 @@ export default function HeroSection() {
             href='/'
             className='cursor-pointer rounded-full bg-gradient-to-r from-red-600 to-red-700 px-8 py-4 text-lg font-semibold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:from-red-700 hover:to-red-800 hover:shadow-xl'
           >
-            {t('about.hero.cta_button')}
+            {hero.cta_button}
           </Link>
         </motion.div>
       </div>

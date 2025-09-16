@@ -1,10 +1,13 @@
 'use client';
 
-import { useTranslation } from '@/src/shared/lib/i18n';
 import { motion } from 'motion/react';
 
-export default function VideoSection() {
-  const { t } = useTranslation();
+interface VideoSectionProps {
+  translations: ReturnType<typeof import('@/app/about/_utils/translations').getTranslations>;
+}
+
+export default function VideoSection({ translations }: VideoSectionProps) {
+  const { video } = translations;
 
   return (
     <section className='bg-white py-20'>
@@ -16,8 +19,8 @@ export default function VideoSection() {
           viewport={{ once: true }}
           className='mb-12 text-center'
         >
-          <h2 className='mb-4 text-4xl font-bold text-gray-900'>{t('video.title')}</h2>
-          <p className='text-xl text-gray-600'>{t('video.description')}</p>
+          <h2 className='mb-4 text-4xl font-bold text-gray-900'>{video.title}</h2>
+          <p className='text-xl text-gray-600'>{video.description}</p>
         </motion.div>
 
         <motion.div
