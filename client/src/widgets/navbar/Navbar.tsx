@@ -9,13 +9,25 @@ import Dropdown from '@/src/shared/ui/Dropdown';
 import { AnimatePresence, motion } from 'motion/react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { FaBars, FaChevronDown, FaTimes } from 'react-icons/fa';
 
 const LanguageDropdown = () => {
   const { i18n } = useTranslation();
+  const pathname = usePathname();
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
-  const currentLang = i18n.language;
+
+  const getCurrentLanguage = () => {
+    if (pathname.startsWith('/about')) {
+      const langFromUrl = pathname.split('/')[2];
+      return langFromUrl || 'en';
+    }
+    return i18n.language;
+  };
+
+  const currentLang = getCurrentLanguage();
 
   const languages = [
     { code: 'en', name: 'English', flag: '🇺🇸' },
@@ -25,7 +37,12 @@ const LanguageDropdown = () => {
   const currentLanguage = languages.find((lang) => lang.code === currentLang) || languages[0];
 
   const handleLanguageChange = (langCode: string) => {
-    i18n.changeLanguage(langCode);
+    if (pathname.startsWith('/about')) {
+      router.push(`/about/${langCode}`);
+      i18n.changeLanguage(langCode);
+    } else {
+      i18n.changeLanguage(langCode);
+    }
     setIsOpen(false);
   };
 
