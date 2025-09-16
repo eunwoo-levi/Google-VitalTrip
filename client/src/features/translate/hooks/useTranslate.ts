@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export interface Language {
   language: string;
@@ -47,7 +47,6 @@ export function useTranslate(): UseTranslateReturn {
     fetchLanguages();
   }, []);
 
-
   const handleTranslate = async () => {
     if (!sourceText.trim()) return;
 
@@ -91,9 +90,7 @@ export function useTranslate(): UseTranslateReturn {
   };
 
   const filterLanguages = (query: string) => {
-    return languages.filter((lang) =>
-      lang.name.toLowerCase().includes(query.toLowerCase()),
-    );
+    return languages.filter((lang) => lang.name.toLowerCase().includes(query.toLowerCase()));
   };
 
   return {

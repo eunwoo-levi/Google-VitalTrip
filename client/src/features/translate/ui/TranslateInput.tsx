@@ -81,9 +81,7 @@ export function TranslateInput({
         <div className='flex flex-col sm:flex-row sm:items-center sm:justify-between'>
           <span className='mb-2 text-xs text-gray-500 sm:mb-0'>
             {sourceText.length} characters
-            <span className='ml-1 text-xs text-gray-400'>
-              (Press Ctrl+Enter to translate)
-            </span>
+            <span className='ml-1 text-xs text-gray-400'>(Press Ctrl+Enter to translate)</span>
           </span>
           <button
             onClick={onTranslate}

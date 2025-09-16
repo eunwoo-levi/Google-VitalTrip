@@ -22,7 +22,9 @@ export function LanguageDropdown({
   const [searchQuery, setSearchQuery] = useState('');
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const displayLanguages = isSource ? filterLanguages(searchQuery) : filterLanguages(searchQuery).filter((lang) => lang.language !== 'auto');
+  const displayLanguages = isSource
+    ? filterLanguages(searchQuery)
+    : filterLanguages(searchQuery).filter((lang) => lang.language !== 'auto');
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -67,12 +69,7 @@ export function LanguageDropdown({
           viewBox='0 0 24 24'
           xmlns='http://www.w3.org/2000/svg'
         >
-          <path
-            strokeLinecap='round'
-            strokeLinejoin='round'
-            strokeWidth={2}
-            d='M19 9l-7 7-7-7'
-          />
+          <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M19 9l-7 7-7-7' />
         </svg>
       </button>
 
