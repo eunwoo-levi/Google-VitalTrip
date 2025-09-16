@@ -34,7 +34,7 @@ export default function EmergencyCall() {
         },
       });
     }
-  }, [coords]);
+  }, [coords, identifyCountryMutation]);
 
   const isLoading = identifyCountryMutation.isPending;
 

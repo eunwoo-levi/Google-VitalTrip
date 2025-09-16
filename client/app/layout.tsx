@@ -153,24 +153,9 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <head>
-        <link rel='preconnect' href='https://fonts.googleapis.com' />
-        <link rel='preconnect' href='https://fonts.gstatic.com' crossOrigin='anonymous' />
         <link rel='dns-prefetch' href='https://maps.googleapis.com' />
-        {/* Preload critical fonts */}
-        <link
-          rel='preload'
-          href='https://fonts.gstatic.com/s/roboto/v18/KFOmCnqEu92Fr1Mu4mxK.woff2'
-          as='font'
-          type='font/woff2'
-          crossOrigin='anonymous'
-        />
-        <link
-          rel='preload'
-          href='https://fonts.gstatic.com/s/roboto/v18/KFOlCnqEu92Fr1MmEU9fBBc4.woff2'
-          as='font'
-          type='font/woff2'
-          crossOrigin='anonymous'
-        />
+        <link rel='dns-prefetch' href='https://fonts.googleapis.com' />
+
         {/* Preload local font */}
         <link
           rel='preload'
@@ -179,25 +164,6 @@ export default function RootLayout({
           type='font/woff2'
           crossOrigin='anonymous'
         />
-        {/* Google Fonts optimization for external embeds */}
-        <style>{`
-          @font-face {
-            font-family: 'Roboto';
-            font-style: normal;
-            font-weight: 400;
-            font-display: swap;
-            src: url(https://fonts.gstatic.com/s/roboto/v18/KFOmCnqEu92Fr1Mu4mxK.woff2) format('woff2');
-            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-          }
-          @font-face {
-            font-family: 'Roboto';
-            font-style: normal;
-            font-weight: 500;
-            font-display: swap;
-            src: url(https://fonts.gstatic.com/s/roboto/v18/KFOlCnqEu92Fr1MmEU9fBBc4.woff2) format('woff2');
-            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-          }
-        `}</style>
         <meta name='format-detection' content='telephone=no' />
         <meta name='color-scheme' content='light dark' />
       </head>
