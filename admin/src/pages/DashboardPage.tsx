@@ -14,11 +14,11 @@ export default function DashboardPage() {
       try {
         const response = await getUserList({ page: 0, size: 10 });
         setUsers(response);
-      } catch (err: any) {
+      } catch (err: unknown) {
         console.error('사용자 목록 에러: ', err);
 
         // 권한 오류 시 로그인 페이지로 리다이렉트
-        if (err?.status === 401 || err?.status === 403) {
+        if (err && typeof err === 'object' && 'status' in err && (err.status === 401 || err.status === 403)) {
           navigate('/login', { replace: true });
           return;
         }

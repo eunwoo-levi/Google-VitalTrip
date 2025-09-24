@@ -4,7 +4,7 @@ import { APIError } from './apiError';
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api';
 
 let isRefreshing = false;
-let failedQueue: Array<{ resolve: (value: any) => void; reject: (reason: any) => void }> = [];
+let failedQueue: Array<{ resolve: (value: unknown) => void; reject: (reason: unknown) => void }> = [];
 
 async function refreshTokens(): Promise<void> {
   const response = await fetch(`${API_BASE_URL}/auth/admin/refresh`, {
