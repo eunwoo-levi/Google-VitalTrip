@@ -20,9 +20,7 @@ interface NewsPageProps {
 }
 
 export async function generateStaticParams() {
-  return Array.from({ length: 10 }, (_, i) => ({
-    page: (i + 1).toString(),
-  }));
+  return [{ page: '1' }];
 }
 
 export default async function NewsPage({ params }: NewsPageProps) {
