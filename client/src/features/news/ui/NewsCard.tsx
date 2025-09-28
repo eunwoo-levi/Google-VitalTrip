@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { NewsArticle } from '../types';
 
 interface NewsCardProps {
@@ -20,10 +21,12 @@ export function NewsCard({ article }: NewsCardProps) {
     <div className='overflow-hidden rounded-lg bg-white shadow-md transition-shadow duration-300 hover:shadow-lg'>
       {article.imageUrl && (
         <div className='relative h-48 w-full'>
-          <img
+          <Image
             src={article.imageUrl}
             alt={article.title}
-            className='h-full w-full object-cover'
+            fill
+            className='object-cover'
+            sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
             onError={(e) => {
               (e.target as HTMLImageElement).style.display = 'none';
             }}
