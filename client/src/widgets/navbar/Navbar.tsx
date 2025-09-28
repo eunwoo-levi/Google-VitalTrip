@@ -122,6 +122,18 @@ export default function Navbar() {
               <span>{t('navbar.home')}</span>
             </Link>
             <Link
+              href='/about'
+              className='flex items-center space-x-1 rounded-md px-3 py-2 text-gray-700 transition-colors duration-200 hover:bg-blue-50 hover:text-blue-600'
+            >
+              <span>{t('navbar.about')}</span>
+            </Link>
+            <Link
+              href='/news/1'
+              className='flex items-center space-x-1 rounded-md px-3 py-2 text-gray-700 transition-colors duration-200 hover:bg-blue-50 hover:text-blue-600'
+            >
+              <span>{t('navbar.news')}</span>
+            </Link>
+            <Link
               href='/translate'
               className='flex items-center space-x-1 rounded-md px-3 py-2 text-gray-700 transition-colors duration-200 hover:bg-blue-50 hover:text-blue-600'
             >
@@ -175,6 +187,20 @@ export default function Navbar() {
                   className='flex items-center justify-center space-x-2 rounded-md px-3 py-2 text-gray-700 transition-colors duration-200 hover:bg-blue-50 hover:text-blue-600'
                 >
                   <span>{t('navbar.hospital_pharmacy_nearby')}</span>
+                </Link>
+                <Link
+                  href='/about'
+                  onClick={closeMenu}
+                  className='flex items-center justify-center space-x-2 rounded-md px-3 py-2 text-gray-700 transition-colors duration-200 hover:bg-blue-50 hover:text-blue-600'
+                >
+                  <span>{t('navbar.about')}</span>
+                </Link>
+                <Link
+                  href='/news/1'
+                  onClick={closeMenu}
+                  className='flex items-center justify-center space-x-2 rounded-md px-3 py-2 text-gray-700 transition-colors duration-200 hover:bg-blue-50 hover:text-blue-600'
+                >
+                  <span>{t('navbar.news')}</span>
                 </Link>
                 <Link
                   href='/translate'
