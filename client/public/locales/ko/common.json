@@ -12,6 +12,8 @@
   },
   "navbar": {
     "home": "홈",
+    "about": "소개",
+    "news": "뉴스",
     "translate": "AI 번역",
     "first_aid": "AI 응급처치",
     "hospital_pharmacy_nearby": "병원 & 약국 찾기"
