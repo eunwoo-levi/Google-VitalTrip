@@ -1,30 +1,44 @@
 import { FetchConfig } from '../types/http';
 import { APIError } from './apiError';
 
-const BASE_URL = process.env.API_BASE_URL;
+const BASE_URL = process.env.API_BASE_URL || 'http://localhost:3000/api';
 
 async function request<T = unknown>(url: string, config: FetchConfig = {}): Promise<T> {
   const { method = 'GET', headers = {}, body } = config;
 
-  const response = await fetch(`${BASE_URL}${url}`, {
-    method,
-    headers: {
-      'Content-Type': 'application/json',
-      ...headers,
-    },
-    body: body ? JSON.stringify(body) : undefined,
-  });
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 10000);
 
-  const data = await response.json();
+  try {
+    const response = await fetch(`${BASE_URL}${url}`, {
+      method,
+      headers: {
+        'Content-Type': 'application/json',
+        ...headers,
+      },
+      body: body ? JSON.stringify(body) : undefined,
+      signal: controller.signal,
+    });
 
-  if (!response.ok) {
-    const errorMessage = data.message || `HTTP ${response.status}: an unknown error occurred`;
-    console.error('백엔드 에러 메시지', data);
-    console.error('HTTP 에러 코드: ', response.status);
+    clearTimeout(timeoutId);
 
-    throw new APIError(errorMessage, response.status);
+    const data = await response.json();
+
+    if (!response.ok) {
+      const errorMessage = data.message || `HTTP ${response.status}: an unknown error occurred`;
+      console.error('백엔드 에러 메시지', data);
+      console.error('HTTP 에러 코드: ', response.status);
+
+      throw new APIError(errorMessage, response.status);
+    }
+    return data;
+  } catch (error) {
+    clearTimeout(timeoutId);
+    if (error instanceof Error && error.name === 'AbortError') {
+      throw new APIError('Request timeout', 408);
+    }
+    throw error;
   }
-  return data;
 }
 
 export const httpServer = {
