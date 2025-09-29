@@ -1,8 +1,12 @@
 'use client';
 
 import { SYMPTOMS } from '@/src/features/firstAid/data/symptom';
+import { FirstAidCombinedResponse } from '@/src/features/firstAid/type/firstAid';
+import { useCurrentLocation } from '@/src/shared/hooks/useCurrentLocation';
 import { useTranslation } from '@/src/shared/lib/i18n';
 import Modal from '@/src/shared/ui/Modal';
+import { httpClient } from '@/src/shared/utils/httpClient';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface SymptomModalProps {
   closeSymptomModal: () => void;
@@ -20,6 +24,53 @@ export const SymptomModal = ({
   handleSubmit,
 }: SymptomModalProps) => {
   const { t } = useTranslation('symptoms');
+  const queryClient = useQueryClient();
+  const { coords } = useCurrentLocation();
+
+  const handleSubmitWithPrefetch = async () => {
+    if (coords && symptomData.type && symptomData.detail) {
+      const defaultCoords = { latitude: 37.5665, longitude: 126.978 };
+      const latitude = coords.latitude ?? defaultCoords.latitude;
+      const longitude = coords.longitude ?? defaultCoords.longitude;
+      const radius = 5000;
+      const language = 'ko';
+
+      try {
+        await queryClient.prefetchQuery({
+          queryKey: [
+            'firstAidCombined',
+            {
+              symptomType: symptomData.type,
+              symptomDetail: symptomData.detail,
+              latitude,
+              longitude,
+              radius,
+              language,
+            },
+          ],
+          queryFn: async (): Promise<FirstAidCombinedResponse> => {
+            const response = await httpClient.post<{
+              message: string;
+              data: FirstAidCombinedResponse;
+            }>('/api/first-aid/combined', {
+              symptomType: symptomData.type,
+              symptomDetail: symptomData.detail,
+              latitude,
+              longitude,
+              radius,
+              language,
+            });
+
+            return response.data;
+          },
+        });
+      } catch (error) {
+        console.warn('Prefetch failed:', error);
+      }
+    }
+
+    handleSubmit();
+  };
 
   return (
     <Modal key='symptom-modal' onClose={closeSymptomModal}>
@@ -48,7 +99,7 @@ export const SymptomModal = ({
       />
       <button
         disabled={isDisabled}
-        onClick={handleSubmit}
+        onClick={handleSubmitWithPrefetch}
         className={`w-full rounded-md px-4 py-2 text-white transition-colors duration-200 ${
           isDisabled
             ? 'cursor-not-allowed bg-gray-300'
