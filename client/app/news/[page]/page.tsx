@@ -20,7 +20,15 @@ interface NewsPageProps {
 }
 
 export async function generateStaticParams() {
-  return [{ page: '1' }];
+  return [
+    { page: '1' },
+    { page: '2' },
+    { page: '3' },
+    { page: '4' },
+    { page: '5' },
+    { page: '6' },
+    { page: '7' },
+  ];
 }
 
 export default async function NewsPage({ params }: NewsPageProps) {
