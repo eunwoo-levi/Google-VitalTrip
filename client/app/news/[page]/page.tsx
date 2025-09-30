@@ -27,7 +27,7 @@ export async function generateStaticParams() {
     { page: '4' },
     { page: '5' },
     { page: '6' },
-    { page: '7' }
+    { page: '7' },
   ];
 }
 
