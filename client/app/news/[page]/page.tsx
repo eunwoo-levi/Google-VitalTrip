@@ -5,11 +5,24 @@ import Navbar from '@/src/widgets/navbar/Navbar';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
-export const metadata: Metadata = {
-  title: 'Medical News - Vital Trip',
-  description:
-    'Stay updated with the latest medical news, health research, and healthcare developments from around the world.',
-};
+export async function generateMetadata({ params }: NewsPageProps): Promise<Metadata> {
+  const resolvedParams = await params;
+  const pageNum = parseInt(resolvedParams.page);
+
+  return {
+    title: `Medical News - Page ${pageNum} | Vital Trip`,
+    description: `Stay updated with the latest medical news, health research, and healthcare developments from around the world. Page ${pageNum} of medical news articles.`,
+    alternates: {
+      canonical: `/news/${pageNum}`,
+    },
+    openGraph: {
+      title: `Medical News - Page ${pageNum} | Vital Trip`,
+      description: `Stay updated with the latest medical news, health research, and healthcare developments from around the world. Page ${pageNum} of medical news articles.`,
+      url: `/news/${pageNum}`,
+      type: 'website',
+    },
+  };
+}
 
 export const revalidate = 3600;
 
