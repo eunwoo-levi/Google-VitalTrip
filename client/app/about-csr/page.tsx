@@ -9,9 +9,9 @@ import {
 } from '@/app/about/_utils/translations';
 import Navbar from '@/src/widgets/navbar/Navbar';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 
-export default function AboutCSRPage() {
+function AboutCSRContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [currentLang, setCurrentLang] = useState(defaultLanguage);
@@ -63,5 +63,19 @@ export default function AboutCSRPage() {
       <VideoSection translations={translations} />
       <Footer translations={translations} />
     </div>
+  );
+}
+
+export default function AboutCSRPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className='flex min-h-screen items-center justify-center bg-white'>
+          <div className='text-lg text-gray-500'>Loading...</div>
+        </div>
+      }
+    >
+      <AboutCSRContent />
+    </Suspense>
   );
 }

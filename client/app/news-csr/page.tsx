@@ -7,9 +7,9 @@ import { Pagination } from '@/src/features/news/ui/Pagination';
 import { httpClient } from '@/src/shared/utils/httpClient';
 import Navbar from '@/src/widgets/navbar/Navbar';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useCallback, useEffect, useState } from 'react';
+import { Suspense, useCallback, useEffect, useState } from 'react';
 
-export default function NewsCSRPage() {
+function NewsCSRContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [currentPage, setCurrentPage] = useState(1);
@@ -122,6 +122,24 @@ export default function NewsCSRPage() {
         <NewsFooterCSR />
       </div>
     </div>
+  );
+}
+
+export default function NewsCSRPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className='min-h-screen bg-gray-50 md:pt-16'>
+          <div className='mx-auto max-w-7xl px-4 py-8'>
+            <div className='flex items-center justify-center py-12'>
+              <div className='text-lg text-gray-500'>Loading...</div>
+            </div>
+          </div>
+        </div>
+      }
+    >
+      <NewsCSRContent />
+    </Suspense>
   );
 }
 
