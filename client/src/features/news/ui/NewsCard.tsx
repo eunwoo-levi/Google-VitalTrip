@@ -49,7 +49,8 @@ export function NewsCard({ article }: NewsCardProps) {
           className='inline-flex items-center text-sm font-medium text-blue-600 transition-colors hover:text-blue-800'
           aria-label={`Read full article: ${article.title}`}
         >
-          Read More
+          Read full article about{' '}
+          {article.title.length > 50 ? `${article.title.substring(0, 50)}...` : article.title}
           <svg className='ml-1 h-4 w-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
             <path
               strokeLinecap='round'
