@@ -47,6 +47,7 @@ export function NewsCard({ article }: NewsCardProps) {
           target='_blank'
           rel='noopener noreferrer'
           className='inline-flex items-center text-sm font-medium text-blue-600 transition-colors hover:text-blue-800'
+          aria-label={`Read full article: ${article.title}`}
         >
           Read More
           <svg className='ml-1 h-4 w-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
