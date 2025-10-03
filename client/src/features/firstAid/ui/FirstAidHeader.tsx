@@ -1,6 +1,5 @@
 'use client';
 import { useHydration } from '@/src/shared/hooks/useHydration';
-import { motion } from 'motion/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
@@ -31,12 +30,7 @@ export const FirstAidHeader = () => {
   }
 
   return (
-    <motion.header
-      className='w-full bg-white shadow-sm'
-      initial={{ opacity: 0, y: -10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-    >
+    <header className='animate-fade-in-down w-full bg-white shadow-sm'>
       <div className='mx-auto w-full max-w-7xl px-6 py-5'>
         <div className='mb-2 flex items-center gap-3'>
           <Link href='/'>
@@ -51,6 +45,6 @@ export const FirstAidHeader = () => {
           <h1 className='text-2xl font-semibold text-gray-900'>{t('navbar.first_aid')}</h1>
         </div>
       </div>
-    </motion.header>
+    </header>
   );
 };
