@@ -10,6 +10,7 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
 export const dynamic = 'force-static';
+export const dynamicParams = false;
 
 interface PageProps {
   params: Promise<{
@@ -26,12 +27,16 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { lang } = await params;
 
-  if (!isValidLanguage(lang)) {
-    return {};
-  }
+  // 유효하지 않은 언어의 경우 기본 언어로 fallback
+  const validLang = isValidLanguage(lang) ? lang : defaultLanguage;
+  const translations = getTranslations(validLang);
+  const isDefault = validLang === defaultLanguage;
 
-  const translations = getTranslations(lang);
-  const isDefault = lang === defaultLanguage;
+  // 언어별 URL 맵핑을 더 명확하게 생성
+  const languageUrls = supportedLanguages.reduce<Record<string, string>>((acc, language) => {
+    acc[language] = language === defaultLanguage ? '/about' : `/about/${language}`;
+    return acc;
+  }, {});
 
   return {
     title: translations.meta.title,
@@ -41,7 +46,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       title: translations.meta.openGraph.title,
       description: translations.meta.openGraph.description,
       type: 'website',
-      url: isDefault ? '/about' : `/about/${lang}`,
+      url: isDefault ? '/about' : `/about/${validLang}`,
       images: [
         {
           url: '/vitalTrip.webp',
@@ -56,15 +61,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       description: translations.meta.twitter.description,
     },
     alternates: {
-      canonical: isDefault ? '/about' : `/about/${lang}`,
-      languages: supportedLanguages.reduce(
-        (acc, language) => {
-          const url = language === defaultLanguage ? '/about' : `/about/${language}`;
-          acc[language] = url;
-          return acc;
-        },
-        {} as Record<string, string>,
-      ),
+      canonical: isDefault ? '/about' : `/about/${validLang}`,
+      languages: languageUrls,
     },
   };
 }

@@ -80,6 +80,16 @@ const nextConfig: NextConfig = {
     ];
   },
 
+  async redirects() {
+    return [
+      {
+        source: '/about',
+        destination: '/about/en',
+        permanent: true, // 308/301 정적 리다이렉트(SSG 보존)
+      },
+    ];
+  },
+
   async rewrites() {
     return [
       {
