@@ -27,12 +27,10 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { lang } = await params;
 
-  // 유효하지 않은 언어의 경우 기본 언어로 fallback
   const validLang = isValidLanguage(lang) ? lang : defaultLanguage;
   const translations = getTranslations(validLang);
   const isDefault = validLang === defaultLanguage;
 
-  // 언어별 URL 맵핑을 더 명확하게 생성
   const languageUrls = supportedLanguages.reduce<Record<string, string>>((acc, language) => {
     acc[language] = language === defaultLanguage ? '/about' : `/about/${language}`;
     return acc;
