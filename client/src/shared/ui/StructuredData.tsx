@@ -2,12 +2,16 @@ import Script from 'next/script';
 
 interface StructuredDataProps {
   data: Record<string, unknown>;
+  id?: string;
 }
 
-export default function StructuredData({ data }: StructuredDataProps) {
+export default function StructuredData({ data, id }: StructuredDataProps) {
+  const schemaType = typeof data === 'object' && data !== null ? String(data['@type']) : 'schema';
+  const scriptId = id || `structured-data-${schemaType.toLowerCase()}`;
+
   return (
     <Script
-      id='structured-data'
+      id={scriptId}
       type='application/ld+json'
       dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
     />
