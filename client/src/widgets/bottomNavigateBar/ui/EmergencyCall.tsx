@@ -34,7 +34,8 @@ export default function EmergencyCall() {
         },
       });
     }
-  }, [coords, identifyCountryMutation]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [coords]);
 
   const isLoading = identifyCountryMutation.isPending;
 
