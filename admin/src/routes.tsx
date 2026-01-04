@@ -3,6 +3,7 @@ import {
   createRoutesFromElements,
   Route,
 } from "react-router";
+import { ErrorBoundary } from "./components/ErrorBoundary";
 import DashboardPage from "./pages/DashboardPage";
 import Layout from "./pages/Layout";
 import LoginPage from "./pages/LoginPage";
@@ -19,7 +20,14 @@ export const router = createBrowserRouter(
       <Route path={ROUTES.LOGIN} element={<LoginPage />} />
       <Route element={<ProtectedRoute />}>
         <Route element={<Layout />}>
-          <Route path={ROUTES.ROOT} element={<DashboardPage />} />
+          <Route
+            path={ROUTES.ROOT}
+            element={
+              <ErrorBoundary>
+                <DashboardPage />
+              </ErrorBoundary>
+            }
+          />
         </Route>
       </Route>
     </>

@@ -26,7 +26,7 @@ export const useUserList = (
   const { data, isFetching, fetchNextPage, fetchPreviousPage } =
     useSuspenseInfiniteQuery({
       queryKey: ["users", pageSize, currentPage],
-      queryFn: async ({ pageParam = currentPage }) => {
+      queryFn: async ({ pageParam }) => {
         return await getUserList({ page: pageParam, size: pageSize });
       },
       initialPageParam: currentPage,
