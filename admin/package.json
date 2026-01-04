@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.11",
+    "@tanstack/react-query": "^5.84.1",
     "@vitaltrip/shared": "workspace:*",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",

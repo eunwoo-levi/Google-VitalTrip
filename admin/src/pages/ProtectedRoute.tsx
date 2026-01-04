@@ -1,6 +1,6 @@
-import { useEffect } from 'react';
-import { Outlet, useNavigate } from 'react-router';
-import { useAdminAuth } from '../hooks/useAdminAuth';
+import { useEffect } from "react";
+import { Outlet, useNavigate } from "react-router";
+import { useAdminAuth } from "../hooks/dashboard/useAdminAuth";
 
 export const ProtectedRoute = () => {
   const { isAdmin, isLoading } = useAdminAuth();
@@ -8,8 +8,8 @@ export const ProtectedRoute = () => {
 
   useEffect(() => {
     if (!isLoading && !isAdmin) {
-      alert('Admin 로그인을 해주세요.');
-      navigate('/login');
+      alert("Admin 로그인을 해주세요.");
+      navigate("/login");
     }
   }, [isAdmin, isLoading, navigate]);
 

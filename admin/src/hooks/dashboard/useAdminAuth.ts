@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { checkIfAdmin } from '../api/checkIfAdmin';
+import { useEffect, useState } from "react";
+import { checkIfAdmin } from "../../api/login/checkIfAdmin";
 
 export const useAdminAuth = () => {
   const [isAdmin, setIsAdmin] = useState<boolean | null>(null);

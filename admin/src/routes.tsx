@@ -1,12 +1,16 @@
-import { createBrowserRouter, createRoutesFromElements, Route } from 'react-router';
-import DashboardPage from './pages/DashboardPage';
-import Layout from './pages/Layout';
-import LoginPage from './pages/LoginPage';
-import { ProtectedRoute } from './pages/ProtectedRoute';
+import {
+  createBrowserRouter,
+  createRoutesFromElements,
+  Route,
+} from "react-router";
+import DashboardPage from "./pages/DashboardPage";
+import Layout from "./pages/Layout";
+import LoginPage from "./pages/LoginPage";
+import { ProtectedRoute } from "./pages/ProtectedRoute";
 
 const ROUTES = {
-  ROOT: '/',
-  LOGIN: '/login',
+  ROOT: "/",
+  LOGIN: "/login",
 };
 
 export const router = createBrowserRouter(

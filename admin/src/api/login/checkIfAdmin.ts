@@ -1,4 +1,4 @@
-import { httpClient } from '../utils/httpClient';
+import { httpClient } from "../../utils/httpClient";
 
 interface AdminMeResponse {
   message: string;
@@ -8,5 +8,5 @@ interface AdminMeResponse {
 }
 
 export const checkIfAdmin = async (): Promise<AdminMeResponse> => {
-  return await httpClient.get<AdminMeResponse>('/admin/me');
+  return await httpClient.get<AdminMeResponse>("/admin/me");
 };
