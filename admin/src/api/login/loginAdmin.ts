@@ -1,4 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
+import { useNavigate } from "react-router";
 import { httpClient } from "src/utils/httpClient";
 
 export interface LoginRequest {
@@ -15,10 +16,13 @@ const loginAdmin = async (formData: LoginRequest) => {
   return await httpClient.post<LoginResponse>("/auth/admin/login", formData);
 };
 
-export const useAdminLoginMutation = () =>
-  useMutation({
+export const useAdminLoginMutation = () => {
+  const navigate = useNavigate();
+
+  return useMutation({
     mutationFn: (formData: LoginRequest) => loginAdmin(formData),
     onSuccess: () => {
-      window.location.href = "/dashboard";
+      navigate("/");
     },
   });
+};
