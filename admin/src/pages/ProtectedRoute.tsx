@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router";
-import { useAdminAuth } from "../hooks/dashboard/useAdminAuth";
+import { useAdminCheckQuery } from "src/api/login/useAdminCheckQuery";
 
 export const ProtectedRoute = () => {
-  const { isAdmin, isLoading } = useAdminAuth();
+  const { data: isAdmin, isLoading } = useAdminCheckQuery();
   const navigate = useNavigate();
 
   useEffect(() => {

@@ -1,14 +1,20 @@
+import { useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router";
 import { httpClient } from "src/utils/httpClient";
 import { UserList } from "./UserList";
 
 export function AdminDashboard() {
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
   const handleLogout = async () => {
     try {
       await httpClient.post("/auth/logout");
+      queryClient.clear();
+      navigate("/login");
     } catch (error) {
       console.error("Logout error:", error);
-    } finally {
-      window.location.reload();
+      alert("로그아웃 중 오류가 발생했습니다.");
     }
   };
 
