@@ -149,5 +149,5 @@ Enter symptoms and receive AI-generated emergency response advice including:
 
 | Role     | Members                             |
 | -------- | ----------------------------------- |
-| Frontend | Eunwoo Seong, Seohyun Jung          |
+| Frontend | Eunwoo Seong       |
 | Backend  | Jaemin An, Seyeon Park, Wooseok Yoo |
