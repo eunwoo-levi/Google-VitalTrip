@@ -1,5 +1,5 @@
 import { fetchMedicalNewsSSR } from '@/src/features/news/api/newsApi';
-import { NewsFooter, NewsHeader } from '@/src/features/news/ui';
+import { NewsFooter, NewsHeader, RevalidateButton } from '@/src/features/news/ui';
 import { NewsPageClient } from '@/src/features/news/ui/NewsPageClient';
 import Navbar from '@/src/widgets/navbar/Navbar';
 import { Metadata } from 'next';
@@ -24,8 +24,6 @@ export async function generateMetadata({ params }: NewsPageProps): Promise<Metad
   };
 }
 
-export const revalidate = 3600;
-
 interface NewsPageProps {
   params: Promise<{
     page: string;
@@ -45,50 +43,34 @@ export async function generateStaticParams() {
 }
 
 export default async function NewsPage({ params }: NewsPageProps) {
-  const resolvedParams = await params;
-  const pageNum = parseInt(resolvedParams.page);
-  const pageSize = 10;
+  const { page: pageParam } = await params;
+  const pageNum = parseInt(pageParam);
 
   if (isNaN(pageNum) || pageNum < 1) {
     notFound();
   }
 
-  let initialData;
-  let error = null;
+  const initialData = await fetchMedicalNewsSSR({ page: pageNum, pageSize: 10 });
 
-  try {
-    initialData = await fetchMedicalNewsSSR({ page: pageNum, pageSize });
-
-    if (initialData.articles.length === 0 && pageNum > 1) {
-      notFound();
-    }
-  } catch (err) {
-    console.error('Failed to fetch medical news:', err);
-    error = err instanceof Error ? err.message : 'Failed to fetch medical news';
-
-    initialData = {
-      articles: [],
-      totalResults: 0,
-      page: pageNum,
-      pageSize,
-    };
+  if (initialData.articles.length === 0 && pageNum > 1) {
+    notFound();
   }
 
   return (
-    <div className='min-h-screen bg-gray-50 md:pt-16'>
+    <div className='min-h-screen bg-white pt-16'>
       <Navbar />
-      <div className='mx-auto max-w-7xl px-4 py-8'>
+      <div className='relative mx-auto max-w-7xl px-4 py-8'>
+        <div className='absolute top-8 right-4 hidden md:block'>
+          <RevalidateButton />
+        </div>
+
         <NewsHeader />
 
-        {error && pageNum === 1 ? (
-          <div className='py-12 text-center'>
-            <div className='mb-4 text-lg text-red-500'>Failed to load medical news</div>
-            <p className='text-gray-400'>{error}</p>
-          </div>
-        ) : (
-          <NewsPageClient initialData={initialData} />
-        )}
+        <div className='mb-6 flex justify-center md:hidden'>
+          <RevalidateButton />
+        </div>
 
+        <NewsPageClient initialData={initialData} />
         <NewsFooter />
       </div>
     </div>
