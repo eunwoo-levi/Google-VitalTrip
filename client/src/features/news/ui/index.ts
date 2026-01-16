@@ -5,3 +5,4 @@ export { NewsGrid } from './NewsGrid';
 export { NewsHeader } from './NewsHeader';
 export { NewsPageClient } from './NewsPageClient';
 export { Pagination } from './Pagination';
+export { RevalidateButton } from './RevalidateButton';

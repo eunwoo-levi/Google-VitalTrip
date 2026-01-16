@@ -16,11 +16,16 @@ export async function fetchMedicalNewsSSR({
         page: number;
         pageSize: number;
       };
-    }>(`/news/headlines?page=${page}&pageSize=${pageSize}&country=${country}`);
+    }>(`/news/headlines?page=${page}&pageSize=${pageSize}&country=${country}`, {
+      next: {
+        tags: ['medical-news', `news-page-${page}`],
+        revalidate: 3600,
+      },
+    });
 
     return response.data;
   } catch (error) {
-    console.warn('Failed to fetch medical news during build:', error);
+    console.warn('Failed to fetch medical news:', error);
     return {
       articles: [],
       totalResults: 0,

@@ -4,6 +4,7 @@ import { useCheckIfLoggedInQuery } from '@/src/features/auth/api/checkIfLoggedIn
 import { AuthButton } from '@/src/features/auth/ui/AuthButton';
 import { useProfileQuery } from '@/src/features/profile/api/useProfileQuery';
 
+import { useHydration } from '@/src/shared/hooks/useHydration';
 import { useTranslation } from '@/src/shared/lib/i18n';
 import Dropdown from '@/src/shared/ui/Dropdown';
 import { AnimatePresence, motion } from 'motion/react';
@@ -18,6 +19,7 @@ const LanguageDropdown = () => {
   const pathname = usePathname();
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
+  const isHydrated = useHydration();
 
   const getCurrentLanguage = () => {
     if (pathname.startsWith('/about')) {
@@ -46,13 +48,15 @@ const LanguageDropdown = () => {
     setIsOpen(false);
   };
 
+  const displayLanguage = isHydrated ? currentLanguage : languages[0];
+
   return (
     <div className='relative'>
       <button
         onClick={() => setIsOpen(!isOpen)}
         className='flex items-center gap-1 rounded-md px-2 py-2 text-sm font-medium text-gray-700 transition-colors duration-200 hover:bg-blue-50 hover:text-blue-600'
       >
-        <span className='text-xl'>{currentLanguage.flag}</span>
+        <span className='text-xl'>{displayLanguage.flag}</span>
         <FaChevronDown
           className={`h-3 w-3 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
         />
