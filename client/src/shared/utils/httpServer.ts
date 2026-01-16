@@ -4,7 +4,7 @@ import { APIError } from './apiError';
 const BASE_URL = process.env.API_BASE_URL || 'http://localhost:3000/api';
 
 async function request<T = unknown>(url: string, config: FetchConfig = {}): Promise<T> {
-  const { method = 'GET', headers = {}, body } = config;
+  const { method = 'GET', headers = {}, body, next } = config;
 
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), 10000);
@@ -18,6 +18,7 @@ async function request<T = unknown>(url: string, config: FetchConfig = {}): Prom
       },
       body: body ? JSON.stringify(body) : undefined,
       signal: controller.signal,
+      ...(next && { next }),
     });
 
     clearTimeout(timeoutId);

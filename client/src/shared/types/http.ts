@@ -5,4 +5,8 @@ export interface FetchConfig {
   headers?: Record<string, string>;
   body?: unknown;
   timeout?: number;
+  next?: {
+    tags?: string[];
+    revalidate?: number | false;
+  };
 }
