@@ -187,6 +187,9 @@ importers:
       dotenv:
         specifier: ^17.2.3
         version: 17.2.3
+      eslint:
+        specifier: ^9.32.0
+        version: 9.32.0(jiti@2.6.1)
       eslint-config-next:
         specifier: 15.1.7
         version: 15.1.7(eslint@9.32.0(jiti@2.6.1))(typescript@5.9.2)
