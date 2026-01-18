@@ -1,6 +1,7 @@
 import { Profile } from '@/src/features/profile/types/profile';
 import { APIError } from '@/src/shared/utils/apiError';
 import { httpServer } from '@/src/shared/utils/httpServer';
+import * as Sentry from '@sentry/nextjs';
 import { NextRequest, NextResponse } from 'next/server';
 
 interface LoginResponse {
