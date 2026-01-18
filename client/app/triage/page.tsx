@@ -1,6 +1,8 @@
 import { prisma } from '@/src/shared/lib/prisma';
 import Link from 'next/link';
 
+export const dynamic = 'force-dynamic';
+
 type IssueStatus = 'OPEN' | 'ACK' | 'FIXED' | 'IGNORED';
 
 const statusColors: Record<IssueStatus, string> = {

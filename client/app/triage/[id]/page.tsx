@@ -2,6 +2,8 @@ import { TriageJson, triageWithOpenAI } from '@/src/shared/lib/llm/openaiTriage'
 import { prisma } from '@/src/shared/lib/prisma';
 import Link from 'next/link';
 
+export const dynamic = 'force-dynamic';
+
 async function setStatus(id: string, status: 'OPEN' | 'ACK' | 'FIXED' | 'IGNORED') {
   'use server';
   await prisma.sentryIssue.update({ where: { id }, data: { status } });
