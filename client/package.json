@@ -17,7 +17,7 @@
   "homepage": "https://aivitaltrip.com",
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "generate": "prisma generate",
     "start": "next start",
     "lint": "eslint .",
