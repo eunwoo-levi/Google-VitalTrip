@@ -16,31 +16,35 @@ async function retriage(id: string) {
   const issue = await prisma.sentryIssue.findUnique({ where: { id } });
   if (!issue) return;
 
-  const triage = await triageWithOpenAI({
-    issue: {
-      id: issue.id,
-      title: issue.title,
-      level: issue.level,
-      project: issue.project,
-      environment: issue.environment,
-      url: issue.url,
-      windowCount: issue.windowCount,
-      totalCount: issue.totalCount,
-    },
-    payload: { note: 'manual_retriage' },
-  });
+  try {
+    const triage = await triageWithOpenAI({
+      issue: {
+        id: issue.id,
+        title: issue.title,
+        level: issue.level,
+        project: issue.project,
+        environment: issue.environment,
+        url: issue.url,
+        windowCount: issue.windowCount,
+        totalCount: issue.totalCount,
+      },
+      payload: { note: 'manual_retriage' },
+    });
 
-  const now = new Date();
+    const now = new Date();
 
-  await prisma.$transaction([
-    prisma.triageRun.create({
-      data: { issueId: issue.id, provider: 'openai', model: 'gpt-5-mini', result: triage },
-    }),
-    prisma.sentryIssue.update({
-      where: { id: issue.id },
-      data: { triageJson: triage as unknown as TriageJson, triageUpdatedAt: now },
-    }),
-  ]);
+    await prisma.$transaction([
+      prisma.triageRun.create({
+        data: { issueId: issue.id, provider: 'openai', model: 'gpt-4o-mini', result: triage },
+      }),
+      prisma.sentryIssue.update({
+        where: { id: issue.id },
+        data: { triageJson: triage as unknown as TriageJson, triageUpdatedAt: now },
+      }),
+    ]);
+  } catch (error) {
+    console.error('Manual Retriage Failed:', error);
+  }
 }
 
 type IssueStatus = 'OPEN' | 'ACK' | 'FIXED' | 'IGNORED';

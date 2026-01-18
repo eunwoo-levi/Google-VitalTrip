@@ -69,7 +69,7 @@ function extractSentryFields(body: unknown) {
 export async function POST(req: Request) {
   const rawBody = await req.text();
 
-  // 1) 서명 검증 (Internal Integration일 때 signature 헤더가 온다) :contentReference[oaicite:6]{index=6}
+  // 1) 서명 검증 (Internal Integration일 때 signature 헤더가 온다)
   const secret = process.env.SENTRY_CLIENT_SECRET;
   const sig = header(req, 'Sentry-Hook-Signature');
   if (secret) {
@@ -158,29 +158,34 @@ export async function POST(req: Request) {
   const isError = ['error', 'fatal'].includes(String(issue.level).toLowerCase());
 
   if (process.env.OPENAI_API_KEY && (!triage || triageExpired) && (isNew || isSpike || isError)) {
-    triage = await triageWithOpenAI({
-      issue: {
-        id: issue.id,
-        title: issue.title,
-        level: issue.level,
-        project: issue.project,
-        environment: issue.environment,
-        url: issue.url,
-        windowCount: issue.windowCount,
-        totalCount: issue.totalCount,
-      },
-      payload: body,
-    });
+    try {
+      triage = await triageWithOpenAI({
+        issue: {
+          id: issue.id,
+          title: issue.title,
+          level: issue.level,
+          project: issue.project,
+          environment: issue.environment,
+          url: issue.url,
+          windowCount: issue.windowCount,
+          totalCount: issue.totalCount,
+        },
+        payload: body,
+      });
 
-    await prisma.$transaction([
-      prisma.triageRun.create({
-        data: { issueId: issue.id, provider: 'openai', model: 'gpt-5-mini', result: triage },
-      }),
-      prisma.sentryIssue.update({
-        where: { id: issue.id },
-        data: { triageJson: triage as unknown as Prisma.InputJsonValue, triageUpdatedAt: now },
-      }),
-    ]);
+      await prisma.$transaction([
+        prisma.triageRun.create({
+          data: { issueId: issue.id, provider: 'openai', model: 'gpt-4o-mini', result: triage },
+        }),
+        prisma.sentryIssue.update({
+          where: { id: issue.id },
+          data: { triageJson: triage as unknown as Prisma.InputJsonValue, triageUpdatedAt: now },
+        }),
+      ]);
+    } catch (error) {
+      console.error('OpenAI Triage Failed:', error);
+      // Continue without triage data
+    }
   }
 
   // 6) Slack 알림 전송 (Incoming Webhook)
