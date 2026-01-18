@@ -1,5 +1,6 @@
 import { APIError } from '@/src/shared/utils/apiError';
 import { httpServer } from '@/src/shared/utils/httpServer';
+import * as Sentry from '@sentry/nextjs';
 import { NextResponse } from 'next/server';
 
 interface LoginGoogleResponse {
@@ -17,6 +18,7 @@ export async function GET() {
 
     return NextResponse.redirect(googleLoginUrl);
   } catch (error) {
+    Sentry.captureException(error);
     if (error instanceof APIError) {
       console.error('Google login URL error:', error.message, error.status);
     }

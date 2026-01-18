@@ -1,6 +1,7 @@
 import { APIError } from '@/src/shared/utils/apiError';
 import { getValidAccessToken } from '@/src/shared/utils/cookieService';
 import { httpServer } from '@/src/shared/utils/httpServer';
+import * as Sentry from '@sentry/nextjs';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function PUT(req: NextRequest) {
@@ -20,6 +21,7 @@ export async function PUT(req: NextRequest) {
 
     return NextResponse.json({ message: 'Profile updated successfully' }, { status: 200 });
   } catch (error) {
+    Sentry.captureException(error);
     if (error instanceof APIError) {
       if (error.status === 400) {
         return NextResponse.json(

@@ -41,6 +41,7 @@ export async function POST(req: NextRequest) {
 
     return res;
   } catch (error) {
+    Sentry.captureException(error);
     if (error instanceof APIError) {
       if (error.status === 401) {
         return NextResponse.json(

@@ -1,6 +1,7 @@
 import { APIError } from '@/src/shared/utils/apiError';
 import { getValidAccessToken } from '@/src/shared/utils/cookieService';
 import { httpServer } from '@/src/shared/utils/httpServer';
+import * as Sentry from '@sentry/nextjs';
 import { NextResponse } from 'next/server';
 
 export async function POST() {
@@ -30,6 +31,7 @@ export async function POST() {
 
     return res;
   } catch (error) {
+    Sentry.captureException(error);
     if (error instanceof APIError) {
       console.error('Logout error:', error.message, error.status);
       if (error.status === 401) {

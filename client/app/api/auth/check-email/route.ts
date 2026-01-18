@@ -1,5 +1,6 @@
 import { APIError } from '@/src/shared/utils/apiError';
 import { httpServer } from '@/src/shared/utils/httpServer';
+import * as Sentry from '@sentry/nextjs';
 import { NextRequest, NextResponse } from 'next/server';
 
 interface CheckEmailResponse {
@@ -17,6 +18,7 @@ export async function GET(request: NextRequest) {
     const response: CheckEmailResponse = await httpServer.get(`/auth/check-email?email=${email}`);
     return NextResponse.json(response.data);
   } catch (error) {
+    Sentry.captureException(error);
     if (error instanceof APIError && error.status === 400) {
       return NextResponse.json({ message: 'Please enter a valid email address' }, { status: 400 });
     }

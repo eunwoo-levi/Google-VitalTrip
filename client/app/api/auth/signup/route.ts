@@ -1,5 +1,6 @@
 import { APIError } from '@/src/shared/utils/apiError';
 import { httpServer } from '@/src/shared/utils/httpServer';
+import * as Sentry from '@sentry/nextjs';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {
@@ -9,6 +10,7 @@ export async function POST(req: NextRequest) {
     await httpServer.post('/auth/signup', body);
     return NextResponse.json({ message: 'Signup success' }, { status: 201 });
   } catch (error) {
+    Sentry.captureException(error);
     if (error instanceof APIError) {
       if (error.status === 400) {
         return NextResponse.json(

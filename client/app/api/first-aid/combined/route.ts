@@ -1,6 +1,7 @@
 import { FirstAid } from '@/src/features/firstAid/type/firstAid';
 import { Medical } from '@/src/features/medical/types/medical';
 import { httpServer } from '@/src/shared/utils/httpServer';
+import * as Sentry from '@sentry/nextjs';
 
 interface ApiResponse<T> {
   data: T;
@@ -98,6 +99,7 @@ export async function POST(req: Request) {
       { status: 200, headers: { 'Content-Type': 'application/json' } },
     );
   } catch (error) {
+    Sentry.captureException(error);
     return new Response(
       JSON.stringify({
         message: 'Internal Server Error',

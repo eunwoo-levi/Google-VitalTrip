@@ -2,6 +2,7 @@ import { Profile } from '@/src/features/profile/types/profile';
 import { APIError } from '@/src/shared/utils/apiError';
 import { getTempToken } from '@/src/shared/utils/cookieService';
 import { httpServer } from '@/src/shared/utils/httpServer';
+import * as Sentry from '@sentry/nextjs';
 import { NextRequest, NextResponse } from 'next/server';
 
 interface SignupGoogleResponse {
@@ -48,6 +49,7 @@ export async function POST(req: NextRequest) {
 
     return res;
   } catch (error) {
+    Sentry.captureException(error);
     if (error instanceof APIError) {
       if (error.status === 400) {
         return NextResponse.json(
