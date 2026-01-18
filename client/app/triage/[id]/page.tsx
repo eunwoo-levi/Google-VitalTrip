@@ -41,7 +41,9 @@ async function retriage(id: string) {
   ]);
 }
 
-const statusColors = {
+type IssueStatus = 'OPEN' | 'ACK' | 'FIXED' | 'IGNORED';
+
+const statusColors: Record<IssueStatus, string> = {
   OPEN: 'bg-red-100 text-red-700 border-red-200',
   ACK: 'bg-yellow-100 text-yellow-700 border-yellow-200',
   FIXED: 'bg-green-100 text-green-700 border-green-200',
@@ -108,7 +110,7 @@ export default async function TriageDetailPage({ params }: { params: { id: strin
               </h1>
               <div className='mt-4 flex flex-wrap items-center gap-2 text-sm'>
                 <span
-                  className={`rounded-md border px-3 py-1.5 font-semibold ${statusColors[issue.status]}`}
+                  className={`rounded-md border px-3 py-1.5 font-semibold ${statusColors[issue.status as IssueStatus]}`}
                 >
                   {issue.status}
                 </span>
@@ -216,31 +218,38 @@ export default async function TriageDetailPage({ params }: { params: { id: strin
                   </tr>
                 </thead>
                 <tbody className='divide-y divide-slate-200 bg-white'>
-                  {logs.map((l) => (
-                    <tr key={l.id} className='transition-colors hover:bg-slate-50'>
-                      <td className='px-4 py-3 text-sm whitespace-nowrap text-slate-900'>
-                        {new Date(l.sentAt).toLocaleString('ko-KR')}
-                      </td>
-                      <td className='px-4 py-3 text-sm whitespace-nowrap'>
-                        {l.success ? (
-                          <span className='inline-flex items-center gap-1.5 rounded-full bg-green-100 px-2.5 py-1 text-xs font-semibold text-green-700'>
-                            <span className='h-1.5 w-1.5 rounded-full bg-green-600'></span>
-                            Success
-                          </span>
-                        ) : (
-                          <span className='inline-flex items-center gap-1.5 rounded-full bg-red-100 px-2.5 py-1 text-xs font-semibold text-red-700'>
-                            <span className='h-1.5 w-1.5 rounded-full bg-red-600'></span>
-                            Failed
-                          </span>
-                        )}
-                      </td>
-                      <td className='px-4 py-3 text-sm text-slate-600'>
-                        {l.success
-                          ? 'Notification sent successfully'
-                          : l.errorMsg || 'Unknown error'}
-                      </td>
-                    </tr>
-                  ))}
+                  {logs.map(
+                    (l: {
+                      id: string;
+                      sentAt: Date;
+                      success: boolean;
+                      errorMsg: string | null;
+                    }) => (
+                      <tr key={l.id} className='transition-colors hover:bg-slate-50'>
+                        <td className='px-4 py-3 text-sm whitespace-nowrap text-slate-900'>
+                          {new Date(l.sentAt).toLocaleString('ko-KR')}
+                        </td>
+                        <td className='px-4 py-3 text-sm whitespace-nowrap'>
+                          {l.success ? (
+                            <span className='inline-flex items-center gap-1.5 rounded-full bg-green-100 px-2.5 py-1 text-xs font-semibold text-green-700'>
+                              <span className='h-1.5 w-1.5 rounded-full bg-green-600'></span>
+                              Success
+                            </span>
+                          ) : (
+                            <span className='inline-flex items-center gap-1.5 rounded-full bg-red-100 px-2.5 py-1 text-xs font-semibold text-red-700'>
+                              <span className='h-1.5 w-1.5 rounded-full bg-red-600'></span>
+                              Failed
+                            </span>
+                          )}
+                        </td>
+                        <td className='px-4 py-3 text-sm text-slate-600'>
+                          {l.success
+                            ? 'Notification sent successfully'
+                            : l.errorMsg || 'Unknown error'}
+                        </td>
+                      </tr>
+                    ),
+                  )}
                 </tbody>
               </table>
             </div>

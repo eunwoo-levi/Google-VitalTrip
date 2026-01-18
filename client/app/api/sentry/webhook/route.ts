@@ -54,46 +54,53 @@ export async function POST(req: Request) {
   const now = new Date();
 
   // 3) DB upsert + 10분 윈도우 집계
-  const issue = await prisma.$transaction(async (tx) => {
-    const existing = await tx.sentryIssue.findUnique({ where: { id: issueId } });
+  const issue = await prisma.$transaction(
+    async (
+      tx: Omit<
+        typeof prisma,
+        '$connect' | '$disconnect' | '$on' | '$transaction' | '$use' | '$extends'
+      >,
+    ) => {
+      const existing = await tx.sentryIssue.findUnique({ where: { id: issueId } });
 
-    if (!existing) {
-      return tx.sentryIssue.create({
+      if (!existing) {
+        return tx.sentryIssue.create({
+          data: {
+            id: issueId,
+            title,
+            level,
+            project,
+            environment,
+            url,
+            culprit,
+            firstSeenAt: now,
+            lastSeenAt: now,
+            totalCount: 1,
+            windowStartAt: now,
+            windowCount: 1,
+          },
+        });
+      }
+
+      const windowExpired = now.getTime() - existing.windowStartAt.getTime() > WINDOW_MS;
+
+      return tx.sentryIssue.update({
+        where: { id: issueId },
         data: {
-          id: issueId,
           title,
           level,
           project,
           environment,
           url,
           culprit,
-          firstSeenAt: now,
           lastSeenAt: now,
-          totalCount: 1,
-          windowStartAt: now,
-          windowCount: 1,
+          totalCount: { increment: 1 },
+          windowStartAt: windowExpired ? now : existing.windowStartAt,
+          windowCount: windowExpired ? 1 : { increment: 1 },
         },
       });
-    }
-
-    const windowExpired = now.getTime() - existing.windowStartAt.getTime() > WINDOW_MS;
-
-    return tx.sentryIssue.update({
-      where: { id: issueId },
-      data: {
-        title,
-        level,
-        project,
-        environment,
-        url,
-        culprit,
-        lastSeenAt: now,
-        totalCount: { increment: 1 },
-        windowStartAt: windowExpired ? now : existing.windowStartAt,
-        windowCount: windowExpired ? 1 : { increment: 1 },
-      },
-    });
-  });
+    },
+  );
 
   // 4) 도배 방지: 같은 이슈는 10분에 1번만 알림
   const shouldNotify =

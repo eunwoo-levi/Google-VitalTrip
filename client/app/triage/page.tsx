@@ -1,7 +1,9 @@
 import { prisma } from '@/src/shared/lib/prisma';
 import Link from 'next/link';
 
-const statusColors = {
+type IssueStatus = 'OPEN' | 'ACK' | 'FIXED' | 'IGNORED';
+
+const statusColors: Record<IssueStatus, string> = {
   OPEN: 'bg-red-100 text-red-700 border-red-200',
   ACK: 'bg-yellow-100 text-yellow-700 border-yellow-200',
   FIXED: 'bg-green-100 text-green-700 border-green-200',
@@ -41,64 +43,75 @@ export default async function TriageListPage() {
           <div className='rounded-xl bg-white p-5 shadow-sm ring-1 ring-slate-200/50'>
             <div className='text-sm font-medium text-slate-600'>Open</div>
             <div className='mt-1 text-2xl font-bold text-red-600'>
-              {issues.filter((i) => i.status === 'OPEN').length}
+              {issues.filter((i: { status: IssueStatus }) => i.status === 'OPEN').length}
             </div>
           </div>
           <div className='rounded-xl bg-white p-5 shadow-sm ring-1 ring-slate-200/50'>
             <div className='text-sm font-medium text-slate-600'>Acknowledged</div>
             <div className='mt-1 text-2xl font-bold text-yellow-600'>
-              {issues.filter((i) => i.status === 'ACK').length}
+              {issues.filter((i: { status: IssueStatus }) => i.status === 'ACK').length}
             </div>
           </div>
           <div className='rounded-xl bg-white p-5 shadow-sm ring-1 ring-slate-200/50'>
             <div className='text-sm font-medium text-slate-600'>Fixed</div>
             <div className='mt-1 text-2xl font-bold text-green-600'>
-              {issues.filter((i) => i.status === 'FIXED').length}
+              {issues.filter((i: { status: IssueStatus }) => i.status === 'FIXED').length}
             </div>
           </div>
         </div>
 
         {/* Issues List */}
         <div className='space-y-3'>
-          {issues.map((i) => (
-            <Link
-              key={i.id}
-              href={`/triage/${i.id}`}
-              className='group block rounded-xl bg-white p-6 shadow-sm ring-1 ring-slate-200/50 transition-all duration-200 hover:shadow-lg hover:ring-slate-300'
-            >
-              <div className='flex items-start justify-between gap-4'>
-                <div className='min-w-0 flex-1'>
-                  <h3 className='truncate text-lg font-bold text-slate-900 group-hover:text-blue-600'>
-                    {i.title ?? '(no title)'}
-                  </h3>
-                  <div className='mt-3 flex flex-wrap items-center gap-2 text-sm'>
-                    <span
-                      className={`rounded-md border px-2.5 py-1 font-medium ${statusColors[i.status]}`}
-                    >
-                      {i.status}
-                    </span>
-                    {i.level && (
+          {issues.map(
+            (i: {
+              id: string;
+              title: string | null;
+              status: IssueStatus;
+              level: string | null;
+              project: string | null;
+              environment: string | null;
+              windowCount: number;
+              totalCount: number;
+            }) => (
+              <Link
+                key={i.id}
+                href={`/triage/${i.id}`}
+                className='group block rounded-xl bg-white p-6 shadow-sm ring-1 ring-slate-200/50 transition-all duration-200 hover:shadow-lg hover:ring-slate-300'
+              >
+                <div className='flex items-start justify-between gap-4'>
+                  <div className='min-w-0 flex-1'>
+                    <h3 className='truncate text-lg font-bold text-slate-900 group-hover:text-blue-600'>
+                      {i.title ?? '(no title)'}
+                    </h3>
+                    <div className='mt-3 flex flex-wrap items-center gap-2 text-sm'>
                       <span
-                        className={`font-semibold ${levelColors[i.level as keyof typeof levelColors] || 'text-gray-600'}`}
+                        className={`rounded-md border px-2.5 py-1 font-medium ${statusColors[i.status as IssueStatus]}`}
                       >
-                        {i.level}
+                        {i.status}
                       </span>
-                    )}
-                    <span className='text-slate-500'>·</span>
-                    <span className='text-slate-600'>{i.project ?? 'Unknown Project'}</span>
-                    <span className='text-slate-500'>·</span>
-                    <span className='text-slate-600'>{i.environment ?? 'Unknown Env'}</span>
+                      {i.level && (
+                        <span
+                          className={`font-semibold ${levelColors[i.level as keyof typeof levelColors] || 'text-gray-600'}`}
+                        >
+                          {i.level}
+                        </span>
+                      )}
+                      <span className='text-slate-500'>·</span>
+                      <span className='text-slate-600'>{i.project ?? 'Unknown Project'}</span>
+                      <span className='text-slate-500'>·</span>
+                      <span className='text-slate-600'>{i.environment ?? 'Unknown Env'}</span>
+                    </div>
+                  </div>
+                  <div className='flex shrink-0 flex-col items-end gap-2 text-right'>
+                    <div className='rounded-lg bg-slate-100 px-3 py-1.5 text-sm font-semibold text-slate-700'>
+                      최근 {i.windowCount}회
+                    </div>
+                    <div className='text-xs text-slate-500'>누적 {i.totalCount}회</div>
                   </div>
                 </div>
-                <div className='flex shrink-0 flex-col items-end gap-2 text-right'>
-                  <div className='rounded-lg bg-slate-100 px-3 py-1.5 text-sm font-semibold text-slate-700'>
-                    최근 {i.windowCount}회
-                  </div>
-                  <div className='text-xs text-slate-500'>누적 {i.totalCount}회</div>
-                </div>
-              </div>
-            </Link>
-          ))}
+              </Link>
+            ),
+          )}
         </div>
 
         {issues.length === 0 && (
