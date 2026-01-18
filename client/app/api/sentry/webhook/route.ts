@@ -13,20 +13,57 @@ function header(req: Request, name: string) {
   return req.headers.get(name) ?? req.headers.get(name.toLowerCase());
 }
 
-// Sentry payload 구조가 케이스별로 달라서 "유연 추출"
-function extractSentryFields(body: any) {
-  const issue = body?.data?.issue ?? body?.issue ?? {};
-  const event = body?.data?.event ?? body?.event ?? {};
+import { Prisma } from '@prisma/client';
 
-  const issueId = String(issue?.id ?? body?.issueId ?? '');
-  const title = issue?.title ?? body?.title ?? event?.title ?? event?.message ?? null;
-  const level = event?.level ?? body?.level ?? issue?.level ?? 'error';
-  const project = issue?.project?.slug ?? body?.project ?? null;
-  const environment = event?.environment ?? body?.environment ?? null;
-  const url = issue?.url ?? body?.url ?? null;
+interface SentryIssue {
+  id?: string;
+  title?: string;
+  level?: string;
+  project?: { slug?: string };
+  url?: string;
+  culprit?: string;
+}
+
+interface SentryEvent {
+  title?: string;
+  message?: string;
+  level?: string;
+  environment?: string;
+}
+
+interface SentryPayload {
+  data?: {
+    issue?: SentryIssue;
+    event?: SentryEvent;
+  };
+  issue?: SentryIssue;
+  event?: SentryEvent;
+  issueId?: string;
+  title?: string;
+  level?: string;
+  project?: string | { slug?: string };
+  environment?: string;
+  url?: string;
+  culprit?: string;
+}
+
+// Sentry payload 구조가 케이스별로 달라서 "유연 추출"
+function extractSentryFields(body: unknown) {
+  const b = body as SentryPayload;
+  const issue = b?.data?.issue ?? b?.issue ?? {};
+  const event = b?.data?.event ?? b?.event ?? {};
+
+  const issueId = String(issue?.id ?? b?.issueId ?? '');
+  const title = issue?.title ?? b?.title ?? event?.title ?? event?.message ?? null;
+  const level = event?.level ?? b?.level ?? issue?.level ?? 'error';
+
+  const projectSlug =
+    typeof b?.project === 'string' ? b.project : (b?.project?.slug ?? issue?.project?.slug ?? null);
+  const environment = event?.environment ?? b?.environment ?? null;
+  const url = issue?.url ?? b?.url ?? null;
   const culprit = issue?.culprit ?? null;
 
-  return { issueId, title, level, project, environment, url, culprit };
+  return { issueId, title, level, project: projectSlug, environment, url, culprit };
 }
 
 export async function POST(req: Request) {
@@ -41,7 +78,7 @@ export async function POST(req: Request) {
   }
 
   // 2) JSON parse
-  let body: any;
+  let body: unknown;
   try {
     body = JSON.parse(rawBody);
   } catch {
@@ -111,7 +148,7 @@ export async function POST(req: Request) {
   }
 
   // 5) 조건부 LLM + TTL 캐시
-  let triage: TriageJson | null = (issue.triageJson as any) ?? null;
+  let triage: TriageJson | null = (issue.triageJson as TriageJson) ?? null;
 
   const triageExpired =
     !issue.triageUpdatedAt || now.getTime() - issue.triageUpdatedAt.getTime() > TRIAGE_TTL_MS;
@@ -141,7 +178,7 @@ export async function POST(req: Request) {
       }),
       prisma.sentryIssue.update({
         where: { id: issue.id },
-        data: { triageJson: triage as any, triageUpdatedAt: now },
+        data: { triageJson: triage as unknown as Prisma.InputJsonValue, triageUpdatedAt: now },
       }),
     ]);
   }
@@ -185,13 +222,14 @@ export async function POST(req: Request) {
         data: { lastNotifiedAt: now },
       }),
     ]);
-  } catch (e: any) {
+  } catch (e: unknown) {
+    const errorMsg = e instanceof Error ? e.message : String(e);
     await prisma.notificationLog.create({
       data: {
         issueId: issue.id,
         channel: 'slack',
         success: false,
-        errorMsg: String(e?.message ?? e),
+        errorMsg,
       },
     });
 

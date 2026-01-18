@@ -70,8 +70,9 @@ ${JSON.stringify(input.payload).slice(0, 8000)}
     throw new Error(`OpenAI failed: ${res.status} ${text}`);
   }
 
-  const data: any = await res.json();
-  const text = data?.output?.[0]?.content?.[0]?.text ?? data?.output_text ?? '';
+  const data: unknown = await res.json();
+  const d = data as { output?: { content?: { text?: string }[] }[]; output_text?: string }; // minimal shape
+  const text = d?.output?.[0]?.content?.[0]?.text ?? d?.output_text ?? '';
 
   return extractJson(String(text));
 }

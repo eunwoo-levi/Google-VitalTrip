@@ -1,4 +1,4 @@
-import { triageWithOpenAI } from '@/src/shared/lib/llm/openaiTriage';
+import { TriageJson, triageWithOpenAI } from '@/src/shared/lib/llm/openaiTriage';
 import { prisma } from '@/src/shared/lib/prisma';
 import Link from 'next/link';
 
@@ -36,7 +36,7 @@ async function retriage(id: string) {
     }),
     prisma.sentryIssue.update({
       where: { id: issue.id },
-      data: { triageJson: triage as any, triageUpdatedAt: now },
+      data: { triageJson: triage as unknown as TriageJson, triageUpdatedAt: now },
     }),
   ]);
 }
@@ -193,7 +193,7 @@ export default async function TriageDetailPage({ params }: { params: { id: strin
             </pre>
           ) : (
             <div className='rounded-lg bg-slate-50 p-8 text-center text-slate-600'>
-              No triage data available. Click "Re-triage with AI" to generate analysis.
+              No triage data available. Click &quot;Re-triage with AI&quot; to generate analysis.
             </div>
           )}
         </section>
