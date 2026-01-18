@@ -2,6 +2,7 @@
 
 import { useLanguageSelection } from '@/src/shared/hooks/useLanguageSelection';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 
 const languages = [
   { code: 'en', name: 'English', flag: '🇺🇸' },
@@ -12,7 +13,9 @@ export const LanguageSelectionModal = () => {
   const { isLanguageSelectionOpen, selectLanguage, renderLanguageSelection } =
     useLanguageSelection();
 
-  if (!isLanguageSelectionOpen) return null;
+  const pathname = usePathname();
+
+  if (!isLanguageSelectionOpen || pathname.startsWith('/triage')) return null;
 
   return renderLanguageSelection(
     <div className='text-center'>
