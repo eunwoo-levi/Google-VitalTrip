@@ -40,7 +40,7 @@ jobs:
             ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-
 
       - name: Generate Prisma Client
-        run: pnpm --filter client exec prisma generate
+        run: pnpm --filter client run generate
 
       - name: TypeScript type check
         run: pnpm --filter client type-check
