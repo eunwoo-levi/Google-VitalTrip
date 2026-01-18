@@ -9,6 +9,7 @@ export default function ConditionalBottomNavigateBar() {
   const shouldHide =
     pathname.startsWith('/about') ||
     pathname.startsWith('/news') ||
+    pathname.startsWith('/triage') ||
     pathname === '/login' ||
     pathname === '/signup' ||
     pathname === '/auth/callback';
