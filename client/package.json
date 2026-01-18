@@ -32,6 +32,7 @@
   "dependencies": {
     "@googlemaps/js-api-loader": "^1.16.10",
     "@next/third-parties": "^15.4.5",
+    "@prisma/adapter-pg": "^7.2.0",
     "@prisma/client": "^7.2.0",
     "@sentry/nextjs": "^10.0.0",
     "@tailwindcss/postcss": "^4.1.11",
@@ -44,6 +45,7 @@
     "import-in-the-middle": "^1.14.2",
     "motion": "^12.23.6",
     "next": "^15.5.9",
+    "pg": "^8.17.1",
     "prisma": "^7.2.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
@@ -59,6 +61,7 @@
     "@types/google.maps": "^3.58.1",
     "@types/jest": "^29.5.12",
     "@types/node": "^20.19.9",
+    "@types/pg": "^8.16.0",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
     "dotenv": "^17.2.3",
