@@ -57,8 +57,9 @@ const levelColors = {
   debug: 'bg-gray-50 text-gray-700 border-gray-200',
 };
 
-export default async function TriageDetailPage({ params }: { params: { id: string } }) {
-  const issue = await prisma.sentryIssue.findUnique({ where: { id: params.id } });
+export default async function TriageDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const issue = await prisma.sentryIssue.findUnique({ where: { id } });
   if (!issue)
     return (
       <main className='flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-50 via-white to-blue-50'>
