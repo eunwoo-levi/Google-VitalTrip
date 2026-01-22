@@ -1,8 +1,8 @@
 'use client';
 
 import { NewsArticle } from '../types';
-import { NewsCard } from './NewsCard';
 import { LoadingSkeleton } from './LoadingSkeleton';
+import { NewsCard } from './NewsCard';
 
 interface NewsGridProps {
   articles: NewsArticle[];
@@ -33,7 +33,7 @@ export function NewsGrid({ articles, isLoading, pageSize }: NewsGridProps) {
   return (
     <div className='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3'>
       {articles.map((article, index) => (
-        <NewsCard key={`${article.url}-${index}`} article={article} />
+        <NewsCard key={`${article.url}-${index}`} article={article} priority={index < 3} />
       ))}
     </div>
   );

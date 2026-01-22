@@ -3,6 +3,7 @@ import { NewsArticle } from '../types';
 
 interface NewsCardProps {
   article: NewsArticle;
+  priority?: boolean;
 }
 
 function formatDate(dateString: string): string {
@@ -16,7 +17,7 @@ function formatDate(dateString: string): string {
   });
 }
 
-export function NewsCard({ article }: NewsCardProps) {
+export function NewsCard({ article, priority = false }: NewsCardProps) {
   return (
     <div className='overflow-hidden rounded-lg bg-white shadow-md transition-shadow duration-300 hover:shadow-lg'>
       {article.imageUrl && (
@@ -27,6 +28,9 @@ export function NewsCard({ article }: NewsCardProps) {
             fill
             className='object-cover'
             sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
+            priority={priority}
+            placeholder='blur'
+            blurDataURL='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNzAwIiBoZWlnaHQ9IjQ3NSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2ZXJzaW9uPSIxLjEiLz4='
           />
         </div>
       )}
