@@ -177,7 +177,7 @@ async function fetchMedicalNewsCSR({
         pageSize: number;
       };
     }>(
-      `https://dkswoalstest.duckdns.org/api/news/headlines?page=${page}&pageSize=${pageSize}&country=${country}`,
+      `https://api.aivitaltrip.com/api/news/headlines?page=${page}&pageSize=${pageSize}&country=${country}`,
     );
 
     console.log('asdfasdf', response);

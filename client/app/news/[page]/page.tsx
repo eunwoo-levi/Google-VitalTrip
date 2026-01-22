@@ -5,6 +5,8 @@ import Navbar from '@/src/widgets/navbar/Navbar';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
+export const revalidate = 3600;
+
 export async function generateMetadata({ params }: NewsPageProps): Promise<Metadata> {
   const resolvedParams = await params;
   const pageNum = parseInt(resolvedParams.page);
