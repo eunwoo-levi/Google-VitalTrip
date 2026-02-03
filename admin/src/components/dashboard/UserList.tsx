@@ -1,4 +1,7 @@
+import { useOverlay } from "@vitaltrip/shared";
+import { useState } from "react";
 import { useUserList } from "../../api/dashboard/useUserList";
+import type { User } from "../../types/user";
 
 export const UserList = () => {
   const {
@@ -11,6 +14,9 @@ export const UserList = () => {
     handlePageChange,
     handlePageSizeChange,
   } = useUserList();
+
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const userDetailModal = useOverlay({ closeOnEscape: true });
 
   if (!data) {
     return null;
@@ -50,6 +56,16 @@ export const UserList = () => {
         User
       </span>
     );
+  };
+
+  const handleUserClick = (user: User) => {
+    setSelectedUser(user);
+    userDetailModal.open();
+  };
+
+  const handleCloseModal = () => {
+    userDetailModal.close();
+    setSelectedUser(null);
   };
 
   return (
@@ -113,7 +129,11 @@ export const UserList = () => {
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {users.map((user) => (
-                <tr key={user.id} className="hover:bg-gray-50">
+                <tr
+                  key={user.id}
+                  className="hover:bg-gray-50 cursor-pointer"
+                  onClick={() => handleUserClick(user)}
+                >
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                     {user.id}
                   </td>
@@ -193,7 +213,7 @@ export const UserList = () => {
             {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
               const startPage = Math.max(
                 0,
-                Math.min(currentPage - 2, totalPages - 5)
+                Math.min(currentPage - 2, totalPages - 5),
               );
               const pageNum = startPage + i;
 
@@ -237,6 +257,133 @@ export const UserList = () => {
         <div className="mt-4 text-center">
           <div className="text-sm text-gray-600">업데이트 중...</div>
         </div>
+      )}
+
+      {/* 사용자 상세 모달 */}
+      {userDetailModal.render(
+        selectedUser && (
+          <div className="w-[600px]">
+            <div className="flex justify-between items-center mb-6 pb-4 border-b">
+              <h2 className="text-2xl font-bold text-gray-900">
+                사용자 상세 정보
+              </h2>
+              <button
+                onClick={handleCloseModal}
+                className="text-gray-400 hover:text-gray-600 text-2xl leading-none"
+              >
+                ×
+              </button>
+            </div>
+
+            <div className="space-y-4">
+              {/* 프로필 이미지 */}
+              {selectedUser.profileImageUrl && (
+                <div className="flex justify-center mb-6">
+                  <img
+                    className="h-24 w-24 rounded-full border-4 border-gray-200"
+                    src={selectedUser.profileImageUrl}
+                    alt={selectedUser.name}
+                  />
+                </div>
+              )}
+
+              {/* 기본 정보 */}
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-500 mb-1">
+                    사용자 ID
+                  </label>
+                  <p className="text-base text-gray-900">{selectedUser.id}</p>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-500 mb-1">
+                    이름
+                  </label>
+                  <p className="text-base text-gray-900">{selectedUser.name}</p>
+                </div>
+
+                <div className="col-span-2">
+                  <label className="block text-sm font-medium text-gray-500 mb-1">
+                    이메일
+                  </label>
+                  <p className="text-base text-gray-900">
+                    {selectedUser.email}
+                  </p>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-500 mb-1">
+                    생년월일
+                  </label>
+                  <p className="text-base text-gray-900">
+                    {selectedUser.birthDate}
+                  </p>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-500 mb-1">
+                    국가 코드
+                  </label>
+                  <p className="text-base text-gray-900">
+                    {selectedUser.countryCode}
+                  </p>
+                </div>
+
+                <div className="col-span-2">
+                  <label className="block text-sm font-medium text-gray-500 mb-1">
+                    전화번호
+                  </label>
+                  <p className="text-base text-gray-900">
+                    {selectedUser.phoneNumber || "미등록"}
+                  </p>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-500 mb-1">
+                    로그인 제공자
+                  </label>
+                  <div>{getProviderBadge(selectedUser.provider)}</div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-500 mb-1">
+                    역할
+                  </label>
+                  <div>{getRoleBadge(selectedUser.role)}</div>
+                </div>
+
+                <div className="col-span-2">
+                  <label className="block text-sm font-medium text-gray-500 mb-1">
+                    가입일
+                  </label>
+                  <p className="text-base text-gray-900">
+                    {formatDate(selectedUser.createdAt)}
+                  </p>
+                </div>
+
+                <div className="col-span-2">
+                  <label className="block text-sm font-medium text-gray-500 mb-1">
+                    최종 수정일
+                  </label>
+                  <p className="text-base text-gray-900">
+                    {formatDate(selectedUser.updatedAt)}
+                  </p>
+                </div>
+              </div>
+
+              {/* 닫기 버튼 */}
+              <div className="flex justify-end mt-6 pt-4 border-t">
+                <button
+                  onClick={handleCloseModal}
+                  className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md font-medium"
+                >
+                  닫기
+                </button>
+              </div>
+            </div>
+          </div>
+        ),
       )}
     </div>
   );
