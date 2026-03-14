@@ -13,16 +13,11 @@ overrides:
   rollup: '>=4.59.0'
   serialize-javascript: '>=7.0.3'
   flatted: '>=3.4.0'
-  eslint>minimatch: ^3.1.4
-  eslint>ajv: ^6.14.0
-  '@eslint/eslintrc>minimatch': ^3.1.4
-  '@eslint/eslintrc>ajv': ^6.14.0
-  eslint-plugin-import>minimatch: ^3.1.4
-  test-exclude>minimatch: ^3.1.4
-  '@typescript-eslint/typescript-estree>minimatch': ^9.0.7
-  '@sentry/node>minimatch': ^9.0.7
-  glob>minimatch: ^8.0.6
-  schema-utils>ajv: ^8.18.0
+  minimatch@^3: ^3.1.4
+  minimatch@^8: ^8.0.6
+  minimatch@^9: ^9.0.7
+  ajv@^6: ^6.14.0
+  ajv@^8: ^8.18.0
   next: '>=15.6.0-canary.61'
   lodash: '>=4.17.23'
 
@@ -2135,7 +2130,7 @@ packages:
   ajv-formats@2.1.1:
     resolution: {integrity: sha512-Wx0Kx52hxE7C18hkMEggYlEifqWZtYaRgouJor+WMdPnQyEK13vgEWyVNup7SoeeoLMsr4kf5h6dOW11I15MUA==}
     peerDependencies:
-      ajv: ^8.0.0
+      ajv: ^8.18.0
     peerDependenciesMeta:
       ajv:
         optional: true
@@ -2143,7 +2138,7 @@ packages:
   ajv-keywords@5.1.0:
     resolution: {integrity: sha512-YCS/JNFAUyr5vAuhk1DWm1CBxRHW9LbJ2ozWeemrIqpbsqKjHVxYPyi5GC0rjZIT5JxJ3virVTS8wk4i/Z+krw==}
     peerDependencies:
-      ajv: ^8.8.2
+      ajv: ^8.18.0
 
   ajv@6.14.0:
     resolution: {integrity: sha512-IWrosm/yrn43eiKqkfkHis7QioDleaXQHdDVPKg0FSwwd/DuvyX79TZnFOnYpB7dcsFAMmtFztZuXPDvSePkFw==}
@@ -8156,7 +8151,7 @@ snapshots:
       fs.realpath: 1.0.0
       inflight: 1.0.6
       inherits: 2.0.4
-      minimatch: 8.0.7
+      minimatch: 3.1.5
       once: 1.4.0
       path-is-absolute: 1.0.1
 
