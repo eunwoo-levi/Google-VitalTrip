@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   description: '외교부 공식 여행경보 정보. 여행 전 목적지 안전 정보를 확인하세요.',
 };
 
-export const revalidate = 3600; // ISR: 1시간마다 갱신
+export const revalidate = 3600;
 
 async function fetchAllAlertCountries(): Promise<TravelAlertItem[]> {
   const serviceKey = process.env.TRAVEL_ALARM_API_KEY;
@@ -67,7 +67,6 @@ export default async function AlertsPage() {
           </p>
         </div>
 
-        {/* 경보 단계 요약 */}
         <div className='mb-8 grid grid-cols-2 gap-3 sm:grid-cols-4'>
           {[
             {
@@ -108,7 +107,6 @@ export default async function AlertsPage() {
           ))}
         </div>
 
-        {/* 검색 + 목록 (CSR) */}
         <CountrySearchClient countries={countries} />
       </main>
     </div>

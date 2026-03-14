@@ -15,11 +15,10 @@ interface Props {
 
 async function fetchTravelAlert(countryCode: string): Promise<TravelAlertItem[] | null> {
   const serviceKey = process.env.TRAVEL_ALARM_API_KEY;
-  // serviceKey가 이미 URL 인코딩된 상태이므로 직접 URL 조합 (URLSearchParams 사용 시 이중 인코딩 발생)
   const url = `https://apis.data.go.kr/1262000/TravelAlarmService2/getTravelAlarmList2?serviceKey=${serviceKey}&returnType=JSON&numOfRows=10&pageNo=1&cond%5Bcountry_iso_alp2%3A%3AEQ%5D=${countryCode.toUpperCase()}`;
 
   try {
-    const res = await fetch(url, { cache: 'no-store' }); // SSR: 매 요청마다 최신 경보 정보
+    const res = await fetch(url, { cache: 'no-store' });
 
     if (!res.ok) return null;
 
@@ -74,7 +73,6 @@ export default async function TravelAlertPage({ params }: Props) {
       </header>
 
       <main className='mx-auto max-w-4xl px-6 py-10 pb-[100px]'>
-        {/* 국가 헤더 */}
         <div className='mb-8 overflow-hidden rounded-2xl bg-white shadow-xl'>
           <div className='flex items-center gap-6 p-8'>
             {country.flag_download_url && (
