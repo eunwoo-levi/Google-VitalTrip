@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { MdEdit } from 'react-icons/md';
+import { MdEdit } from '@/src/shared/ui/icons';
 import { useEditProfile } from '../hooks/useEditProfile';
 import { Profile } from '../types/profile';
 

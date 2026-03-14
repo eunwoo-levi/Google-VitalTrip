@@ -3,10 +3,16 @@
 import EmergencyCallBanner from '@/src/features/firstAid/ui/EmergencyCallBanner';
 import { useHydration } from '@/src/shared/hooks/useHydration';
 import { useTranslation } from 'react-i18next';
-import { BsCheckCircle } from 'react-icons/bs';
-import { FiActivity, FiExternalLink, FiInfo } from 'react-icons/fi';
-import { HiOutlineDocumentText } from 'react-icons/hi';
-import { MdArrowForward, MdErrorOutline, MdMedicalServices } from 'react-icons/md';
+import {
+  BsCheckCircle,
+  FiActivity,
+  FiExternalLink,
+  FiInfo,
+  HiOutlineDocumentText,
+  MdArrowForward,
+  MdErrorOutline,
+  MdMedicalServices,
+} from '@/src/shared/ui/icons';
 import { Medical } from '../../medical/types/medical';
 import { formatDistance } from '../../medical/utils/formatDistance';
 import { useFirstAidCombined } from '../hooks/useFirstAidCombined';

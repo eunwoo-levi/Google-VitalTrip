@@ -1,6 +1,5 @@
 import { motion } from 'motion/react';
-import { MdEmail } from 'react-icons/md';
-import { FaRegSmile } from 'react-icons/fa';
+import { MdEmail, FaRegSmile } from '@/src/shared/ui/icons';
 import CopyEmailButton from '@/src/shared/ui/CopyEmailButton';
 
 export default function Contact() {
@@ -26,7 +25,7 @@ export default function Contact() {
       </section>
       <section className='mt-8 flex flex-col items-center gap-2'>
         <CopyEmailButton />
-        <span className='text-xs text-gray-500'>We usually respond quickly!</span>
+        <span className='text-xs text-gray-600'>We usually respond quickly!</span>
       </section>
       <footer className='mt-8 flex flex-col gap-2 border-t pt-6 text-center text-base font-bold text-blue-700'>
         <span className='flex items-center justify-center gap-1'>

@@ -1,5 +1,5 @@
 import { motion } from 'motion/react';
-import { MdLocalHospital } from 'react-icons/md';
+import { MdLocalHospital } from '@/src/shared/ui/icons';
 
 export const LoadingSpinner = () => {
   return (

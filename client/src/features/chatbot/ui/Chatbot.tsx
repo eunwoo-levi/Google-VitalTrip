@@ -1,4 +1,4 @@
-import { RiRobot3Line } from 'react-icons/ri';
+import { RiRobot3Line } from '@/src/shared/ui/icons';
 import { useChatbot } from '../hooks/useChatbot';
 
 export default function Chatbot() {

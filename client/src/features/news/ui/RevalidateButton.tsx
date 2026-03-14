@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { MdRefresh } from 'react-icons/md';
+import { MdRefresh } from '@/src/shared/ui/icons';
 import { revalidateNews } from '../actions/revalidateNews';
 
 export const RevalidateButton = () => {

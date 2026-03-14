@@ -1,8 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { MdContactSupport } from 'react-icons/md';
-import { FaCheck } from 'react-icons/fa';
+import { MdContactSupport, FaCheck } from '@/src/shared/ui/icons';
 
 const useCopyEmail = (email: string) => {
   const [copied, setCopied] = useState(false);
