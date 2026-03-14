@@ -155,15 +155,6 @@ export default function RootLayout({
       <head>
         <link rel='dns-prefetch' href='https://maps.googleapis.com' />
         <link rel='dns-prefetch' href='https://fonts.googleapis.com' />
-
-        {/* Preload local font */}
-        <link
-          rel='preload'
-          href='/fonts/iansui.woff2'
-          as='font'
-          type='font/woff2'
-          crossOrigin='anonymous'
-        />
         <meta name='format-detection' content='telephone=no' />
         <meta name='color-scheme' content='light dark' />
       </head>
