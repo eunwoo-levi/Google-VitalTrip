@@ -5,11 +5,9 @@ import { useSymptomStore } from '@/src/features/firstAid/store/useSymptomStore';
 import { UserProfileInfo } from '@/src/features/profile/ui/UserProfileInfo';
 import { useOutsideClick } from '@/src/shared/hooks/useOutsideClick';
 import Modal from '@/src/shared/ui/Modal';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { FaMapMarkedAlt, FaRegHospital } from 'react-icons/fa';
-import { MdGTranslate } from 'react-icons/md';
+import { FaMapMarkedAlt, FaRegHospital, MdGTranslate, MdOutlineWarningAmber } from '@/src/shared/ui/icons';
 import { useBottonNavigateBarModals } from '../hooks/useBottonNavigateBarModals';
 import { useTempSymptomData } from '../hooks/useTempSymptomData';
 import Contact from './Contact';
@@ -52,33 +50,29 @@ export default function BottomNavigateBar() {
 
   return (
     <>
-      <div className='fixed bottom-2 left-1/2 z-10 flex h-[60px] w-[98%] -translate-x-1/2 items-center justify-evenly gap-2 rounded-t-xl bg-white shadow-xl'>
-        <Link href='/' className={linkClassName}>
+      <div className='fixed bottom-2 left-1/2 z-10 flex h-[60px] w-[98%] -translate-x-1/2 items-center justify-evenly gap-2 rounded-t-xl bg-white shadow-xl will-change-transform'>
+        <Link href='/' aria-label='홈으로 이동' className={linkClassName}>
           <FaMapMarkedAlt size={25} className='text-red-500' />
         </Link>
 
-        <Link href='/translate' className={linkClassName}>
+        <Link href='/translate' aria-label='의료 번역 페이지로 이동' className={linkClassName}>
           <MdGTranslate size={25} className='text-red-500' />
         </Link>
 
-        <button onClick={() => setIsProfileModalOpen(true)} className={linkClassName}>
-          <Image src='/logo.webp' alt='logo' width={25} height={25} className='object-contain' />
-        </button>
-        {isProfileModalOpen && (
-          <Modal key='profile-modal' onClose={() => setIsProfileModalOpen(false)}>
-            <UserProfileInfo onClose={() => setIsProfileModalOpen(false)} />
-          </Modal>
-        )}
-
-        <button onClick={() => setIsSymptomModalOpen((prev) => !prev)} className={linkClassName}>
+        <button aria-label='증상 입력 열기' onClick={() => setIsSymptomModalOpen((prev) => !prev)} className={linkClassName}>
           <FaRegHospital size={25} className='text-red-500' />
         </button>
+
+        <Link href='/alerts' aria-label='여행 경보 페이지로 이동' className={linkClassName}>
+          <MdOutlineWarningAmber size={25} className='text-red-500' />
+        </Link>
 
         <MenuDropdown
           isMenuOpen={isMenuOpen}
           menuRef={menuRef}
           setIsMenuOpen={setIsMenuOpen}
           setInfoModalCode={setInfoModalCode}
+          setIsProfileModalOpen={setIsProfileModalOpen}
         />
         <Chatbot />
       </div>
@@ -91,6 +85,11 @@ export default function BottomNavigateBar() {
           isDisabled={isDisabled}
           handleSubmit={handleSubmit}
         />
+      )}
+      {isProfileModalOpen && (
+        <Modal key='profile-modal' onClose={() => setIsProfileModalOpen(false)}>
+          <UserProfileInfo onClose={() => setIsProfileModalOpen(false)} />
+        </Modal>
       )}
       {infoModalCode === 'EMERGENCY' && (
         <Modal key='emergency-modal' onClose={() => setInfoModalCode(null)}>
