@@ -2,8 +2,7 @@ import { useIdentifyCountryMutation } from '@/src/features/medical/api/useIdenti
 import { useCurrentLocation } from '@/src/shared/hooks/useCurrentLocation';
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
-import { FaGlobeAmericas } from 'react-icons/fa';
-import { MdLocalFireDepartment, MdLocalHospital, MdLocalPolice, MdWarning } from 'react-icons/md';
+import { FaGlobeAmericas, MdLocalFireDepartment, MdLocalHospital, MdLocalPolice, MdWarning } from '@/src/shared/ui/icons';
 
 interface EmergencyNumbers {
   country: string;
@@ -101,7 +100,7 @@ export default function EmergencyCall() {
           <span className='rounded bg-yellow-200 px-2 py-0.5 font-mono'>112</span> connects you to
           all emergency services.
         </span>
-        <span className='text-xs text-gray-500'>
+        <span className='text-xs text-gray-600'>
           Stay calm and provide clear information to responders.
         </span>
       </footer>

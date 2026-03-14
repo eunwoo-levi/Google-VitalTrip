@@ -12,7 +12,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { FaBars, FaChevronDown, FaTimes } from 'react-icons/fa';
+import { FaBars, FaChevronDown, FaTimes } from '@/src/shared/ui/icons';
 
 const LanguageDropdown = () => {
   const { i18n } = useTranslation();
@@ -54,6 +54,8 @@ const LanguageDropdown = () => {
     <div className='relative'>
       <button
         onClick={() => setIsOpen(!isOpen)}
+        aria-label={`언어 선택: ${displayLanguage.name}`}
+        aria-expanded={isOpen}
         className='flex items-center gap-1 rounded-md px-2 py-2 text-sm font-medium text-gray-700 transition-colors duration-200 hover:bg-blue-50 hover:text-blue-600'
       >
         <span className='text-xl'>{displayLanguage.flag}</span>
@@ -107,7 +109,7 @@ export default function Navbar() {
       <div className='mx-auto px-6 md:px-10'>
         <div className='flex h-16 items-center justify-between'>
           <div className='flex items-center'>
-            <Link href='/' className='flex items-center space-x-2'>
+            <Link href='/' aria-label='VitalTrip 홈으로 이동' className='flex items-center space-x-2'>
               <Image
                 src='/VitalTrip.svg'
                 alt='VitalTrip Logo'
@@ -162,6 +164,8 @@ export default function Navbar() {
           <div className='md:hidden'>
             <button
               onClick={toggleMenu}
+              aria-label={isMenuOpen ? '메뉴 닫기' : '메뉴 열기'}
+              aria-expanded={isMenuOpen}
               className='rounded-md p-2 text-gray-700 transition-colors duration-200 hover:bg-blue-50 hover:text-blue-600'
             >
               {isMenuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
