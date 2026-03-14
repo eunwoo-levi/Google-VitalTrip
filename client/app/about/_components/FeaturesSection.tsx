@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'motion/react';
-import { FaHospitalAlt, FaLanguage, FaMapMarkedAlt, FaRobot } from 'react-icons/fa';
+import { FaHospitalAlt, FaLanguage, FaMapMarkedAlt, FaRobot } from '@/src/shared/ui/icons';
 
 interface FeaturesSectionProps {
   translations: ReturnType<typeof import('@/app/about/_utils/translations').getTranslations>;

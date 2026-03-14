@@ -1,6 +1,6 @@
 'use client';
 
-import { FaCheck } from 'react-icons/fa';
+import { FaCheck } from '@/src/shared/ui/icons';
 
 interface SignupNavigateBarProps {
   currentStep: 'step1' | 'step2' | 'step3';

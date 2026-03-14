@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { FaEnvelope } from 'react-icons/fa';
+import { FaEnvelope } from '@/src/shared/ui/icons';
 
 interface FooterProps {
   translations: ReturnType<typeof import('@/app/about/_utils/translations').getTranslations>;

@@ -1,6 +1,6 @@
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
-import { BsShieldCheck } from 'react-icons/bs';
+import { BsShieldCheck } from '@/src/shared/ui/icons';
 
 export const ConfidenceIndicator = ({ confidence }: { confidence: number }) => {
   const [displayValue, setDisplayValue] = useState(0);
