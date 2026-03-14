@@ -1,7 +1,6 @@
 import { TravelAlertApiResponse, TravelAlertItem } from '../types/travelAlert';
 
-const BASE_URL =
-  'https://apis.data.go.kr/1262000/TravelAlarmService2/getTravelAlarmList2';
+const BASE_URL = 'https://apis.data.go.kr/1262000/TravelAlarmService2/getTravelAlarmList2';
 
 function getServiceKey() {
   return process.env.TRAVEL_ALARM_API_KEY;
