@@ -12,7 +12,6 @@ export const CountrySearchClient = ({ countries }: Props) => {
   const [query, setQuery] = useState('');
   const router = useRouter();
 
-  // 같은 국가가 지역별로 여러 row로 올 수 있어서 나라당 하나로 합침 (가장 높은 경보단계)
   const deduped = Object.values(
     countries.reduce(
       (acc, c) => {
@@ -37,7 +36,6 @@ export const CountrySearchClient = ({ countries }: Props) => {
 
   return (
     <div>
-      {/* 검색창 */}
       <div className='relative mb-8'>
         <input
           type='text'
@@ -57,12 +55,10 @@ export const CountrySearchClient = ({ countries }: Props) => {
         )}
       </div>
 
-      {/* 결과 수 */}
       <p className='mb-4 text-sm text-gray-600'>
         {query ? `"${query}" 검색 결과 ${filtered.length}개` : `전체 ${deduped.length}개국`}
       </p>
 
-      {/* 국가 목록 */}
       {filtered.length === 0 ? (
         <div className='py-20 text-center text-gray-400'>검색 결과가 없어요</div>
       ) : (
