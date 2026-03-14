@@ -52,7 +52,13 @@ export const MenuDropdown = ({
                 }}
                 className='mb-2 flex w-full items-center justify-center gap-2 rounded-md p-2 transition-all duration-200 hover:bg-gray-100 hover:text-red-500'
               >
-                <Image src='/logo.webp' alt='logo' width={18} height={18} className='object-contain' />
+                <Image
+                  src='/logo.webp'
+                  alt='logo'
+                  width={18}
+                  height={18}
+                  className='object-contain'
+                />
                 {t('menu.mypage')}
               </button>
             </li>

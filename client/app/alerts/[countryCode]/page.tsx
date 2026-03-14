@@ -1,4 +1,8 @@
-import { ALARM_LEVEL, TravelAlertApiResponse, TravelAlertItem } from '@/src/features/travelAlert/types/travelAlert';
+import {
+  ALARM_LEVEL,
+  TravelAlertApiResponse,
+  TravelAlertItem,
+} from '@/src/features/travelAlert/types/travelAlert';
 import { TravelAlertContent } from '@/src/features/travelAlert/ui/TravelAlertContent';
 import { Metadata } from 'next';
 import Image from 'next/image';
@@ -56,7 +60,13 @@ export default async function TravelAlertPage({ params }: Props) {
         <div className='mx-auto max-w-4xl px-6 py-5'>
           <div className='flex items-center gap-3'>
             <Link href='/' aria-label='VitalTrip 홈으로 이동'>
-              <Image src='/VitalTrip.svg' alt='VitalTrip' width={40} height={40} className='h-10 w-auto' />
+              <Image
+                src='/VitalTrip.svg'
+                alt='VitalTrip'
+                width={40}
+                height={40}
+                className='h-10 w-auto'
+              />
             </Link>
             <span className='text-lg font-semibold text-gray-700'>해외 여행경보</span>
           </div>

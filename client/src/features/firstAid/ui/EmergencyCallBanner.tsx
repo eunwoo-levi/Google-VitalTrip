@@ -1,6 +1,12 @@
 import { motion } from 'motion/react';
 import { useTranslation } from 'react-i18next';
-import { FaGlobeAmericas, MdLocalFireDepartment, MdLocalHospital, MdLocalPolice, MdWarning } from '@/src/shared/ui/icons';
+import {
+  FaGlobeAmericas,
+  MdLocalFireDepartment,
+  MdLocalHospital,
+  MdLocalPolice,
+  MdWarning,
+} from '@/src/shared/ui/icons';
 
 type EmergencyContact = {
   fire: string | null;

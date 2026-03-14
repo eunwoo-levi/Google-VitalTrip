@@ -2,7 +2,13 @@ import { useIdentifyCountryMutation } from '@/src/features/medical/api/useIdenti
 import { useCurrentLocation } from '@/src/shared/hooks/useCurrentLocation';
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
-import { FaGlobeAmericas, MdLocalFireDepartment, MdLocalHospital, MdLocalPolice, MdWarning } from '@/src/shared/ui/icons';
+import {
+  FaGlobeAmericas,
+  MdLocalFireDepartment,
+  MdLocalHospital,
+  MdLocalPolice,
+  MdWarning,
+} from '@/src/shared/ui/icons';
 
 interface EmergencyNumbers {
   country: string;

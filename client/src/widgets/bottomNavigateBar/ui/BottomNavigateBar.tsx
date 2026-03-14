@@ -7,7 +7,12 @@ import { useOutsideClick } from '@/src/shared/hooks/useOutsideClick';
 import Modal from '@/src/shared/ui/Modal';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { FaMapMarkedAlt, FaRegHospital, MdGTranslate, MdOutlineWarningAmber } from '@/src/shared/ui/icons';
+import {
+  FaMapMarkedAlt,
+  FaRegHospital,
+  MdGTranslate,
+  MdOutlineWarningAmber,
+} from '@/src/shared/ui/icons';
 import { useBottonNavigateBarModals } from '../hooks/useBottonNavigateBarModals';
 import { useTempSymptomData } from '../hooks/useTempSymptomData';
 import Contact from './Contact';
@@ -59,7 +64,11 @@ export default function BottomNavigateBar() {
           <MdGTranslate size={25} className='text-red-500' />
         </Link>
 
-        <button aria-label='증상 입력 열기' onClick={() => setIsSymptomModalOpen((prev) => !prev)} className={linkClassName}>
+        <button
+          aria-label='증상 입력 열기'
+          onClick={() => setIsSymptomModalOpen((prev) => !prev)}
+          className={linkClassName}
+        >
           <FaRegHospital size={25} className='text-red-500' />
         </button>
 

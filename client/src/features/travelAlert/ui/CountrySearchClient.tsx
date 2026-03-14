@@ -50,7 +50,7 @@ export const CountrySearchClient = ({ countries }: Props) => {
           <button
             onClick={() => setQuery('')}
             aria-label='검색어 지우기'
-            className='absolute right-5 top-1/2 -translate-y-1/2 text-gray-600 hover:text-gray-800'
+            className='absolute top-1/2 right-5 -translate-y-1/2 text-gray-600 hover:text-gray-800'
           >
             ✕
           </button>
@@ -72,10 +72,8 @@ export const CountrySearchClient = ({ countries }: Props) => {
             return (
               <button
                 key={country.country_iso_alp2}
-                onClick={() =>
-                  router.push(`/alerts/${country.country_iso_alp2.toLowerCase()}`)
-                }
-                className='flex items-center gap-4 rounded-xl border border-gray-100 bg-white p-4 text-left shadow-sm transition-shadow transition-colors duration-200 hover:border-blue-300 hover:bg-blue-50 hover:shadow-md active:bg-blue-100'
+                onClick={() => router.push(`/alerts/${country.country_iso_alp2.toLowerCase()}`)}
+                className='flex items-center gap-4 rounded-xl border border-gray-100 bg-white p-4 text-left shadow-sm transition-colors transition-shadow duration-200 hover:border-blue-300 hover:bg-blue-50 hover:shadow-md active:bg-blue-100'
               >
                 {country.flag_download_url && (
                   <img

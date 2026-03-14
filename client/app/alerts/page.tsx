@@ -1,5 +1,8 @@
 import { CountrySearchClient } from '@/src/features/travelAlert/ui/CountrySearchClient';
-import { TravelAlertApiResponse, TravelAlertItem } from '@/src/features/travelAlert/types/travelAlert';
+import {
+  TravelAlertApiResponse,
+  TravelAlertItem,
+} from '@/src/features/travelAlert/types/travelAlert';
 import { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -43,7 +46,13 @@ export default async function AlertsPage() {
         <div className='mx-auto max-w-5xl px-6 py-5'>
           <div className='flex items-center gap-3'>
             <Link href='/' aria-label='VitalTrip 홈으로 이동'>
-              <Image src='/VitalTrip.svg' alt='VitalTrip' width={40} height={40} className='h-10 w-auto' />
+              <Image
+                src='/VitalTrip.svg'
+                alt='VitalTrip'
+                width={40}
+                height={40}
+                className='h-10 w-auto'
+              />
             </Link>
             <span className='text-lg font-semibold text-gray-700'>해외 여행경보</span>
           </div>
@@ -61,14 +70,40 @@ export default async function AlertsPage() {
         {/* 경보 단계 요약 */}
         <div className='mb-8 grid grid-cols-2 gap-3 sm:grid-cols-4'>
           {[
-            { level: '1', label: '여행유의', bg: 'bg-blue-50', text: 'text-blue-700', border: 'border-blue-200' },
-            { level: '2', label: '여행자제', bg: 'bg-yellow-50', text: 'text-yellow-700', border: 'border-yellow-200' },
-            { level: '3', label: '출국권고', bg: 'bg-orange-50', text: 'text-orange-700', border: 'border-orange-200' },
-            { level: '4', label: '여행금지', bg: 'bg-red-50', text: 'text-red-700', border: 'border-red-200' },
+            {
+              level: '1',
+              label: '여행유의',
+              bg: 'bg-blue-50',
+              text: 'text-blue-700',
+              border: 'border-blue-200',
+            },
+            {
+              level: '2',
+              label: '여행자제',
+              bg: 'bg-yellow-50',
+              text: 'text-yellow-700',
+              border: 'border-yellow-200',
+            },
+            {
+              level: '3',
+              label: '출국권고',
+              bg: 'bg-orange-50',
+              text: 'text-orange-700',
+              border: 'border-orange-200',
+            },
+            {
+              level: '4',
+              label: '여행금지',
+              bg: 'bg-red-50',
+              text: 'text-red-700',
+              border: 'border-red-200',
+            },
           ].map(({ level, label, bg, text, border }) => (
             <div key={level} className={`rounded-xl border-2 ${border} ${bg} p-4 text-center`}>
               <div className={`text-2xl font-bold ${text}`}>{levelCounts[level] ?? 0}</div>
-              <div className={`text-sm font-medium ${text}`}>{level}단계 · {label}</div>
+              <div className={`text-sm font-medium ${text}`}>
+                {level}단계 · {label}
+              </div>
             </div>
           ))}
         </div>

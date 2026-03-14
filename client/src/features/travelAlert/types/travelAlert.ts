@@ -34,8 +34,32 @@ export interface TravelAlertApiResponse {
 }
 
 export const ALARM_LEVEL = {
-  '1': { label: '여행유의', color: 'blue', bg: 'bg-blue-100', text: 'text-blue-700', border: 'border-blue-300' },
-  '2': { label: '여행자제', color: 'yellow', bg: 'bg-yellow-100', text: 'text-yellow-700', border: 'border-yellow-300' },
-  '3': { label: '출국권고', color: 'orange', bg: 'bg-orange-100', text: 'text-orange-700', border: 'border-orange-300' },
-  '4': { label: '여행금지', color: 'red', bg: 'bg-red-100', text: 'text-red-700', border: 'border-red-300' },
+  '1': {
+    label: '여행유의',
+    color: 'blue',
+    bg: 'bg-blue-100',
+    text: 'text-blue-700',
+    border: 'border-blue-300',
+  },
+  '2': {
+    label: '여행자제',
+    color: 'yellow',
+    bg: 'bg-yellow-100',
+    text: 'text-yellow-700',
+    border: 'border-yellow-300',
+  },
+  '3': {
+    label: '출국권고',
+    color: 'orange',
+    bg: 'bg-orange-100',
+    text: 'text-orange-700',
+    border: 'border-orange-300',
+  },
+  '4': {
+    label: '여행금지',
+    color: 'red',
+    bg: 'bg-red-100',
+    text: 'text-red-700',
+    border: 'border-red-300',
+  },
 } as const;

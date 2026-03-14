@@ -27,16 +27,18 @@ export const TravelAlertContent = ({ items, alarmInfo }: Props) => {
       <div className='overflow-hidden rounded-2xl bg-white shadow-xl'>
         <div className='bg-gradient-to-r from-slate-700 to-slate-800 px-8 py-6 text-white'>
           <h2 className='text-xl font-bold'>지역별 경보 상세</h2>
-          <p className='mt-1 text-slate-300 text-sm'>총 {items.length}개 지역</p>
+          <p className='mt-1 text-sm text-slate-300'>총 {items.length}개 지역</p>
         </div>
         <div className='divide-y divide-gray-100'>
           {items.map((item, idx) => {
             const level = ALARM_LEVEL[item.alarm_lvl as keyof typeof ALARM_LEVEL];
             return (
               <div key={idx} className='flex items-start gap-4 p-6'>
-                <div className='flex-shrink-0 mt-1'>
+                <div className='mt-1 flex-shrink-0'>
                   {level && (
-                    <span className={`inline-flex items-center rounded-full px-3 py-1 text-sm font-semibold ${level.bg} ${level.text}`}>
+                    <span
+                      className={`inline-flex items-center rounded-full px-3 py-1 text-sm font-semibold ${level.bg} ${level.text}`}
+                    >
                       {item.alarm_lvl}단계 · {level.label}
                     </span>
                   )}
@@ -98,9 +100,7 @@ const AlarmBadge = ({
 }) => {
   const emojiMap = { blue: '💙', yellow: '⚠️', orange: '🟠', red: '🚫' };
   return (
-    <span className='text-5xl'>
-      {emojiMap[alarmInfo.color as keyof typeof emojiMap] ?? '⚠️'}
-    </span>
+    <span className='text-5xl'>{emojiMap[alarmInfo.color as keyof typeof emojiMap] ?? '⚠️'}</span>
   );
 };
 
@@ -111,7 +111,10 @@ const AlarmLevelGuide = () => (
     </div>
     <div className='grid grid-cols-2 gap-4 p-6 sm:grid-cols-4'>
       {Object.entries(ALARM_LEVEL).map(([level, info]) => (
-        <div key={level} className={`rounded-xl border-2 ${info.border} ${info.bg} p-4 text-center`}>
+        <div
+          key={level}
+          className={`rounded-xl border-2 ${info.border} ${info.bg} p-4 text-center`}
+        >
           <div className={`text-2xl font-bold ${info.text}`}>{level}단계</div>
           <div className={`mt-1 text-sm font-semibold ${info.text}`}>{info.label}</div>
         </div>

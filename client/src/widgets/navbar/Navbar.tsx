@@ -109,7 +109,11 @@ export default function Navbar() {
       <div className='mx-auto px-6 md:px-10'>
         <div className='flex h-16 items-center justify-between'>
           <div className='flex items-center'>
-            <Link href='/' aria-label='VitalTrip 홈으로 이동' className='flex items-center space-x-2'>
+            <Link
+              href='/'
+              aria-label='VitalTrip 홈으로 이동'
+              className='flex items-center space-x-2'
+            >
               <Image
                 src='/VitalTrip.svg'
                 alt='VitalTrip Logo'
