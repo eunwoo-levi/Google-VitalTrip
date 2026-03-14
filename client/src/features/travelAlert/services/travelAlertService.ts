@@ -11,7 +11,7 @@ export async function fetchAllAlertCountries(): Promise<TravelAlertItem[]> {
   const url = `${BASE_URL}?serviceKey=${getServiceKey()}&returnType=JSON&numOfRows=300&pageNo=1`;
 
   try {
-    const res = await fetch(url, { next: { revalidate: 3600 } });
+    const res = await fetch(url, { cache: 'no-store' });
     if (!res.ok) return [];
     const data: TravelAlertApiResponse = await res.json();
     return data.response.body.items?.item ?? [];

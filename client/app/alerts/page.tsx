@@ -10,8 +10,6 @@ export const metadata: Metadata = {
   description: '외교부 공식 여행경보 정보. 여행 전 목적지 안전 정보를 확인하세요.',
 };
 
-export const revalidate = 3600;
-
 export default async function AlertsPage() {
   const countries = await fetchAllAlertCountries();
 
