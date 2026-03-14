@@ -1,4 +1,4 @@
-import { TravelAlertApiResponse } from '@/src/features/travelAlert/types/travelAlert';
+import { fetchTravelAlertByCountry } from '@/src/features/travelAlert/services/travelAlertService';
 import * as Sentry from '@sentry/nextjs';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -11,17 +11,11 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ message: 'countryCode is required' }, { status: 400 });
     }
 
-    const serviceKey = process.env.TRAVEL_ALARM_API_KEY;
-    const url = `https://apis.data.go.kr/1262000/TravelAlarmService2/getTravelAlarmList2?serviceKey=${serviceKey}&returnType=JSON&numOfRows=10&pageNo=1&cond%5Bcountry_iso_alp2%3A%3AEQ%5D=${countryCode.toUpperCase()}`;
+    const items = await fetchTravelAlertByCountry(countryCode);
 
-    const response = await fetch(url);
-
-    if (!response.ok) {
+    if (!items) {
       return NextResponse.json({ message: 'Failed to fetch travel alarm' }, { status: 500 });
     }
-
-    const data: TravelAlertApiResponse = await response.json();
-    const items = data.response.body.items?.item ?? [];
 
     return NextResponse.json({ items });
   } catch (error) {

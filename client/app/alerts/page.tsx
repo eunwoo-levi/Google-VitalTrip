@@ -1,8 +1,6 @@
+import { fetchAllAlertCountries } from '@/src/features/travelAlert/services/travelAlertService';
+import { ALARM_LEVEL } from '@/src/features/travelAlert/types/travelAlert';
 import { CountrySearchClient } from '@/src/features/travelAlert/ui/CountrySearchClient';
-import {
-  TravelAlertApiResponse,
-  TravelAlertItem,
-} from '@/src/features/travelAlert/types/travelAlert';
 import { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -13,20 +11,6 @@ export const metadata: Metadata = {
 };
 
 export const revalidate = 3600;
-
-async function fetchAllAlertCountries(): Promise<TravelAlertItem[]> {
-  const serviceKey = process.env.TRAVEL_ALARM_API_KEY;
-  const url = `https://apis.data.go.kr/1262000/TravelAlarmService2/getTravelAlarmList2?serviceKey=${serviceKey}&returnType=JSON&numOfRows=300&pageNo=1`;
-
-  try {
-    const res = await fetch(url, { next: { revalidate: 3600 } });
-    if (!res.ok) return [];
-    const data: TravelAlertApiResponse = await res.json();
-    return data.response.body.items?.item ?? [];
-  } catch {
-    return [];
-  }
-}
 
 export default async function AlertsPage() {
   const countries = await fetchAllAlertCountries();
@@ -68,36 +52,7 @@ export default async function AlertsPage() {
         </div>
 
         <div className='mb-8 grid grid-cols-2 gap-3 sm:grid-cols-4'>
-          {[
-            {
-              level: '1',
-              label: '여행유의',
-              bg: 'bg-blue-50',
-              text: 'text-blue-700',
-              border: 'border-blue-200',
-            },
-            {
-              level: '2',
-              label: '여행자제',
-              bg: 'bg-yellow-50',
-              text: 'text-yellow-700',
-              border: 'border-yellow-200',
-            },
-            {
-              level: '3',
-              label: '출국권고',
-              bg: 'bg-orange-50',
-              text: 'text-orange-700',
-              border: 'border-orange-200',
-            },
-            {
-              level: '4',
-              label: '여행금지',
-              bg: 'bg-red-50',
-              text: 'text-red-700',
-              border: 'border-red-200',
-            },
-          ].map(({ level, label, bg, text, border }) => (
+          {Object.entries(ALARM_LEVEL).map(([level, { label, bg, text, border }]) => (
             <div key={level} className={`rounded-xl border-2 ${border} ${bg} p-4 text-center`}>
               <div className={`text-2xl font-bold ${text}`}>{levelCounts[level] ?? 0}</div>
               <div className={`text-sm font-medium ${text}`}>

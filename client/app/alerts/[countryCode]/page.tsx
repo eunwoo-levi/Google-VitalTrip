@@ -1,8 +1,5 @@
-import {
-  ALARM_LEVEL,
-  TravelAlertApiResponse,
-  TravelAlertItem,
-} from '@/src/features/travelAlert/types/travelAlert';
+import { fetchTravelAlertByCountry } from '@/src/features/travelAlert/services/travelAlertService';
+import { ALARM_LEVEL } from '@/src/features/travelAlert/types/travelAlert';
 import { TravelAlertContent } from '@/src/features/travelAlert/ui/TravelAlertContent';
 import { Metadata } from 'next';
 import Image from 'next/image';
@@ -13,25 +10,9 @@ interface Props {
   params: Promise<{ countryCode: string }>;
 }
 
-async function fetchTravelAlert(countryCode: string): Promise<TravelAlertItem[] | null> {
-  const serviceKey = process.env.TRAVEL_ALARM_API_KEY;
-  const url = `https://apis.data.go.kr/1262000/TravelAlarmService2/getTravelAlarmList2?serviceKey=${serviceKey}&returnType=JSON&numOfRows=10&pageNo=1&cond%5Bcountry_iso_alp2%3A%3AEQ%5D=${countryCode.toUpperCase()}`;
-
-  try {
-    const res = await fetch(url, { cache: 'no-store' });
-
-    if (!res.ok) return null;
-
-    const data: TravelAlertApiResponse = await res.json();
-    return data.response.body.items?.item ?? [];
-  } catch {
-    return null;
-  }
-}
-
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { countryCode } = await params;
-  const items = await fetchTravelAlert(countryCode);
+  const items = await fetchTravelAlertByCountry(countryCode);
   const country = items?.[0];
 
   if (!country) return { title: '여행경보 정보' };
@@ -46,7 +27,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function TravelAlertPage({ params }: Props) {
   const { countryCode } = await params;
-  const items = await fetchTravelAlert(countryCode);
+  const items = await fetchTravelAlertByCountry(countryCode);
 
   if (!items || items.length === 0) notFound();
 
