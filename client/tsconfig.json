@@ -22,7 +22,8 @@
     "paths": {
       "@/*": ["./*"],
       "@shared/*": ["../shared/*"]
-    }
+    },
+    "types": ["google.maps"]
   },
   "include": [
     "next-env.d.ts",
