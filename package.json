@@ -36,7 +36,8 @@
       "effect": ">=3.20.0",
       "defu": ">=6.1.5",
       "vite": ">=7.3.2",
-      "brace-expansion": ">=1.1.13",
+      "brace-expansion@^1": "1.1.13",
+      "brace-expansion@^2": ">=2.0.3",
       "picomatch": ">=2.3.2"
     }
   }
