@@ -23,7 +23,7 @@
       "@/*": ["./*"],
       "@shared/*": ["../shared/*"]
     },
-    "types": ["google.maps"]
+    "types": ["google.maps", "jest"]
   },
   "include": [
     "next-env.d.ts",
