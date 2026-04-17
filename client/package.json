@@ -46,7 +46,7 @@
     "i18next-http-backend": "^3.0.2",
     "import-in-the-middle": "^1.14.2",
     "motion": "^12.23.6",
-    "next": "^15.5.11",
+    "next": "^16.2.4",
     "pg": "^8.17.1",
     "prisma": "^7.2.0",
     "react": "^19.1.1",
