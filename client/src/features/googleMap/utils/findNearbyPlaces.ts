@@ -1,22 +1,48 @@
-/**
- * @description: 주변 약국, 병원, 응급실 검색 (반경 1km 이내)
- * @param {google.maps.places.PlacesService} placesService - Google Places API 서비스 객체
- * @param {google.maps.LatLngLiteral} location - 검색할 위치 (위도, 경도)
- * @param {google.maps.Map} map - Google Maps 객체
- */
+import { MarkerClusterer } from '@googlemaps/markerclusterer';
+
+let activeMarkers: Array<{
+  marker: google.maps.Marker;
+  listener: google.maps.MapsEventListener;
+}> = [];
+let mapClickListener: google.maps.MapsEventListener | null = null;
+let openInfoWindows: google.maps.InfoWindow[] = [];
+let clusterer: MarkerClusterer | null = null;
+
+export const cleanupNearbyPlaces = () => {
+  activeMarkers.forEach(({ marker, listener }) => {
+    google.maps.event.removeListener(listener);
+    marker.setMap(null);
+  });
+  activeMarkers = [];
+
+  if (mapClickListener) {
+    google.maps.event.removeListener(mapClickListener);
+    mapClickListener = null;
+  }
+
+  openInfoWindows.forEach((w) => w.close());
+  openInfoWindows = [];
+
+  if (clusterer) {
+    clusterer.clearMarkers();
+    clusterer = null;
+  }
+};
+
 export const findNearbyPlaces = (
   placesService: google.maps.places.PlacesService,
   location: google.maps.LatLngLiteral,
   map: google.maps.Map,
 ) => {
-  // 현재 열린 InfoWindow들을 추적하기 위한 배열
-  const openInfoWindows: google.maps.InfoWindow[] = [];
+  cleanupNearbyPlaces();
+
+  clusterer = new MarkerClusterer({ map, markers: [] });
+
   const types = ['pharmacy', 'hospital'];
 
-  // 지도 클릭 시 모든 InfoWindow 닫기
-  map.addListener('click', () => {
-    openInfoWindows.forEach((window) => window.close());
-    openInfoWindows.length = 0;
+  mapClickListener = map.addListener('click', () => {
+    openInfoWindows.forEach((w) => w.close());
+    openInfoWindows = [];
   });
 
   types.forEach((type) => {
@@ -31,7 +57,6 @@ export const findNearbyPlaces = (
         results.forEach((place) => {
           if (place.geometry?.location) {
             const marker = new google.maps.Marker({
-              map,
               position: place.geometry.location,
               title: place.name,
               icon: {
@@ -51,7 +76,8 @@ export const findNearbyPlaces = (
                     margin-top: -8px;
                   ">
                     <button
-                      onclick="this.parentElement.parentElement.parentElement.parentElement.style.display='none'"
+                      onclick="window.__closeInfoWindow && window.__closeInfoWindow(this)"
+                      data-infowindow-id="${place.place_id}"
                       style="
                         position: absolute;
                         top: 8px;
@@ -113,15 +139,19 @@ export const findNearbyPlaces = (
                 `,
             });
 
-            marker.addListener('click', () => {
-              // 다른 열린 InfoWindow들을 모두 닫기
-              openInfoWindows.forEach((window) => window.close());
-              openInfoWindows.length = 0;
+            infoWindow.addListener('closeclick', () => {
+              openInfoWindows = openInfoWindows.filter((w) => w !== infoWindow);
+            });
 
-              // 새 InfoWindow 열기
+            const clickListener = marker.addListener('click', () => {
+              openInfoWindows.forEach((w) => w.close());
+              openInfoWindows = [];
               infoWindow.open(map, marker);
               openInfoWindows.push(infoWindow);
             });
+
+            clusterer!.addMarker(marker);
+            activeMarkers.push({ marker, listener: clickListener });
           }
         });
       } else {

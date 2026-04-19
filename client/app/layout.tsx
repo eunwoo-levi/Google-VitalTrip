@@ -153,7 +153,8 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <head>
-        <link rel='dns-prefetch' href='https://maps.googleapis.com' />
+        <link rel='preconnect' href='https://maps.googleapis.com' />
+        <link rel='preconnect' href='https://maps.gstatic.com' crossOrigin='anonymous' />
         <link rel='dns-prefetch' href='https://fonts.googleapis.com' />
         <meta name='format-detection' content='telephone=no' />
         <meta name='color-scheme' content='light dark' />
