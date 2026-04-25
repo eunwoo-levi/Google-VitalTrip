@@ -42,7 +42,6 @@ export async function POST(req: NextRequest) {
 
     return res;
   } catch (error) {
-    Sentry.captureException(error);
     if (error instanceof APIError) {
       if (error.status === 401) {
         return NextResponse.json(
@@ -58,6 +57,7 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ message: 'You are already logged in Google' }, { status: 400 });
       }
     }
+    Sentry.captureException(error);
     return NextResponse.json({ message: 'Login failed. Please try again.' }, { status: 500 });
   }
 }

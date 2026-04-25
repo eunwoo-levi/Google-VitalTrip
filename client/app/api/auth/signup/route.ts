@@ -10,7 +10,6 @@ export async function POST(req: NextRequest) {
     await httpServer.post('/auth/signup', body);
     return NextResponse.json({ message: 'Signup success' }, { status: 201 });
   } catch (error) {
-    Sentry.captureException(error);
     if (error instanceof APIError) {
       if (error.status === 400) {
         return NextResponse.json(
@@ -21,6 +20,7 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ message: 'Email already exists' }, { status: 409 });
       }
     }
+    Sentry.captureException(error);
     return NextResponse.json({ message: 'Signup failed' }, { status: 500 });
   }
 }
