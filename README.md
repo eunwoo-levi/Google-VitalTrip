@@ -150,4 +150,4 @@ Enter symptoms and receive AI-generated emergency response advice including:
 | Role     | Members                             |
 | -------- | ----------------------------------- |
 | Frontend | Eunwoo Seong       |
-| Backend  | Jaemin An, Seyeon Park, Wooseok Yoo |
+| Backend  | Eunwoo Seong(nest.js) ,Jaemin An, Seyeon Park, Wooseok Yoo |
