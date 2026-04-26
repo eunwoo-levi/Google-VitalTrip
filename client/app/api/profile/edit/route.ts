@@ -21,7 +21,6 @@ export async function PUT(req: NextRequest) {
 
     return NextResponse.json({ message: 'Profile updated successfully' }, { status: 200 });
   } catch (error) {
-    Sentry.captureException(error);
     if (error instanceof APIError) {
       if (error.status === 400) {
         return NextResponse.json(
@@ -32,6 +31,7 @@ export async function PUT(req: NextRequest) {
         return NextResponse.json({ message: 'Unauthorized access' }, { status: 401 });
       }
     }
+    Sentry.captureException(error);
     return NextResponse.json({ message: 'Failed to edit profile' }, { status: 500 });
   }
 }

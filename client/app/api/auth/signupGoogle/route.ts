@@ -49,7 +49,6 @@ export async function POST(req: NextRequest) {
 
     return res;
   } catch (error) {
-    Sentry.captureException(error);
     if (error instanceof APIError) {
       if (error.status === 400) {
         return NextResponse.json(
@@ -62,6 +61,7 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ message: 'User not found' }, { status: 404 });
       }
     }
+    Sentry.captureException(error);
     return NextResponse.json({ message: 'Google signup failed' }, { status: 500 });
   }
 }
