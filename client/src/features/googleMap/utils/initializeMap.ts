@@ -55,27 +55,26 @@ export const initializeMap = async ({
     return;
   }
 
-  navigator.permissions
+  const permissionState = await navigator.permissions
     ?.query({ name: 'geolocation' })
-    .then((result) => {
-      if (result.state === 'denied') {
-        console.warn('Geolocation permission denied. Using default location.');
-        initializeMapWithDefaultLocation();
-        return;
-      }
-    })
-    .catch(() => {
-      // Permissions API not supported, continue with getCurrentPosition
-    });
+    .catch(() => null);
+
+  if (permissionState?.state === 'denied') {
+    console.warn('Geolocation permission denied. Using default location.');
+    initializeMapWithDefaultLocation();
+    return;
+  }
 
   navigator.geolocation.getCurrentPosition(
     (position) => {
+      if (!mapRef.current) return;
+
       const center = {
         lat: position.coords.latitude,
         lng: position.coords.longitude,
       };
 
-      const map = new Map(mapRef.current as HTMLDivElement, {
+      const map = new Map(mapRef.current, {
         center,
         zoom: 15,
         mapId: 'NEXT_MAPS_VITALTRIPS',
@@ -115,13 +114,14 @@ export const initializeMap = async ({
   );
 
   function initializeMapWithDefaultLocation() {
-    // Default to Seoul, Korea coordinates
+    if (!mapRef.current) return;
+
     const defaultCenter = {
       lat: 37.5665,
       lng: 126.978,
     };
 
-    const map = new Map(mapRef.current as HTMLDivElement, {
+    const map = new Map(mapRef.current, {
       center: defaultCenter,
       zoom: 13,
       mapId: 'NEXT_MAPS_VITALTRIPS',

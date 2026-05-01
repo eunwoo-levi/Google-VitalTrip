@@ -13,7 +13,9 @@ export const useGoogleMap = () => {
 
   useEffect(() => {
     const initMap = () => {
-      initializeMap({ mapRef, setMapInstance, setService, findNearbyPlaces });
+      initializeMap({ mapRef, setMapInstance, setService, findNearbyPlaces }).catch((error) => {
+        console.error('Google Maps 초기화 실패:', error);
+      });
     };
 
     const handleLanguageChange = () => {
