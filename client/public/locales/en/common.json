@@ -70,6 +70,10 @@
     "select": "Select",
     "close": "Close"
   },
+  "map": {
+    "category_all": "All",
+    "research_area": "Search this area"
+  },
   "medical": {
     "title": "Medical Facilities",
     "subtitle": "Find healthcare services near you",
@@ -91,6 +95,31 @@
       "pharmacy": "Pharmacy",
       "emergency": "Emergency"
     }
+  },
+  "travelAlert": {
+    "header_title": "Overseas Travel Alert",
+    "page_title": "Overseas Travel Alert Search",
+    "page_description": "Based on official Ministry of Foreign Affairs data · {{count}} countries with travel alerts issued",
+    "alarm_levels": {
+      "1": "Travel Advisory",
+      "2": "Travel Restraint",
+      "3": "Departure Recommended",
+      "4": "Travel Prohibited"
+    },
+    "level_count": "Level {{level}}",
+    "ministry_designation": "Ministry of Foreign Affairs designated travel alert level",
+    "regional_detail_title": "Regional Alert Details",
+    "total_regions": "{{count}} regions",
+    "all_regions": "All Regions",
+    "updated_date": "Updated: {{date}}",
+    "danger_map": "Danger Map",
+    "alert_level_guide": "Travel Alert Level Guide",
+    "level_label": "Level {{level}}",
+    "search_placeholder": "Search by country (e.g., Japan, JP)",
+    "search_results": "\"{{query}}\" — {{count}} results",
+    "total_countries": "{{count}} countries total",
+    "no_results": "No results found",
+    "source": "Source: Korea Ministry of Foreign Affairs Safe Travel"
   },
   "firstaid": {
     "reported_symptoms": "Symptoms you described",
