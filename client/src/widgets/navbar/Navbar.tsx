@@ -7,12 +7,12 @@ import { useProfileQuery } from '@/src/features/profile/api/useProfileQuery';
 import { useHydration } from '@/src/shared/hooks/useHydration';
 import { useTranslation } from '@/src/shared/lib/i18n';
 import Dropdown from '@/src/shared/ui/Dropdown';
+import { FaBars, FaChevronDown, FaTimes } from '@/src/shared/ui/icons';
 import { AnimatePresence, motion } from 'motion/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { FaBars, FaChevronDown, FaTimes } from '@/src/shared/ui/icons';
 
 const LanguageDropdown = () => {
   const { i18n } = useTranslation();
@@ -38,14 +38,14 @@ const LanguageDropdown = () => {
 
   const currentLanguage = languages.find((lang) => lang.code === currentLang) || languages[0];
 
-  const handleLanguageChange = (langCode: string) => {
+  const handleLanguageChange = async (langCode: string) => {
+    setIsOpen(false);
     if (pathname.startsWith('/about')) {
       router.push(`/about/${langCode}`);
-      i18n.changeLanguage(langCode);
-    } else {
-      i18n.changeLanguage(langCode);
+      return;
     }
-    setIsOpen(false);
+    await i18n.loadLanguages(langCode);
+    await i18n.changeLanguage(langCode);
   };
 
   const displayLanguage = isHydrated ? currentLanguage : languages[0];
@@ -89,8 +89,18 @@ const LanguageDropdown = () => {
   );
 };
 
-export default function Navbar() {
-  const { t } = useTranslation();
+type NavTranslations = {
+  home: string;
+  about: string;
+  news: string;
+  translate: string;
+  first_aid: string;
+  hospital_pharmacy_nearby: string;
+};
+
+export default function Navbar({ navTranslations }: { navTranslations?: NavTranslations }) {
+  const { t: i18nT } = useTranslation();
+  const t = (key: keyof NavTranslations) => navTranslations?.[key] ?? i18nT(`navbar.${key}`);
 
   const { data: isLoggedIn } = useCheckIfLoggedInQuery();
   const { data: profile } = useProfileQuery();
@@ -129,31 +139,31 @@ export default function Navbar() {
               href='/'
               className='flex items-center space-x-1 rounded-md px-3 py-2 text-gray-700 transition-colors duration-200 hover:bg-blue-50 hover:text-blue-600'
             >
-              <span>{t('navbar.home')}</span>
+              <span>{t('home')}</span>
             </Link>
             <Link
               href='/about'
               className='flex items-center space-x-1 rounded-md px-3 py-2 text-gray-700 transition-colors duration-200 hover:bg-blue-50 hover:text-blue-600'
             >
-              <span>{t('navbar.about')}</span>
+              <span>{t('about')}</span>
             </Link>
             <Link
               href='/news/1'
               className='flex items-center space-x-1 rounded-md px-3 py-2 text-gray-700 transition-colors duration-200 hover:bg-blue-50 hover:text-blue-600'
             >
-              <span>{t('navbar.news')}</span>
+              <span>{t('news')}</span>
             </Link>
             <Link
               href='/translate'
               className='flex items-center space-x-1 rounded-md px-3 py-2 text-gray-700 transition-colors duration-200 hover:bg-blue-50 hover:text-blue-600'
             >
-              <span>{t('navbar.translate')}</span>
+              <span>{t('translate')}</span>
             </Link>
             <Link
               href='/first-aid'
               className='flex items-center space-x-1 rounded-md px-3 py-2 text-gray-700 transition-colors duration-200 hover:bg-blue-50 hover:text-blue-600'
             >
-              <span>{t('navbar.first_aid')}</span>
+              <span>{t('first_aid')}</span>
             </Link>
           </div>
 
@@ -198,35 +208,35 @@ export default function Navbar() {
                   onClick={closeMenu}
                   className='flex items-center justify-center space-x-2 rounded-md px-3 py-2 text-gray-700 transition-colors duration-200 hover:bg-blue-50 hover:text-blue-600'
                 >
-                  <span>{t('navbar.hospital_pharmacy_nearby')}</span>
+                  <span>{t('hospital_pharmacy_nearby')}</span>
                 </Link>
                 <Link
                   href='/about'
                   onClick={closeMenu}
                   className='flex items-center justify-center space-x-2 rounded-md px-3 py-2 text-gray-700 transition-colors duration-200 hover:bg-blue-50 hover:text-blue-600'
                 >
-                  <span>{t('navbar.about')}</span>
+                  <span>{t('about')}</span>
                 </Link>
                 <Link
                   href='/news/1'
                   onClick={closeMenu}
                   className='flex items-center justify-center space-x-2 rounded-md px-3 py-2 text-gray-700 transition-colors duration-200 hover:bg-blue-50 hover:text-blue-600'
                 >
-                  <span>{t('navbar.news')}</span>
+                  <span>{t('news')}</span>
                 </Link>
                 <Link
                   href='/translate'
                   onClick={closeMenu}
                   className='flex items-center justify-center space-x-2 rounded-md px-3 py-2 text-gray-700 transition-colors duration-200 hover:bg-blue-50 hover:text-blue-600'
                 >
-                  <span>{t('navbar.translate')}</span>
+                  <span>{t('translate')}</span>
                 </Link>
                 <Link
                   href='/first-aid'
                   onClick={closeMenu}
                   className='flex items-center justify-center space-x-2 rounded-md px-3 py-2 text-gray-700 transition-colors duration-200 hover:bg-blue-50 hover:text-blue-600'
                 >
-                  <span>{t('navbar.first_aid')}</span>
+                  <span>{t('first_aid')}</span>
                 </Link>
                 <div className='flex items-center justify-center gap-4'>
                   <LanguageDropdown />
