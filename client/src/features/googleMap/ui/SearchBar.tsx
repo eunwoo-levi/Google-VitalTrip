@@ -20,7 +20,7 @@ export default function SearchBar({
   };
 
   return (
-    <div className='absolute top-15 left-1/2 z-10 w-2/3 -translate-x-1/2 transform rounded-md bg-white p-2 shadow-lg lg:top-5'>
+    <div className='rounded-md bg-white p-2 shadow-lg'>
       <div className='flex'>
         <input
           type='text'
