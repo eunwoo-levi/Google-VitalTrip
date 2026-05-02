@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslation } from '@/src/shared/lib/i18n';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { ALARM_LEVEL, TravelAlertItem } from '../types/travelAlert';
@@ -11,6 +12,7 @@ interface Props {
 export const CountrySearchClient = ({ countries }: Props) => {
   const [query, setQuery] = useState('');
   const router = useRouter();
+  const { t } = useTranslation();
 
   const deduped = Object.values(
     countries.reduce(
@@ -41,13 +43,13 @@ export const CountrySearchClient = ({ countries }: Props) => {
           type='text'
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder='국가명 검색 (예: 일본, Japan, JP)'
+          placeholder={t('travelAlert.search_placeholder')}
           className='w-full rounded-2xl border border-gray-200 bg-white px-6 py-4 text-lg shadow-lg outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100'
         />
         {query && (
           <button
             onClick={() => setQuery('')}
-            aria-label='검색어 지우기'
+            aria-label={t('common.close')}
             className='absolute top-1/2 right-5 -translate-y-1/2 text-gray-600 hover:text-gray-800'
           >
             ✕
@@ -56,11 +58,13 @@ export const CountrySearchClient = ({ countries }: Props) => {
       </div>
 
       <p className='mb-4 text-sm text-gray-600'>
-        {query ? `"${query}" 검색 결과 ${filtered.length}개` : `전체 ${deduped.length}개국`}
+        {query
+          ? t('travelAlert.search_results', { query, count: filtered.length })
+          : t('travelAlert.total_countries', { count: deduped.length })}
       </p>
 
       {filtered.length === 0 ? (
-        <div className='py-20 text-center text-gray-400'>검색 결과가 없어요</div>
+        <div className='py-20 text-center text-gray-400'>{t('travelAlert.no_results')}</div>
       ) : (
         <div className='grid gap-3 sm:grid-cols-2 lg:grid-cols-3'>
           {filtered.map((country) => {
@@ -86,7 +90,7 @@ export const CountrySearchClient = ({ countries }: Props) => {
                   <span
                     className={`flex-shrink-0 rounded-full px-2 py-1 text-xs font-bold ${alarmInfo.bg} ${alarmInfo.text}`}
                   >
-                    {country.alarm_lvl}단계
+                    {t('travelAlert.level_label', { level: country.alarm_lvl })}
                   </span>
                 )}
               </button>

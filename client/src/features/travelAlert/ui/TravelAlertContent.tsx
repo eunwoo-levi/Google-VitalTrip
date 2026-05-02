@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslation } from '@/src/shared/lib/i18n';
 import { ALARM_LEVEL, TravelAlertItem } from '../types/travelAlert';
 
 interface Props {
@@ -8,6 +9,8 @@ interface Props {
 }
 
 export const TravelAlertContent = ({ items, alarmInfo }: Props) => {
+  const { t } = useTranslation();
+
   return (
     <div className='space-y-6'>
       {/* 경보단계 배너 */}
@@ -16,8 +19,8 @@ export const TravelAlertContent = ({ items, alarmInfo }: Props) => {
           <div className='flex items-center gap-4'>
             <AlarmBadge alarmInfo={alarmInfo} />
             <div>
-              <h2 className={`text-2xl font-bold ${alarmInfo.text}`}>{alarmInfo.label}</h2>
-              <p className='mt-1 text-gray-600'>외교부 지정 여행경보 단계</p>
+              <h2 className={`text-2xl font-bold ${alarmInfo.text}`}>{t(`travelAlert.alarm_levels.${items[0].alarm_lvl}`)}</h2>
+              <p className='mt-1 text-gray-600'>{t('travelAlert.ministry_designation')}</p>
             </div>
           </div>
         </div>
@@ -26,8 +29,8 @@ export const TravelAlertContent = ({ items, alarmInfo }: Props) => {
       {/* 경보 상세 목록 */}
       <div className='overflow-hidden rounded-2xl bg-white shadow-xl'>
         <div className='bg-gradient-to-r from-slate-700 to-slate-800 px-8 py-6 text-white'>
-          <h2 className='text-xl font-bold'>지역별 경보 상세</h2>
-          <p className='mt-1 text-sm text-slate-300'>총 {items.length}개 지역</p>
+          <h2 className='text-xl font-bold'>{t('travelAlert.regional_detail_title')}</h2>
+          <p className='mt-1 text-sm text-slate-300'>{t('travelAlert.total_regions', { count: items.length })}</p>
         </div>
         <div className='divide-y divide-gray-100'>
           {items.map((item, idx) => {
@@ -39,16 +42,16 @@ export const TravelAlertContent = ({ items, alarmInfo }: Props) => {
                     <span
                       className={`inline-flex items-center rounded-full px-3 py-1 text-sm font-semibold ${level.bg} ${level.text}`}
                     >
-                      {item.alarm_lvl}단계 · {level.label}
+                      {t('travelAlert.level_label', { level: item.alarm_lvl })} · {t(`travelAlert.alarm_levels.${item.alarm_lvl}`)}
                     </span>
                   )}
                 </div>
                 <div className='flex-1'>
                   <div className='font-semibold text-gray-900'>
-                    {item.region_ty === '전체' ? '전 지역' : item.remark || item.region_ty}
+                    {item.region_ty === '전체' ? t('travelAlert.all_regions') : item.remark || item.region_ty}
                   </div>
                   {item.written_dt && (
-                    <p className='mt-1 text-sm text-gray-600'>갱신일: {item.written_dt}</p>
+                    <p className='mt-1 text-sm text-gray-600'>{t('travelAlert.updated_date', { date: item.written_dt })}</p>
                   )}
                 </div>
               </div>
@@ -61,12 +64,12 @@ export const TravelAlertContent = ({ items, alarmInfo }: Props) => {
       {items[0]?.dang_map_download_url && (
         <div className='overflow-hidden rounded-2xl bg-white shadow-xl'>
           <div className='bg-gradient-to-r from-slate-700 to-slate-800 px-8 py-6 text-white'>
-            <h2 className='text-xl font-bold'>위험지도</h2>
+            <h2 className='text-xl font-bold'>{t('travelAlert.danger_map')}</h2>
           </div>
           <div className='p-6'>
             <img
               src={items[0].dang_map_download_url}
-              alt='위험지도'
+              alt={t('travelAlert.danger_map')}
               className='w-full rounded-xl object-contain'
             />
           </div>
@@ -78,7 +81,7 @@ export const TravelAlertContent = ({ items, alarmInfo }: Props) => {
 
       {/* 출처 */}
       <p className='text-center text-sm text-gray-600'>
-        출처: 외교부 해외안전여행 (
+        {t('travelAlert.source')} (
         <a
           href='https://www.0404.go.kr'
           target='_blank'
@@ -104,21 +107,24 @@ const AlarmBadge = ({
   );
 };
 
-const AlarmLevelGuide = () => (
-  <div className='overflow-hidden rounded-2xl bg-white shadow-xl'>
-    <div className='bg-gradient-to-r from-slate-700 to-slate-800 px-8 py-6 text-white'>
-      <h2 className='text-xl font-bold'>여행경보 단계 안내</h2>
+const AlarmLevelGuide = () => {
+  const { t } = useTranslation();
+  return (
+    <div className='overflow-hidden rounded-2xl bg-white shadow-xl'>
+      <div className='bg-gradient-to-r from-slate-700 to-slate-800 px-8 py-6 text-white'>
+        <h2 className='text-xl font-bold'>{t('travelAlert.alert_level_guide')}</h2>
+      </div>
+      <div className='grid grid-cols-2 gap-4 p-6 sm:grid-cols-4'>
+        {Object.entries(ALARM_LEVEL).map(([level, info]) => (
+          <div
+            key={level}
+            className={`rounded-xl border-2 ${info.border} ${info.bg} p-4 text-center`}
+          >
+            <div className={`text-2xl font-bold ${info.text}`}>{t('travelAlert.level_label', { level })}</div>
+            <div className={`mt-1 text-sm font-semibold ${info.text}`}>{t(`travelAlert.alarm_levels.${level}`)}</div>
+          </div>
+        ))}
+      </div>
     </div>
-    <div className='grid grid-cols-2 gap-4 p-6 sm:grid-cols-4'>
-      {Object.entries(ALARM_LEVEL).map(([level, info]) => (
-        <div
-          key={level}
-          className={`rounded-xl border-2 ${info.border} ${info.bg} p-4 text-center`}
-        >
-          <div className={`text-2xl font-bold ${info.text}`}>{level}단계</div>
-          <div className={`mt-1 text-sm font-semibold ${info.text}`}>{info.label}</div>
-        </div>
-      ))}
-    </div>
-  </div>
-);
+  );
+};
