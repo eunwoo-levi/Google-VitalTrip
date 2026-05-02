@@ -82,7 +82,7 @@ export const TravelAlertContent = ({ items, alarmInfo }: Props) => {
               alt={t('travelAlert.danger_map')}
               width={0}
               height={0}
-              sizes="100vw"
+              sizes='100vw'
               className='h-auto w-full rounded-xl object-contain'
             />
           </div>
