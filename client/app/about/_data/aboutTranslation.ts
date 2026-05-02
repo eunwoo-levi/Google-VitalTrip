@@ -1,5 +1,13 @@
 export const aboutTranslations = {
   en: {
+    navbar: {
+      home: 'Home',
+      about: 'About',
+      news: 'News',
+      translate: 'AI Translation',
+      first_aid: 'AI First Aid',
+      hospital_pharmacy_nearby: 'Hospital & Pharmacy Nearby',
+    },
     meta: {
       title: 'About VitalTrip - Your Essential Travel Safety Companion',
       description:
@@ -79,6 +87,14 @@ export const aboutTranslations = {
     },
   },
   ko: {
+    navbar: {
+      home: '홈',
+      about: '소개',
+      news: '뉴스',
+      translate: 'AI 번역',
+      first_aid: 'AI 응급처치',
+      hospital_pharmacy_nearby: '병원 & 약국 찾기',
+    },
     meta: {
       title: 'VitalTrip 소개 - 필수 여행 안전 동반자',
       description:

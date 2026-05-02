@@ -76,7 +76,7 @@ export default async function AboutLangPage({ params }: PageProps) {
 
   return (
     <div className='min-h-screen overflow-x-hidden md:pt-16'>
-      <Navbar />
+      <Navbar navTranslations={translations.navbar} />
       <HeroSection translations={translations} />
       <FeaturesSection translations={translations} />
 

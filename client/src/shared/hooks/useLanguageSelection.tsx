@@ -22,13 +22,12 @@ export const useLanguageSelection = () => {
     }
   }, [overlay]);
 
-  const selectLanguage = (languageCode: string) => {
-    i18n.changeLanguage(languageCode).then(() => {
-      window.dispatchEvent(new Event('languageChanged'));
-    });
+  const selectLanguage = async (languageCode: string) => {
     localStorage.setItem('user-set-language', 'true');
     setHasLanguagePreference(true);
     overlay.close();
+    await i18n.loadLanguages(languageCode);
+    await i18n.changeLanguage(languageCode);
   };
 
   return {

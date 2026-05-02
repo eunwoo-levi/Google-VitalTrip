@@ -10,8 +10,9 @@ const languages = [
 export const LanguageSwitcher = () => {
   const { i18n } = useTranslation();
 
-  const changeLanguage = (lng: string) => {
-    i18n.changeLanguage(lng);
+  const changeLanguage = async (lng: string) => {
+    await i18n.loadLanguages(lng);
+    await i18n.changeLanguage(lng);
   };
 
   return (

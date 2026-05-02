@@ -1,30 +1,35 @@
-import React from 'react';
+'use client';
+
 import { useGoogleMap } from '../hooks/useGoogleMap';
+import { useMapControls } from '../hooks/useMapControls';
+import { MapCategoryTabs } from './MapCategoryTabs';
+import { MapCurrentLocationButton } from './MapCurrentLocationButton';
+import { MapLoadingOverlay } from './MapLoadingOverlay';
+import { MapResearchButton } from './MapResearchButton';
 import SearchBar from './SearchBar';
-import { goToCurrentLocation } from '../utils/goToCurrentLocation';
 
 export default function GoogleMaps() {
   const { mapRef, mapInstance, service } = useGoogleMap();
+  const { showResearchBtn, activeCategory, handleResearch, handleCategoryChange } = useMapControls(
+    mapInstance,
+    service,
+  );
 
   return (
     <div className='absolute inset-0'>
-      <SearchBar service={service} mapInstance={mapInstance} />
+      <div className='absolute top-15 left-1/2 z-10 flex w-2/3 -translate-x-1/2 flex-col gap-2 lg:top-5'>
+        <SearchBar service={service} mapInstance={mapInstance} />
+        {mapInstance && (
+          <MapCategoryTabs activeCategory={activeCategory} onChange={handleCategoryChange} />
+        )}
+      </div>
 
-      <button
-        onClick={() => goToCurrentLocation({ mapInstance, service })}
-        className='absolute top-[240px] right-[6px] z-10 rounded-full bg-white p-3 shadow-lg transition hover:bg-gray-100'
-      >
-        📍
-      </button>
+      <MapResearchButton show={showResearchBtn} onClick={handleResearch} />
+      <MapCurrentLocationButton mapInstance={mapInstance} service={service} />
 
       <div ref={mapRef} className='h-full w-full' />
 
-      {!mapInstance && (
-        <div className='absolute inset-0 flex flex-col items-center justify-center gap-3 bg-gray-100'>
-          <div className='h-10 w-10 animate-spin rounded-full border-4 border-gray-300 border-t-blue-500' />
-          <p className='text-sm text-gray-500'>지도를 불러오는 중...</p>
-        </div>
-      )}
+      {!mapInstance && <MapLoadingOverlay />}
     </div>
   );
 }

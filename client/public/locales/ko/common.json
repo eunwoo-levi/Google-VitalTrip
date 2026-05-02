@@ -70,6 +70,10 @@
     "select": "선택",
     "close": "닫기"
   },
+  "map": {
+    "category_all": "전체",
+    "research_area": "이 지역 재검색"
+  },
   "medical": {
     "title": "의료 시설",
     "subtitle": "근처의 의료 서비스를 찾아보세요",
@@ -91,6 +95,31 @@
       "pharmacy": "약국",
       "emergency": "응급실"
     }
+  },
+  "travelAlert": {
+    "header_title": "해외 여행경보",
+    "page_title": "해외 여행경보 검색",
+    "page_description": "외교부 공식 데이터 기준 · 총 {{count}}개국 경보 발령 중",
+    "alarm_levels": {
+      "1": "여행유의",
+      "2": "여행자제",
+      "3": "출국권고",
+      "4": "여행금지"
+    },
+    "level_count": "{{level}}단계",
+    "ministry_designation": "외교부 지정 여행경보 단계",
+    "regional_detail_title": "지역별 경보 상세",
+    "total_regions": "총 {{count}}개 지역",
+    "all_regions": "전 지역",
+    "updated_date": "갱신일: {{date}}",
+    "danger_map": "위험지도",
+    "alert_level_guide": "여행경보 단계 안내",
+    "level_label": "{{level}}단계",
+    "search_placeholder": "국가명 검색 (예: 일본, Japan, JP)",
+    "search_results": "\"{{query}}\" 검색 결과 {{count}}개",
+    "total_countries": "전체 {{count}}개국",
+    "no_results": "검색 결과가 없어요",
+    "source": "출처: 외교부 해외안전여행"
   },
   "firstaid": {
     "reported_symptoms": "설명하신 증상",
