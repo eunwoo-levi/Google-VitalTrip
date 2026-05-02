@@ -82,10 +82,7 @@ const buildLoadingContent = (): string => `
   </div>
 `;
 
-const buildDetailContent = (
-  place: google.maps.places.PlaceResult,
-  type: string,
-): string => {
+const buildDetailContent = (place: google.maps.places.PlaceResult, type: string): string => {
   const isPharmacy = type === 'pharmacy';
   const accentColor = isPharmacy ? '#10b981' : '#3b82f6';
   const badgeLabel = isPharmacy ? '약국' : '병원';
@@ -292,10 +289,7 @@ export const findNearbyPlaces = (
                 ],
               },
               (detail, detailStatus) => {
-                if (
-                  detailStatus === google.maps.places.PlacesServiceStatus.OK &&
-                  detail
-                ) {
+                if (detailStatus === google.maps.places.PlacesServiceStatus.OK && detail) {
                   detailCache.set(place.place_id!, detail);
                   infoWindow.setContent(buildDetailContent(detail, type));
                 } else {

@@ -21,9 +21,17 @@ export const TravelAlertCountryClient = ({ items }: Props) => {
         <div className='mx-auto max-w-4xl px-6 py-5'>
           <div className='flex items-center gap-3'>
             <Link href='/' aria-label='VitalTrip'>
-              <Image src='/VitalTrip.svg' alt='VitalTrip' width={40} height={40} className='h-10 w-auto' />
+              <Image
+                src='/VitalTrip.svg'
+                alt='VitalTrip'
+                width={40}
+                height={40}
+                className='h-10 w-auto'
+              />
             </Link>
-            <span className='text-lg font-semibold text-gray-700'>{t('travelAlert.header_title')}</span>
+            <span className='text-lg font-semibold text-gray-700'>
+              {t('travelAlert.header_title')}
+            </span>
           </div>
         </div>
       </header>

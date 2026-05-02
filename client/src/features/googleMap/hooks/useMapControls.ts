@@ -24,7 +24,12 @@ export const useMapControls = (
   const handleResearch = () => {
     if (!mapInstance || !service) return;
     const center = mapInstance.getCenter()!;
-    findNearbyPlaces(service, { lat: center.lat(), lng: center.lng() }, mapInstance, getTypes(activeCategory));
+    findNearbyPlaces(
+      service,
+      { lat: center.lat(), lng: center.lng() },
+      mapInstance,
+      getTypes(activeCategory),
+    );
     setShowResearchBtn(false);
   };
 
@@ -32,7 +37,12 @@ export const useMapControls = (
     setActiveCategory(category);
     if (!mapInstance || !service) return;
     const center = mapInstance.getCenter()!;
-    findNearbyPlaces(service, { lat: center.lat(), lng: center.lng() }, mapInstance, getTypes(category));
+    findNearbyPlaces(
+      service,
+      { lat: center.lat(), lng: center.lng() },
+      mapInstance,
+      getTypes(category),
+    );
   };
 
   return { showResearchBtn, activeCategory, handleResearch, handleCategoryChange };

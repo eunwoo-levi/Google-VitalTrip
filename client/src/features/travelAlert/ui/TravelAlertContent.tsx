@@ -19,7 +19,9 @@ export const TravelAlertContent = ({ items, alarmInfo }: Props) => {
           <div className='flex items-center gap-4'>
             <AlarmBadge alarmInfo={alarmInfo} />
             <div>
-              <h2 className={`text-2xl font-bold ${alarmInfo.text}`}>{t(`travelAlert.alarm_levels.${items[0].alarm_lvl}`)}</h2>
+              <h2 className={`text-2xl font-bold ${alarmInfo.text}`}>
+                {t(`travelAlert.alarm_levels.${items[0].alarm_lvl}`)}
+              </h2>
               <p className='mt-1 text-gray-600'>{t('travelAlert.ministry_designation')}</p>
             </div>
           </div>
@@ -30,7 +32,9 @@ export const TravelAlertContent = ({ items, alarmInfo }: Props) => {
       <div className='overflow-hidden rounded-2xl bg-white shadow-xl'>
         <div className='bg-gradient-to-r from-slate-700 to-slate-800 px-8 py-6 text-white'>
           <h2 className='text-xl font-bold'>{t('travelAlert.regional_detail_title')}</h2>
-          <p className='mt-1 text-sm text-slate-300'>{t('travelAlert.total_regions', { count: items.length })}</p>
+          <p className='mt-1 text-sm text-slate-300'>
+            {t('travelAlert.total_regions', { count: items.length })}
+          </p>
         </div>
         <div className='divide-y divide-gray-100'>
           {items.map((item, idx) => {
@@ -42,16 +46,21 @@ export const TravelAlertContent = ({ items, alarmInfo }: Props) => {
                     <span
                       className={`inline-flex items-center rounded-full px-3 py-1 text-sm font-semibold ${level.bg} ${level.text}`}
                     >
-                      {t('travelAlert.level_label', { level: item.alarm_lvl })} · {t(`travelAlert.alarm_levels.${item.alarm_lvl}`)}
+                      {t('travelAlert.level_label', { level: item.alarm_lvl })} ·{' '}
+                      {t(`travelAlert.alarm_levels.${item.alarm_lvl}`)}
                     </span>
                   )}
                 </div>
                 <div className='flex-1'>
                   <div className='font-semibold text-gray-900'>
-                    {item.region_ty === '전체' ? t('travelAlert.all_regions') : item.remark || item.region_ty}
+                    {item.region_ty === '전체'
+                      ? t('travelAlert.all_regions')
+                      : item.remark || item.region_ty}
                   </div>
                   {item.written_dt && (
-                    <p className='mt-1 text-sm text-gray-600'>{t('travelAlert.updated_date', { date: item.written_dt })}</p>
+                    <p className='mt-1 text-sm text-gray-600'>
+                      {t('travelAlert.updated_date', { date: item.written_dt })}
+                    </p>
                   )}
                 </div>
               </div>
@@ -120,8 +129,12 @@ const AlarmLevelGuide = () => {
             key={level}
             className={`rounded-xl border-2 ${info.border} ${info.bg} p-4 text-center`}
           >
-            <div className={`text-2xl font-bold ${info.text}`}>{t('travelAlert.level_label', { level })}</div>
-            <div className={`mt-1 text-sm font-semibold ${info.text}`}>{t(`travelAlert.alarm_levels.${level}`)}</div>
+            <div className={`text-2xl font-bold ${info.text}`}>
+              {t('travelAlert.level_label', { level })}
+            </div>
+            <div className={`mt-1 text-sm font-semibold ${info.text}`}>
+              {t(`travelAlert.alarm_levels.${level}`)}
+            </div>
           </div>
         ))}
       </div>
