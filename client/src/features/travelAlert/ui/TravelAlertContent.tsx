@@ -1,6 +1,7 @@
 'use client';
 
 import { useTranslation } from '@/src/shared/lib/i18n';
+import Image from 'next/image';
 import { ALARM_LEVEL, TravelAlertItem } from '../types/travelAlert';
 
 interface Props {
@@ -76,10 +77,13 @@ export const TravelAlertContent = ({ items, alarmInfo }: Props) => {
             <h2 className='text-xl font-bold'>{t('travelAlert.danger_map')}</h2>
           </div>
           <div className='p-6'>
-            <img
+            <Image
               src={items[0].dang_map_download_url}
               alt={t('travelAlert.danger_map')}
-              className='w-full rounded-xl object-contain'
+              width={0}
+              height={0}
+              sizes="100vw"
+              className='h-auto w-full rounded-xl object-contain'
             />
           </div>
         </div>

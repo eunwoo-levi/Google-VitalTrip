@@ -1,6 +1,7 @@
 'use client';
 
 import { useTranslation } from '@/src/shared/lib/i18n';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { ALARM_LEVEL, TravelAlertItem } from '../types/travelAlert';
@@ -76,10 +77,12 @@ export const CountrySearchClient = ({ countries }: Props) => {
                 className='flex items-center gap-4 rounded-xl border border-gray-100 bg-white p-4 text-left shadow-sm transition-colors transition-shadow duration-200 hover:border-blue-300 hover:bg-blue-50 hover:shadow-md active:bg-blue-100'
               >
                 {country.flag_download_url && (
-                  <img
+                  <Image
                     src={country.flag_download_url}
                     alt={country.country_nm}
-                    className='h-8 w-12 flex-shrink-0 rounded object-cover shadow-sm'
+                    width={48}
+                    height={32}
+                    className='flex-shrink-0 rounded object-cover shadow-sm'
                   />
                 )}
                 <div className='min-w-0 flex-1'>

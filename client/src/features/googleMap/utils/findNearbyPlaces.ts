@@ -211,7 +211,7 @@ export const findNearbyPlaces = (
 ) => {
   cleanupNearbyPlaces();
 
-  (window as any).__closeActiveInfoWindow = () => {
+  (window as Window & { __closeActiveInfoWindow?: () => void }).__closeActiveInfoWindow = () => {
     openInfoWindows.forEach((w) => w.close());
     openInfoWindows = [];
   };
