@@ -10,7 +10,8 @@ export const useLogoutMutation = () => {
   return useMutation({
     mutationFn: logoutUser,
     onSuccess: () => {
-      queryClient.removeQueries({ queryKey: ['me'] });
+      queryClient.removeQueries({ queryKey: ['auth', 'isLoggedIn'] });
+      queryClient.removeQueries({ queryKey: ['profile'] });
       router.push('/');
     },
     onError: (error) => {

@@ -19,7 +19,8 @@ export const useLoginMutation = () => {
   return useMutation({
     mutationFn: loginUser,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['me'] });
+      queryClient.invalidateQueries({ queryKey: ['auth', 'isLoggedIn'] });
+      queryClient.invalidateQueries({ queryKey: ['profile'] });
       router.push('/');
     },
     onError: (error) => {
