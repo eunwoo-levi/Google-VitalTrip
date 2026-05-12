@@ -18,6 +18,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(response.data, { status: 200 });
   } catch (error) {
     Sentry.captureException(error);
-    return NextResponse.json({ message: 'first-aid POST 요청에 실패했습니다.' }, { status: 500 });
+    return NextResponse.json(
+      { message: error instanceof Error ? error.message : 'first-aid POST 요청에 실패했습니다.' },
+      { status: 500 },
+    );
   }
 }

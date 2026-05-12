@@ -32,6 +32,9 @@ export async function PUT(req: NextRequest) {
       }
     }
     Sentry.captureException(error);
-    return NextResponse.json({ message: 'Failed to edit profile' }, { status: 500 });
+    return NextResponse.json(
+      { message: error instanceof Error ? error.message : 'Failed to edit profile' },
+      { status: error instanceof APIError ? error.status : 500 },
+    );
   }
 }

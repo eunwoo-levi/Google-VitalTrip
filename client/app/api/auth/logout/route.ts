@@ -32,12 +32,9 @@ export async function POST() {
     return res;
   } catch (error) {
     Sentry.captureException(error);
-    if (error instanceof APIError) {
-      console.error('Logout error:', error.message, error.status);
-      if (error.status === 401) {
-        return NextResponse.json({ message: 'Please login again' }, { status: 401 });
-      }
-    }
-    return NextResponse.json({ message: 'Logout failed. Please try again.' }, { status: 500 });
+    return NextResponse.json(
+      { message: error instanceof Error ? error.message : 'Logout failed. Please try again.' },
+      { status: error instanceof APIError ? error.status : 500 },
+    );
   }
 }

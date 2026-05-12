@@ -22,6 +22,9 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ message: 'Please enter a valid email address' }, { status: 400 });
     }
     Sentry.captureException(error);
-    return NextResponse.json({ message: 'Failed to check email availability' }, { status: 500 });
+    return NextResponse.json(
+      { message: error instanceof Error ? error.message : 'Failed to check email availability' },
+      { status: error instanceof APIError ? error.status : 500 },
+    );
   }
 }

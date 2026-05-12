@@ -19,6 +19,9 @@ export async function GET(request: NextRequest) {
     if (error instanceof APIError && error.status === 400) {
       return NextResponse.json({ message: 'Invalid request parameters' }, { status: 400 });
     }
-    return NextResponse.json({ message: 'Failed to fetch medical facilities' }, { status: 500 });
+    return NextResponse.json(
+      { message: error instanceof Error ? error.message : 'Failed to fetch medical facilities' },
+      { status: error instanceof APIError ? error.status : 500 },
+    );
   }
 }

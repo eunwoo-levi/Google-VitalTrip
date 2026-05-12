@@ -26,9 +26,9 @@ export async function GET() {
     return NextResponse.json(response.data);
   } catch (error) {
     Sentry.captureException(error);
-    if (error instanceof APIError && error.status === 401) {
-      return NextResponse.json({ message: 'Please login again' }, { status: 401 });
-    }
-    return NextResponse.json({ message: 'Please login again' }, { status: 500 });
+    return NextResponse.json(
+      { message: error instanceof Error ? error.message : 'Please login again' },
+      { status: error instanceof APIError ? error.status : 500 },
+    );
   }
 }

@@ -27,6 +27,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ text: result });
   } catch (error) {
     Sentry.captureException(error);
-    return NextResponse.json({ error: 'Chatbot request failed' }, { status: 500 });
+    return NextResponse.json(
+      { error: error instanceof Error ? error.message : 'Chatbot request failed' },
+      { status: 500 },
+    );
   }
 }

@@ -2,6 +2,7 @@ import {
   IdentifyCountryRequest,
   IdentifyCountryResponse,
 } from '@/src/features/medical/types/location';
+import { APIError } from '@/src/shared/utils/apiError';
 import { httpServer } from '@/src/shared/utils/httpServer';
 import * as Sentry from '@sentry/nextjs';
 import { NextRequest, NextResponse } from 'next/server';
@@ -20,6 +21,9 @@ export async function POST(
   } catch (error) {
     Sentry.captureException(error);
     console.error('국가 식별 API 오류:', error);
-    return NextResponse.json({ error: '국가 식별 중 오류가 발생했습니다.' }, { status: 500 });
+    return NextResponse.json(
+      { error: error instanceof Error ? error.message : '국가 식별 중 오류가 발생했습니다.' },
+      { status: error instanceof APIError ? error.status : 500 },
+    );
   }
 }

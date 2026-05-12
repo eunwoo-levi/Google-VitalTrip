@@ -62,6 +62,9 @@ export async function POST(req: NextRequest) {
       }
     }
     Sentry.captureException(error);
-    return NextResponse.json({ message: 'Google signup failed' }, { status: 500 });
+    return NextResponse.json(
+      { message: error instanceof Error ? error.message : 'Google signup failed' },
+      { status: error instanceof APIError ? error.status : 500 },
+    );
   }
 }

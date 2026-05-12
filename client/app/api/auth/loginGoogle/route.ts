@@ -19,9 +19,9 @@ export async function GET() {
     return NextResponse.redirect(googleLoginUrl);
   } catch (error) {
     Sentry.captureException(error);
-    if (error instanceof APIError) {
-      console.error('Google login URL error:', error.message, error.status);
-    }
-    return NextResponse.json({ message: 'Failed to get Google login URL' }, { status: 500 });
+    return NextResponse.json(
+      { message: error instanceof Error ? error.message : 'Failed to get Google login URL' },
+      { status: error instanceof APIError ? error.status : 500 },
+    );
   }
 }

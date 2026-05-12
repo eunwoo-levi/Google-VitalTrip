@@ -20,6 +20,9 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ items });
   } catch (error) {
     Sentry.captureException(error);
-    return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });
+    return NextResponse.json(
+      { message: error instanceof Error ? error.message : 'Internal Server Error' },
+      { status: 500 },
+    );
   }
 }

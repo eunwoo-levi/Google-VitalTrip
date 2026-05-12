@@ -58,6 +58,9 @@ export async function POST(req: NextRequest) {
       }
     }
     Sentry.captureException(error);
-    return NextResponse.json({ message: 'Login failed. Please try again.' }, { status: 500 });
+    return NextResponse.json(
+      { message: error instanceof Error ? error.message : 'Login failed. Please try again.' },
+      { status: 500 },
+    );
   }
 }
