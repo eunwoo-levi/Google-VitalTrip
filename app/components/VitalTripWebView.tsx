@@ -154,7 +154,12 @@ export default function VitalTripWebView() {
         })
           .then(function(res) { return res.json(); })
           .then(function(data) {
-            if (data.success) window.location.href = '/';
+            if (data.success && data.isNewUser) {
+              sessionStorage.setItem('apple-profile', JSON.stringify({ email: ${email} }));
+              window.location.href = '/signup?step=step2';
+            } else if (data.success) {
+              window.location.href = '/';
+            }
           })
           .catch(console.error);
         true;

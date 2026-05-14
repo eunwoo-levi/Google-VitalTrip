@@ -1,5 +1,6 @@
 import { APIError } from '@/src/shared/utils/apiError';
 import { useState } from 'react';
+import { useCompleteAppleProfileMutation } from '../api/useCompleteAppleProfileMutation';
 import { useSignupGoogleMutation } from '../api/useSignupGoogleMutation';
 import { useSignupMutation } from '../api/useSignupMutation';
 import type { SignupErrors, SignupForm } from '../types/signup';
@@ -32,6 +33,11 @@ export const useSignup = () => {
     isPending: isGooglePending,
     error: signupGoogleError,
   } = useSignupGoogleMutation();
+  const {
+    mutateAsync: completeAppleProfile,
+    isPending: isApplePending,
+    error: appleError,
+  } = useCompleteAppleProfileMutation();
 
   const handleFormChange = (field: keyof SignupForm, value: string) => {
     if (field === 'email') {
@@ -70,16 +76,18 @@ export const useSignup = () => {
     }));
   };
 
-  const handleSubmit = async (isGoogleSignup?: boolean) => {
+  const handleSubmit = async (provider?: 'google' | 'apple') => {
     try {
-      if (isGoogleSignup) {
-        const googleFormData = {
-          name: signupForm.name,
-          birthDate: signupForm.birthDate,
-          countryCode: signupForm.countryCode,
-          phoneNumber: signupForm.phoneNumber,
-        };
-        await signupGoogleUser(googleFormData);
+      const profileData = {
+        name: signupForm.name,
+        birthDate: signupForm.birthDate,
+        countryCode: signupForm.countryCode,
+        phoneNumber: signupForm.phoneNumber,
+      };
+      if (provider === 'apple') {
+        await completeAppleProfile(profileData);
+      } else if (provider === 'google') {
+        await signupGoogleUser(profileData);
       } else {
         await signupUser(signupForm);
       }
@@ -109,8 +117,8 @@ export const useSignup = () => {
 
   return {
     signupForm,
-    isLoading: isPending || isGooglePending,
-    error: signupError || signupGoogleError,
+    isLoading: isPending || isGooglePending || isApplePending,
+    error: signupError || signupGoogleError || appleError,
     handleFormChange,
     handleSubmit,
     isFirstStepValid,
