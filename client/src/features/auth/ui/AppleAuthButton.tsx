@@ -1,61 +1,14 @@
 'use client';
 
 import { useIsWebView } from '@/src/shared/hooks/useIsWebView';
-import { APIError } from '@/src/shared/utils/apiError';
-import { useQueryClient } from '@tanstack/react-query';
-import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
-import { loginApple } from '../api/loginApple';
-
-declare global {
-  interface Window {
-    handleAppleSignInResult?: (
-      identityToken: string,
-      fullName: { givenName?: string; familyName?: string } | null,
-      email: string | null,
-    ) => void;
-    webkit?: {
-      messageHandlers?: {
-        appleSignIn?: {
-          postMessage: (message: object) => void;
-        };
-      };
-    };
-  }
-}
 
 export const AppleAuthButton = () => {
   const isWebView = useIsWebView();
-  const router = useRouter();
-  const queryClient = useQueryClient();
-
-  useEffect(() => {
-    window.handleAppleSignInResult = async (identityToken, fullName, email) => {
-      try {
-        await loginApple({
-          identityToken,
-          fullName: fullName ?? undefined,
-          email: email ?? undefined,
-        });
-        queryClient.invalidateQueries({ queryKey: ['auth', 'isLoggedIn'] });
-        queryClient.invalidateQueries({ queryKey: ['profile'] });
-        router.push('/');
-      } catch (error) {
-        if (error instanceof APIError) {
-          console.error('Apple login error:', error.message, error.status);
-        }
-      }
-    };
-
-    return () => {
-      window.handleAppleSignInResult = undefined;
-    };
-  }, [router, queryClient]);
 
   if (!isWebView) return null;
 
   const handleAppleAuthClick = () => {
-    window.webkit?.messageHandlers?.appleSignIn?.postMessage({});
+    window.ReactNativeWebView?.postMessage(JSON.stringify({ type: 'APPLE_SIGN_IN' }));
   };
 
   return (

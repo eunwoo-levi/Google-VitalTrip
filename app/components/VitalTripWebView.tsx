@@ -58,55 +58,6 @@ const GEOLOCATION_INJECT_SCRIPT = `
 true;
 `;
 
-// Injects Apple Sign In button into the login page DOM after Google button
-const APPLE_SIGN_IN_BUTTON_SCRIPT = `
-(function() {
-  if (document.getElementById('rn-apple-signin')) return;
-
-  var interval = setInterval(function() {
-    var buttons = document.querySelectorAll('button');
-    var googleBtn = null;
-    for (var i = 0; i < buttons.length; i++) {
-      if (buttons[i].textContent && buttons[i].textContent.trim().includes('Google Auth')) {
-        googleBtn = buttons[i];
-        break;
-      }
-    }
-
-    if (!googleBtn) return;
-    clearInterval(interval);
-
-    var btn = document.createElement('button');
-    btn.id = 'rn-apple-signin';
-    btn.style.cssText = [
-      'display:flex',
-      'width:100%',
-      'align-items:center',
-      'justify-content:center',
-      'gap:8px',
-      'border-radius:6px',
-      'background:#000',
-      'padding:12px',
-      'font-weight:600',
-      'color:#fff',
-      'border:none',
-      'cursor:pointer',
-      'font-size:15px',
-      'font-family:inherit',
-    ].join(';');
-    btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 814 1000" fill="white"><path d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76 0-103.7 40.8-165.9 40.8s-105-37.8-155.5-127.4C46 790.8 0 663.4 0 541.2c0-204.4 132.4-312.4 262.1-312.4 60.5 0 121.5 37.4 159.9 37.4 38.3 0 108.9-40.8 177.7-40.8 10.3 0 32.7 2.6 49.3 11.7zm-155.1-174C499.3 22.8 433.5 0 371.5 0c-8.3 0-16.6.6-24.3 1.9-1.3 9-2 18-2 26.9 0 60.5 25.1 119.9 68.1 157.6 42.8 37.4 99.7 60.5 162.1 60.5 6.4 0 13.5-.6 19.9-1.3-1.9-61.8-25.1-118.7-72.4-161.7z"/></svg> Sign in with Apple';
-    btn.onclick = function(e) {
-      e.preventDefault();
-      window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'APPLE_SIGN_IN' }));
-    };
-
-    googleBtn.parentNode && googleBtn.parentNode.insertBefore(btn, googleBtn.nextSibling);
-  }, 300);
-
-  setTimeout(function() { clearInterval(interval); }, 10000);
-})();
-true;
-`;
 
 export default function VitalTripWebView() {
   const webViewRef = useRef<WebView>(null);
@@ -148,14 +99,6 @@ export default function VitalTripWebView() {
     `;
     webViewRef.current.injectJavaScript(script);
   }, [coords]);
-
-  // Inject Apple Sign In button when on login page
-  useEffect(() => {
-    if (!appleAvailable || !webViewRef.current) return;
-    if (!currentUrl.includes('/login')) return;
-
-    webViewRef.current.injectJavaScript(APPLE_SIGN_IN_BUTTON_SCRIPT);
-  }, [currentUrl, appleAvailable]);
 
   // Android hardware back button
   useEffect(() => {
