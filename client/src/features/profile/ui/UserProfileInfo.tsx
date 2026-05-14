@@ -1,12 +1,6 @@
 import { motion } from 'motion/react';
 import Image from 'next/image';
-import {
-  MdCalendarToday,
-  MdEmail,
-  MdFlag,
-  MdPerson,
-  MdPhone,
-} from '@/src/shared/ui/icons';
+import { MdCalendarToday, MdEmail, MdFlag, MdPerson, MdPhone } from '@/src/shared/ui/icons';
 import { useCheckIfLoggedInQuery } from '../../auth/api/checkIfLoggedIn';
 import { AuthButton } from '../../auth/ui/AuthButton';
 import { useProfileQuery } from '../api/useProfileQuery';
