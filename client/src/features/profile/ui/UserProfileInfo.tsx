@@ -182,19 +182,33 @@ const ProfileLoading = () => {
 
 const ProfileError = ({ onClose }: { onClose?: () => void }) => {
   return (
-    <div className='flex min-h-[400px] items-center justify-center'>
-      <div className='rounded-lg bg-red-50 p-6 text-center'>
-        <div className='mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-red-100'>
-          <MdError className='h-6 w-6 text-red-600' />
-        </div>
-        <div className='mb-2 text-lg font-medium text-red-800'>Unable to load profile</div>
-        <div className='mt-4 text-sm text-gray-500'>Please log in to set up your profile.</div>
-        <AuthButton closeMenu={onClose} />
-
-        <span className='mt-2 text-sm text-gray-500'>
-          If the problem persists, please contact customer support.
-        </span>
+    <motion.div
+      className='mx-auto w-[320px] max-w-2xl px-3 py-8 md:w-[500px]'
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3, ease: 'easeInOut' }}
+    >
+      <div className='mb-8 text-center'>
+        <h1 className='mb-2 text-3xl font-bold text-gray-900'>Profile</h1>
       </div>
-    </div>
+      <div className='overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-lg'>
+        <div className='bg-gradient-to-r from-blue-500 to-purple-600 px-6 py-10 text-center text-white'>
+          <div className='mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full border-4 border-white bg-white/20'>
+            <MdPerson className='h-10 w-10 text-white' />
+          </div>
+          <h2 className='mb-1 text-2xl font-bold'>Guest</h2>
+          <p className='text-sm text-blue-100'>Please log in to view your profile</p>
+        </div>
+        <div className='flex flex-col items-center gap-4 p-8 text-center'>
+          <p className='text-sm leading-relaxed text-gray-500'>
+            Sign in to access your profile and personalize your experience.
+          </p>
+          <AuthButton closeMenu={onClose} />
+          <p className='text-xs text-gray-400'>
+            If the problem persists, please contact customer support.
+          </p>
+        </div>
+      </div>
+    </motion.div>
   );
 };
