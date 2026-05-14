@@ -27,6 +27,7 @@ interface AppleLoginResponse {
   data: {
     accessToken: string;
     refreshToken: string;
+    isNewUser: boolean;
   };
 }
 
@@ -108,7 +109,7 @@ export async function POST(req: NextRequest) {
     const { accessToken, refreshToken } = response.data;
 
     const res = NextResponse.json(
-      { success: true, message: 'Apple login successful' },
+      { success: true, isNewUser: response.data.isNewUser, message: 'Apple login successful' },
       { status: 200 },
     );
 
