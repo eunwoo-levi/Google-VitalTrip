@@ -1,4 +1,5 @@
 import { LoginForm } from '@/src/features/auth';
+import { AppleAuthButton } from '@/src/features/auth/ui/AppleAuthButton';
 import { GoogleAuthButton } from '@/src/features/auth/ui/GoogleAuthButton';
 import { Metadata } from 'next';
 import Image from 'next/image';
@@ -30,6 +31,7 @@ export default function LoginPage() {
         <div className='flex flex-col gap-4 rounded-xl bg-white px-8 py-10 shadow-lg'>
           <LoginForm />
           <GoogleAuthButton />
+          <AppleAuthButton />
           <div className='mt-6 text-center'>
             <div className='relative'>
               <div className='absolute inset-0 flex items-center'>

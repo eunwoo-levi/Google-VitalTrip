@@ -2,3 +2,4 @@ packages:
   - 'client'
   - 'admin'
   - 'shared'
+  - 'app'

@@ -81,7 +81,7 @@ export const SymptomModal = ({
       <h2 className='mb-4 text-center text-xl font-bold'>{t('symptoms.title')}</h2>
       <select
         name='type'
-        className='mb-4 w-full rounded-md border border-gray-300 p-2 text-sm font-semibold focus:ring-2 focus:ring-blue-400 focus:outline-none'
+        className='mb-4 w-full rounded-md border border-gray-300 p-2 text-base font-semibold focus:ring-2 focus:ring-blue-400 focus:outline-none'
         onChange={(e) => updateSymptomData(e)}
         value={symptomData.type}
       >
@@ -96,7 +96,7 @@ export const SymptomModal = ({
       </select>
       <textarea
         name='detail'
-        className='mb-4 h-32 w-full resize-none rounded-md border border-gray-300 p-2 text-sm focus:ring-2 focus:ring-blue-400 focus:outline-none'
+        className='mb-4 h-32 w-full resize-none rounded-md border border-gray-300 p-2 text-base focus:ring-2 focus:ring-blue-400 focus:outline-none'
         placeholder={t('symptoms.detailPlaceholder')}
         value={symptomData.detail}
         onChange={(e) => updateSymptomData(e)}
