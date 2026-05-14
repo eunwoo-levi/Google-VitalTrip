@@ -1,5 +1,5 @@
 import { GoogleAnalytics } from '@next/third-parties/google';
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 
 import Analytics from '@/src/apps/lib/Analytics';
 import ReactQueryProvider from '@/src/apps/provider/ReactQueryProvider';
@@ -23,6 +23,13 @@ const iansui = localFont({
 });
 
 const GA_ID = process.env.GOOGLE_ANALYTICS_ID;
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://aivitaltrip.com'),
