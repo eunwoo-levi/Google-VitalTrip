@@ -3,7 +3,6 @@ import Image from 'next/image';
 import {
   MdCalendarToday,
   MdEmail,
-  MdError,
   MdFlag,
   MdPerson,
   MdPhone,
