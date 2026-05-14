@@ -43,9 +43,7 @@ async function fetchApplePublicKeys(): Promise<AppleJWK[]> {
   return keys;
 }
 
-async function verifyAppleIdentityToken(
-  identityToken: string,
-): Promise<AppleTokenClaims | null> {
+async function verifyAppleIdentityToken(identityToken: string): Promise<AppleTokenClaims | null> {
   try {
     const parts = identityToken.split('.');
     if (parts.length !== 3) return null;
@@ -57,7 +55,10 @@ async function verifyAppleIdentityToken(
     const matchedKey = keys.find((k) => k.kid === header.kid);
     if (!matchedKey) return null;
 
-    const publicKey = createPublicKey({ format: 'jwk', key: matchedKey as Parameters<typeof createPublicKey>[0] & object });
+    const publicKey = createPublicKey({
+      format: 'jwk',
+      key: matchedKey as Parameters<typeof createPublicKey>[0] & object,
+    });
     const signingInput = Buffer.from(`${headerB64}.${payloadB64}`);
     const signature = base64UrlDecode(signatureB64);
 
@@ -106,7 +107,10 @@ export async function POST(req: NextRequest) {
 
     const { accessToken, refreshToken } = response.data;
 
-    const res = NextResponse.json({ success: true, message: 'Apple login successful' }, { status: 200 });
+    const res = NextResponse.json(
+      { success: true, message: 'Apple login successful' },
+      { status: 200 },
+    );
 
     res.cookies.set('accessToken', accessToken, {
       httpOnly: true,

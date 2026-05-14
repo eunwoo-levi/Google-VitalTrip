@@ -30,7 +30,8 @@ async function request<T = unknown>(url: string, config: FetchConfig = {}): Prom
 
     if (!response.ok) {
       const errorMessage =
-        (data as { message?: string }).message || `HTTP ${response.status}: an unknown error occurred`;
+        (data as { message?: string }).message ||
+        `HTTP ${response.status}: an unknown error occurred`;
       console.error('백엔드 에러 메시지', data);
       console.error('HTTP 에러 코드: ', response.status);
 
