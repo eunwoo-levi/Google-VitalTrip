@@ -14,10 +14,13 @@ async function request<T = unknown>(url: string, config: FetchConfig = {}): Prom
       body: body ? JSON.stringify(body) : undefined,
     });
 
-    const data = await response.json();
+    const contentType = response.headers.get('content-type');
+    const data = contentType?.includes('application/json')
+      ? await response.json()
+      : { message: await response.text() };
 
     if (!response.ok) {
-      const errorMessage = data.message || `HTTP ${response.status}`;
+      const errorMessage = (data as { message?: string }).message || `HTTP ${response.status}`;
       throw new APIError(errorMessage, response.status);
     }
 
