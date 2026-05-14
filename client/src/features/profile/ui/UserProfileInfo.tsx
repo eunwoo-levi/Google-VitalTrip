@@ -184,7 +184,7 @@ const ProfileError = ({ onClose }: { onClose?: () => void }) => {
     <div className='flex min-h-[400px] items-center justify-center'>
       <div className='rounded-lg bg-red-50 p-6 text-center'>
         <div className='mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-red-100'>
-          <MdError className='h-6 w-6 text-red-600' />
+          <MdPerson className='h-6 w-6 text-red-600' />
         </div>
         <div className='mb-2 text-lg font-medium text-red-800'>Unable to load profile</div>
         <div className='mt-4 text-sm text-gray-500'>Please log in to set up your profile.</div>
