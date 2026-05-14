@@ -6,6 +6,15 @@ import { setToSessionStorage } from '@/src/shared/utils/sessionService';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
+const isNativeSource = () => {
+  const match = document.cookie.split(';').find((c) => c.trim().startsWith('auth_source='));
+  return match?.split('=')?.[1]?.trim() === 'native';
+};
+
+const clearNativeSourceCookie = () => {
+  document.cookie = 'auth_source=; Max-Age=0; Path=/';
+};
+
 export default function OAuthCallbackPage() {
   const router = useRouter();
 
@@ -32,6 +41,11 @@ export default function OAuthCallbackPage() {
           const googleProfile = await oAuthCallback();
           setToSessionStorage('google-profile', JSON.stringify(googleProfile));
           window.history.replaceState({}, document.title, window.location.pathname);
+          if (isNativeSource()) {
+            clearNativeSourceCookie();
+            window.location.href = 'vitaltrip://auth-complete';
+            return;
+          }
           router.push('/');
           return;
         }
@@ -40,6 +54,11 @@ export default function OAuthCallbackPage() {
           const googleProfile = await oAuthCallback();
           setToSessionStorage('google-profile', JSON.stringify(googleProfile));
           window.history.replaceState({}, document.title, window.location.pathname);
+          if (isNativeSource()) {
+            clearNativeSourceCookie();
+            window.location.href = 'vitaltrip://auth-complete?needsProfile=true';
+            return;
+          }
           router.push('/signup?step=step2');
           return;
         }
@@ -47,6 +66,11 @@ export default function OAuthCallbackPage() {
         const googleProfile = await oAuthCallback();
         setToSessionStorage('google-profile', JSON.stringify(googleProfile));
         window.history.replaceState({}, document.title, window.location.pathname);
+        if (isNativeSource()) {
+          clearNativeSourceCookie();
+          window.location.href = 'vitaltrip://auth-complete?needsProfile=true';
+          return;
+        }
         router.push('/signup?step=step2');
       } catch (error) {
         if (error instanceof APIError) {
