@@ -15,27 +15,35 @@ interface FormData {
 interface Signup3Props {
   formData: FormData;
   onPrev: () => void;
-  onSubmit: (isGoogleSignup?: boolean) => void;
+  onSubmit: (provider?: 'google' | 'apple') => void;
   isLoading: boolean;
 }
 
 export default function Signup3({ formData, onPrev, onSubmit, isLoading }: Signup3Props) {
   let googleEmail: string | undefined;
+  let isAppleAuth = false;
+  let appleEmail: string | undefined;
 
   try {
     const googleProfile = getFromSessionStorage('google-profile');
     googleEmail = googleProfile?.email;
-  } catch {
-    googleEmail = undefined;
-  }
+  } catch {}
+
+  try {
+    const appleProfile = getFromSessionStorage('apple-profile');
+    isAppleAuth = true;
+    appleEmail = appleProfile?.email ?? undefined;
+  } catch {}
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (googleEmail) {
-      onSubmit(true);
-      return;
+    if (isAppleAuth) {
+      onSubmit('apple');
+    } else if (googleEmail) {
+      onSubmit('google');
+    } else {
+      onSubmit();
     }
-    onSubmit();
   };
 
   return (
@@ -50,7 +58,7 @@ export default function Signup3({ formData, onPrev, onSubmit, isLoading }: Signu
           </div>
           <div>
             <span className='text-sm font-medium text-gray-600'>Email:</span>
-            <p className='text-gray-800'>{googleEmail || formData.email}</p>
+            <p className='text-gray-800'>{googleEmail || appleEmail || formData.email}</p>
           </div>
           <div>
             <span className='text-sm font-medium text-gray-600'>Date of Birth:</span>
