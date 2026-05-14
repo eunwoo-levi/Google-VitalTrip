@@ -57,7 +57,7 @@ async function verifyAppleIdentityToken(identityToken: string): Promise<AppleTok
 
     const publicKey = createPublicKey({
       format: 'jwk',
-      key: matchedKey as Parameters<typeof createPublicKey>[0] & object,
+      key: matchedKey as unknown as import('crypto').JsonWebKey,
     });
     const signingInput = Buffer.from(`${headerB64}.${payloadB64}`);
     const signature = base64UrlDecode(signatureB64);
