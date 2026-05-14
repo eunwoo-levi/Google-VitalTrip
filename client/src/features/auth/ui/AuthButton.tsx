@@ -10,7 +10,7 @@ interface AuthButtonProps {
 export const AuthButton = ({ closeMenu, mobileHidden }: AuthButtonProps) => {
   const { data: isAuthenticated } = useCheckIfLoggedInQuery();
 
-  const mobileHiddenClass = mobileHidden ? 'hidden md:flex' : '';
+  const mobileHiddenClass = mobileHidden ? 'hidden md:flex' : 'flex';
 
   const { mutateAsync: logoutUser } = useLogoutMutation();
 
@@ -34,7 +34,7 @@ export const AuthButton = ({ closeMenu, mobileHidden }: AuthButtonProps) => {
     <Link
       href='/login'
       onClick={closeMenu}
-      className={`${mobileHiddenClass} items-center justify-center rounded-md bg-blue-600 px-3 py-2 font-semibold text-white transition-colors duration-200 hover:bg-blue-700 md:flex`}
+      className={`${mobileHiddenClass} items-center justify-center rounded-md bg-blue-600 px-3 py-2 font-semibold text-white transition-colors duration-200 hover:bg-blue-700`}
     >
       LOGIN
     </Link>

@@ -37,15 +37,16 @@ export default function OAuthCallbackPage() {
           return;
         }
 
+        if (isNativeSource()) {
+          clearNativeSourceCookie();
+          window.location.href = `vitaltrip://auth-complete${window.location.search}`;
+          return;
+        }
+
         if (success) {
           const googleProfile = await oAuthCallback();
           setToSessionStorage('google-profile', JSON.stringify(googleProfile));
           window.history.replaceState({}, document.title, window.location.pathname);
-          if (isNativeSource()) {
-            clearNativeSourceCookie();
-            window.location.href = 'vitaltrip://auth-complete';
-            return;
-          }
           router.push('/');
           return;
         }
@@ -54,11 +55,6 @@ export default function OAuthCallbackPage() {
           const googleProfile = await oAuthCallback();
           setToSessionStorage('google-profile', JSON.stringify(googleProfile));
           window.history.replaceState({}, document.title, window.location.pathname);
-          if (isNativeSource()) {
-            clearNativeSourceCookie();
-            window.location.href = 'vitaltrip://auth-complete?needsProfile=true';
-            return;
-          }
           router.push('/signup?step=step2');
           return;
         }
@@ -66,11 +62,6 @@ export default function OAuthCallbackPage() {
         const googleProfile = await oAuthCallback();
         setToSessionStorage('google-profile', JSON.stringify(googleProfile));
         window.history.replaceState({}, document.title, window.location.pathname);
-        if (isNativeSource()) {
-          clearNativeSourceCookie();
-          window.location.href = 'vitaltrip://auth-complete?needsProfile=true';
-          return;
-        }
         router.push('/signup?step=step2');
       } catch (error) {
         if (error instanceof APIError) {

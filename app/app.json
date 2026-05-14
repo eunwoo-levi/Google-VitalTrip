@@ -12,6 +12,7 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.vitaltrip.app",
       "buildNumber": "1",
+      "usesAppleSignIn": true,
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false,
         "NSLocationWhenInUseUsageDescription": "VitalTrip uses your location to find nearby hospitals and emergency services.",
