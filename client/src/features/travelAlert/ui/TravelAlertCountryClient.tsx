@@ -39,12 +39,13 @@ export const TravelAlertCountryClient = ({ items }: Props) => {
       <main className='mx-auto max-w-4xl px-6 py-10 pb-[100px]'>
         <div className='mb-8 overflow-hidden rounded-2xl bg-white shadow-xl'>
           <div className='flex items-center gap-6 p-8'>
-            {country.flag_download_url && (
+            {country.flag_download_url?.startsWith('http') && (
               <Image
                 src={country.flag_download_url}
                 alt={`${country.country_eng_nm} flag`}
                 width={96}
                 height={64}
+                unoptimized
                 className='rounded-lg object-cover shadow-md'
               />
             )}

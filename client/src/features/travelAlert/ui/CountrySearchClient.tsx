@@ -76,12 +76,13 @@ export const CountrySearchClient = ({ countries }: Props) => {
                 onClick={() => router.push(`/alerts/${country.country_iso_alp2.toLowerCase()}`)}
                 className='flex items-center gap-4 rounded-xl border border-gray-100 bg-white p-4 text-left shadow-sm transition-colors transition-shadow duration-200 hover:border-blue-300 hover:bg-blue-50 hover:shadow-md active:bg-blue-100'
               >
-                {country.flag_download_url && (
+                {country.flag_download_url?.startsWith('http') && (
                   <Image
                     src={country.flag_download_url}
                     alt={country.country_nm}
                     width={48}
                     height={32}
+                    unoptimized
                     className='flex-shrink-0 rounded object-cover shadow-sm'
                   />
                 )}
