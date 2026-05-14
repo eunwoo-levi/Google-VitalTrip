@@ -117,15 +117,11 @@ export default function VitalTripWebView() {
       'vitaltrip://',
     );
     if (result.type === 'success') {
-      const url = new URL(result.url);
-      const needsProfile = url.searchParams.get('needsProfile');
-      if (needsProfile) {
-        webViewRef.current?.injectJavaScript(
-          `window.location.href = '${WEB_URL}/signup?step=step2'; true;`,
-        );
-      } else {
-        webViewRef.current?.reload();
-      }
+      const deepLink = new URL(result.url);
+      const params = deepLink.search;
+      webViewRef.current?.injectJavaScript(
+        `window.location.href = '${WEB_URL}/auth/callback${params}'; true;`,
+      );
     }
   };
 
