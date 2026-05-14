@@ -1,4 +1,5 @@
 import * as AppleAuthentication from 'expo-apple-authentication';
+import * as WebBrowser from 'expo-web-browser';
 import { useEffect, useRef, useState } from 'react';
 import {
   ActivityIndicator,
@@ -167,6 +168,24 @@ export default function VitalTripWebView() {
     return () => handler.remove();
   }, []);
 
+  const handleGoogleSignIn = async () => {
+    const result = await WebBrowser.openAuthSessionAsync(
+      `${WEB_URL}/api/auth/loginGoogle?source=native`,
+      'vitaltrip://',
+    );
+    if (result.type === 'success') {
+      const url = new URL(result.url);
+      const needsProfile = url.searchParams.get('needsProfile');
+      if (needsProfile) {
+        webViewRef.current?.injectJavaScript(
+          `window.location.href = '${WEB_URL}/signup?step=step2'; true;`,
+        );
+      } else {
+        webViewRef.current?.reload();
+      }
+    }
+  };
+
   const handleAppleSignIn = async () => {
     try {
       const credential = await AppleAuthentication.signInAsync({
@@ -236,6 +255,10 @@ export default function VitalTripWebView() {
 
       if (data.type === 'APPLE_SIGN_IN') {
         handleAppleSignIn();
+      }
+
+      if (data.type === 'GOOGLE_SIGN_IN') {
+        handleGoogleSignIn();
       }
     } catch {}
   };
