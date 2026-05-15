@@ -1,29 +1,27 @@
-import { Metadata } from 'next';
+import { fetchEncyclopedia } from '@/src/features/encyclopedia/api/encyclopediaApi';
+import { EncyclopediaClient } from '@/src/features/encyclopedia/ui/EncyclopediaClient';
 import Navbar from '@/src/widgets/navbar/Navbar';
+import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'First Aid Encyclopedia - Vital Trip',
-  description:
-    'Browse thousands of medical conditions and first aid guidelines. Search by condition name or category.',
-  alternates: {
-    canonical: '/news',
-  },
+  title: '응급 사전 - Vital Trip',
+  description: '500개 이상의 의료 질환과 응급처치 가이드를 검색하세요.',
+  alternates: { canonical: '/news' },
   openGraph: {
-    title: 'First Aid Encyclopedia - Vital Trip',
-    description:
-      'Browse thousands of medical conditions and first aid guidelines. Search by condition name or category.',
+    title: '응급 사전 - Vital Trip',
+    description: '500개 이상의 의료 질환과 응급처치 가이드를 검색하세요.',
     url: '/news',
     type: 'website',
   },
 };
 
-export default function EncyclopediaPage() {
+export default async function EncyclopediaPage() {
+  const items = await fetchEncyclopedia();
+
   return (
-    <div className='min-h-screen bg-white pt-16'>
+    <div className='pt-16'>
       <Navbar />
-      <div className='flex min-h-[calc(100vh-64px)] items-center justify-center'>
-        <p className='text-gray-400'>준비 중입니다.</p>
-      </div>
+      <EncyclopediaClient items={items} />
     </div>
   );
 }
