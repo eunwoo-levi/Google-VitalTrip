@@ -1,10 +1,11 @@
 'use client';
 
-import { useVirtualizer } from '@tanstack/react-virtual';
-import { useMemo, useRef, useState } from 'react';
+import { useWindowVirtualizer } from '@tanstack/react-virtual';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from '@/src/shared/lib/i18n';
 import { CATEGORY_ICONS, CategoryKey, EncyclopediaItem, getCategory } from '../types';
 import { EncyclopediaCard } from './EncyclopediaCard';
+import { fetchEncyclopediaPage } from '../api/encyclopediaApi';
 
 const CATEGORY_KEYS: CategoryKey[] = [
   'all',
@@ -18,39 +19,87 @@ const CATEGORY_KEYS: CategoryKey[] = [
 ];
 
 interface Props {
-  items: EncyclopediaItem[];
+  initialItems: EncyclopediaItem[];
+  total: number;
 }
 
-export function EncyclopediaClient({ items }: Props) {
+export function EncyclopediaClient({ initialItems, total: initialTotal }: Props) {
   const { t } = useTranslation('common');
   const [query, setQuery] = useState('');
+  const [debouncedQuery, setDebouncedQuery] = useState('');
   const [category, setCategory] = useState<CategoryKey>('all');
-  const parentRef = useRef<HTMLDivElement>(null);
+  const [items, setItems] = useState(initialItems);
+  const [total, setTotal] = useState(initialTotal);
+  const [offset, setOffset] = useState(initialItems.length);
+  const [isLoading, setIsLoading] = useState(false);
+  const listRef = useRef<HTMLDivElement>(null);
+  const isFirstRender = useRef(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setDebouncedQuery(query.trim()), 300);
+    return () => clearTimeout(timer);
+  }, [query]);
+
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    let cancelled = false;
+    setIsLoading(true);
+    fetchEncyclopediaPage({ search: debouncedQuery || undefined }).then((result) => {
+      if (cancelled) return;
+      setItems(result.items);
+      setTotal(result.total);
+      setOffset(result.items.length);
+      setIsLoading(false);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [debouncedQuery]);
+
+  const loadMore = useCallback(async () => {
+    if (isLoading || offset >= total) return;
+    setIsLoading(true);
+    const result = await fetchEncyclopediaPage({
+      search: debouncedQuery || undefined,
+      offset,
+    });
+    setItems((prev) => [...prev, ...result.items]);
+    setOffset((prev) => prev + result.items.length);
+    setIsLoading(false);
+  }, [isLoading, offset, total, debouncedQuery]);
 
   const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    return items.filter((item) => {
-      const matchesCategory = category === 'all' || getCategory(item.icdCode) === category;
-      const matchesQuery =
-        !q ||
-        item.name.toLowerCase().includes(q) ||
-        item.synonyms?.some((s) => s.toLowerCase().includes(q));
-      return matchesCategory && matchesQuery;
-    });
-  }, [items, query, category]);
+    if (category === 'all') return items;
+    return items.filter((item) => getCategory(item.categories) === category);
+  }, [items, category]);
 
-  const virtualizer = useVirtualizer({
+  const virtualizer = useWindowVirtualizer({
     count: filtered.length,
-    getScrollElement: () => parentRef.current,
     estimateSize: () => 80,
     overscan: 5,
     paddingEnd: 96,
+    scrollMargin: listRef.current?.offsetTop ?? 0,
   });
 
+  useEffect(() => {
+    const handleScroll = () => {
+      if (isLoading || offset >= total) return;
+      const scrollY = window.scrollY;
+      const windowHeight = window.innerHeight;
+      const docHeight = document.documentElement.scrollHeight;
+      if (docHeight - scrollY - windowHeight < 400) loadMore();
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [isLoading, offset, total, loadMore]);
+
   return (
-    <div className='flex flex-col bg-slate-50' style={{ height: 'calc(100vh - 64px)' }}>
+    <div className='bg-slate-50'>
       {/* 헤더 + 검색 */}
-      <div className='flex-shrink-0 bg-gradient-to-br from-red-600 via-red-600 to-rose-700 px-6 py-8'>
+      <div className='bg-gradient-to-br from-red-600 via-red-600 to-rose-700 px-6 py-8'>
         <div className='mx-auto max-w-3xl'>
           <div className='mb-1 flex items-center gap-2'>
             <span className='text-3xl'>🏥</span>
@@ -59,7 +108,7 @@ export function EncyclopediaClient({ items }: Props) {
             </h1>
           </div>
           <p className='mb-6 text-sm text-red-100'>
-            {t('encyclopedia.subtitle', { count: items.length })}
+            {t('encyclopedia.subtitle', { count: total })}
           </p>
           <div className='relative'>
             <span className='pointer-events-none absolute top-1/2 left-4 -translate-y-1/2 text-lg text-gray-400'>
@@ -86,7 +135,7 @@ export function EncyclopediaClient({ items }: Props) {
       </div>
 
       {/* 카테고리 필터 */}
-      <div className='flex-shrink-0 border-b border-gray-100 bg-white shadow-sm'>
+      <div className='sticky top-16 z-10 border-b border-gray-100 bg-white shadow-sm'>
         <div className='mx-auto max-w-3xl px-4 py-3'>
           <div className='flex gap-2 overflow-x-auto pb-0.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden'>
             {CATEGORY_KEYS.map((key) => (
@@ -108,11 +157,11 @@ export function EncyclopediaClient({ items }: Props) {
       </div>
 
       {/* 결과 카운터 */}
-      <div className='mx-auto flex w-full max-w-3xl flex-shrink-0 items-center justify-between px-6 py-2.5'>
+      <div className='mx-auto flex w-full max-w-3xl items-center justify-between px-6 py-2.5'>
         <span className='text-sm text-gray-500'>
-          {query || category !== 'all'
+          {debouncedQuery || category !== 'all'
             ? t('encyclopedia.results', { count: filtered.length })
-            : t('encyclopedia.total', { count: items.length })}
+            : t('encyclopedia.total', { count: total })}
         </span>
         <span className='text-xs text-gray-400 tabular-nums'>
           {t('encyclopedia.dom_counter', {
@@ -123,19 +172,25 @@ export function EncyclopediaClient({ items }: Props) {
       </div>
 
       {/* 가상화 리스트 */}
-      <div className='mx-auto min-h-0 w-full max-w-3xl flex-1 px-2'>
-        {filtered.length === 0 ? (
-          <div className='flex h-full flex-col items-center justify-center rounded-2xl bg-white text-gray-400'>
+      <div className='mx-auto w-full max-w-3xl px-2 pb-4'>
+        {isLoading && items.length === 0 ? (
+          <div className='flex h-64 items-center justify-center text-gray-400'>
+            <span className='text-3xl'>⏳</span>
+          </div>
+        ) : filtered.length === 0 ? (
+          <div className='flex h-64 flex-col items-center justify-center rounded-2xl bg-white text-gray-400'>
             <span className='mb-3 text-5xl'>🔍</span>
             <p className='font-medium text-gray-500'>{t('encyclopedia.no_results')}</p>
             <p className='mt-1 text-sm'>{t('encyclopedia.no_results_hint')}</p>
           </div>
         ) : (
-          <div ref={parentRef} className='h-full overflow-y-auto'>
-            <div style={{ height: virtualizer.getTotalSize(), position: 'relative' }}>
+          <>
+            <div ref={listRef} style={{ height: virtualizer.getTotalSize(), position: 'relative' }}>
               {virtualizer.getVirtualItems().map((virtualItem) => {
                 const item = filtered[virtualItem.index];
-                const categoryLabel = t(`encyclopedia.categories.${getCategory(item.icdCode)}`);
+                const categoryLabel = t(
+                  `encyclopedia.categories.${getCategory(item.categories)}`,
+                );
                 return (
                   <div
                     key={virtualItem.key}
@@ -143,9 +198,10 @@ export function EncyclopediaClient({ items }: Props) {
                     ref={virtualizer.measureElement}
                     style={{
                       position: 'absolute',
-                      top: virtualItem.start,
+                      top: 0,
                       left: 0,
                       width: '100%',
+                      transform: `translateY(${virtualItem.start - virtualizer.options.scrollMargin}px)`,
                     }}
                   >
                     <EncyclopediaCard item={item} categoryLabel={categoryLabel} />
@@ -153,7 +209,10 @@ export function EncyclopediaClient({ items }: Props) {
                 );
               })}
             </div>
-          </div>
+            {isLoading && (
+              <div className='py-3 text-center text-sm text-gray-400'>불러오는 중...</div>
+            )}
+          </>
         )}
       </div>
     </div>

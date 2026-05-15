@@ -16,12 +16,12 @@ export const metadata: Metadata = {
 };
 
 export default async function EncyclopediaPage() {
-  const items = await fetchEncyclopedia();
+  const { total, items } = await fetchEncyclopedia();
 
   return (
     <div className='pt-16'>
       <Navbar />
-      <EncyclopediaClient items={items} />
+      <EncyclopediaClient initialItems={items} total={total} />
     </div>
   );
 }
