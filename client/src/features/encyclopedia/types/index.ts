@@ -1,8 +1,10 @@
 export interface EncyclopediaItem {
-  id: string;
-  name: string;
-  synonyms: string[];
-  icdCode: string;
+  id: number;
+  title: string;
+  altTitles: string[];
+  summary: string;
+  categories: string[];
+  url: string;
 }
 
 export type CategoryKey =
@@ -47,15 +49,13 @@ export const CATEGORY_ICONS: Record<CategoryKey, string> = {
   other: '📋',
 };
 
-export function getCategory(icdCode?: string): Exclude<CategoryKey, 'all'> {
-  if (!icdCode) return 'other';
-  const num = parseInt(icdCode);
-  if (isNaN(num)) return 'other';
-  if (num >= 1 && num <= 139) return 'infectious';
-  if (num >= 320 && num <= 389) return 'neurological';
-  if (num >= 390 && num <= 459) return 'cardiovascular';
-  if (num >= 460 && num <= 519) return 'respiratory';
-  if (num >= 520 && num <= 579) return 'digestive';
-  if (num >= 800 && num <= 999) return 'injury';
+export function getCategory(categories: string[]): Exclude<CategoryKey, 'all'> {
+  const text = categories.join(' ').toLowerCase();
+  if (/infect|virus|bacteria|parasit|fungal/.test(text)) return 'infectious';
+  if (/heart|cardio|vascular|blood pressure|artery|vein/.test(text)) return 'cardiovascular';
+  if (/lung|respirat|breath|pulmon|airway/.test(text)) return 'respiratory';
+  if (/digest|stomach|bowel|intestin|liver|gastr/.test(text)) return 'digestive';
+  if (/brain|nerve|neural|mental|psychiatric|psycho/.test(text)) return 'neurological';
+  if (/injur|wound|fracture|burn|trauma/.test(text)) return 'injury';
   return 'other';
 }
