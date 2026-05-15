@@ -3,7 +3,7 @@ export const aboutTranslations = {
     navbar: {
       home: 'Home',
       about: 'About',
-      news: 'News',
+      news: 'Encyclopedia',
       translate: 'AI Translation',
       first_aid: 'AI First Aid',
       hospital_pharmacy_nearby: 'Hospital & Pharmacy Nearby',
@@ -90,7 +90,7 @@ export const aboutTranslations = {
     navbar: {
       home: '홈',
       about: '소개',
-      news: '뉴스',
+      news: '응급처치 백과사전',
       translate: 'AI 번역',
       first_aid: 'AI 응급처치',
       hospital_pharmacy_nearby: '병원 & 약국 찾기',
