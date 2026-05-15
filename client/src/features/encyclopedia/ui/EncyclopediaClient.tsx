@@ -47,6 +47,7 @@ export function EncyclopediaClient({ initialItems, total: initialTotal }: Props)
     }
     let cancelled = false;
     setIsLoading(true);
+    window.scrollTo(0, 0);
     fetchEncyclopediaPage({ search: debouncedQuery || undefined }).then((result) => {
       if (cancelled) return;
       setItems(result.items);
@@ -157,17 +158,13 @@ export function EncyclopediaClient({ initialItems, total: initialTotal }: Props)
       </div>
 
       {/* 결과 카운터 */}
-      <div className='mx-auto flex w-full max-w-3xl items-center justify-between px-6 py-2.5'>
+      <div className='mx-auto w-full max-w-3xl px-6 py-2.5'>
         <span className='text-sm text-gray-500'>
-          {debouncedQuery || category !== 'all'
-            ? t('encyclopedia.results', { count: filtered.length })
-            : t('encyclopedia.total', { count: total })}
-        </span>
-        <span className='text-xs text-gray-400 tabular-nums'>
-          {t('encyclopedia.dom_counter', {
-            rendered: virtualizer.getVirtualItems().length,
-            total: filtered.length,
-          })}
+          {debouncedQuery
+            ? t('encyclopedia.results', { count: total })
+            : category !== 'all'
+              ? t('encyclopedia.results', { count: filtered.length })
+              : t('encyclopedia.total', { count: total })}
         </span>
       </div>
 
