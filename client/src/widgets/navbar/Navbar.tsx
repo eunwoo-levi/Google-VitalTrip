@@ -148,7 +148,7 @@ export default function Navbar({ navTranslations }: { navTranslations?: NavTrans
               <span>{t('about')}</span>
             </Link>
             <Link
-              href='/news'
+              href='/encyclopedia'
               className='flex items-center space-x-1 rounded-md px-3 py-2 text-gray-700 transition-colors duration-200 hover:bg-blue-50 hover:text-blue-600'
             >
               <span>{t('news')}</span>
@@ -218,7 +218,7 @@ export default function Navbar({ navTranslations }: { navTranslations?: NavTrans
                   <span>{t('about')}</span>
                 </Link>
                 <Link
-                  href='/news'
+                  href='/encyclopedia'
                   onClick={closeMenu}
                   className='flex items-center justify-center space-x-2 rounded-md px-3 py-2 text-gray-700 transition-colors duration-200 hover:bg-blue-50 hover:text-blue-600'
                 >

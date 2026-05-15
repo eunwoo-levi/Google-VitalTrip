@@ -6,11 +6,11 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
   title: '응급 사전 - Vital Trip',
   description: '500개 이상의 의료 질환과 응급처치 가이드를 검색하세요.',
-  alternates: { canonical: '/news' },
+  alternates: { canonical: '/encyclopedia' },
   openGraph: {
     title: '응급 사전 - Vital Trip',
     description: '500개 이상의 의료 질환과 응급처치 가이드를 검색하세요.',
-    url: '/news',
+    url: '/encyclopedia',
     type: 'website',
   },
 };
