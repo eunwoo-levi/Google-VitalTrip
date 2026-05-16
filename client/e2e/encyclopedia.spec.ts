@@ -1,5 +1,10 @@
 import { test, expect } from '@playwright/test';
-import { setupPage, mockAuthAPIs, mockEncyclopediaAPI, MOCK_ENCYCLOPEDIA_ITEMS } from './helpers/mock';
+import {
+  setupPage,
+  mockAuthAPIs,
+  mockEncyclopediaAPI,
+  MOCK_ENCYCLOPEDIA_ITEMS,
+} from './helpers/mock';
 
 test.describe('응급 사전 (Encyclopedia)', () => {
   test.beforeEach(async ({ page }) => {

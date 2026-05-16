@@ -27,7 +27,10 @@ test.describe('AI 번역 (Translate)', () => {
     const textarea = page.locator('textarea').first();
     await textarea.fill('I have a headache');
 
-    const translateBtn = page.locator('button').filter({ hasText: /translate|번역/i }).first();
+    const translateBtn = page
+      .locator('button')
+      .filter({ hasText: /translate|번역/i })
+      .first();
     if (await translateBtn.isVisible()) {
       const [request] = await Promise.all([
         page.waitForRequest(
@@ -43,7 +46,10 @@ test.describe('AI 번역 (Translate)', () => {
     const textarea = page.locator('textarea').first();
     await textarea.fill('I have a headache');
 
-    const translateBtn = page.locator('button').filter({ hasText: /translate|번역/i }).first();
+    const translateBtn = page
+      .locator('button')
+      .filter({ hasText: /translate|번역/i })
+      .first();
     if (await translateBtn.isVisible()) {
       await translateBtn.click();
       await expect(page.getByText('두통이 있습니다')).toBeVisible({ timeout: 5_000 });
