@@ -67,7 +67,10 @@ export function EncyclopediaClient({ initialItems, total: initialTotal }: Props)
       search: debouncedQuery || undefined,
       offset,
     });
-    setItems((prev) => [...prev, ...result.items]);
+    setItems((prev) => {
+      const existingIds = new Set(prev.map((item) => item.id));
+      return [...prev, ...result.items.filter((item) => !existingIds.has(item.id))];
+    });
     setOffset((prev) => prev + result.items.length);
     setIsLoading(false);
   }, [isLoading, offset, total, debouncedQuery]);
