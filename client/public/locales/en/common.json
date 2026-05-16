@@ -14,7 +14,7 @@
   "navbar": {
     "home": "Home",
     "about": "About",
-    "news": "News",
+    "news": "Encyclopedia",
     "translate": "AI Translation",
     "first_aid": "AI First Aid",
     "hospital_pharmacy_nearby": "Hospital & Pharmacy Nearby"
@@ -120,6 +120,27 @@
     "total_countries": "{{count}} countries total",
     "no_results": "No results found",
     "source": "Source: Korea Ministry of Foreign Affairs Safe Travel"
+  },
+  "encyclopedia": {
+    "title": "Emergency Dictionary",
+    "subtitle": "{{count}} medical conditions · Emergency first aid guides",
+    "search_placeholder": "Search by condition, symptom, or ICD code...",
+    "clear_search": "Clear search",
+    "results": "{{count}} results",
+    "total": "Total {{count}}",
+    "dom_counter": "DOM: {{rendered}} / {{total}}",
+    "no_results": "No results found.",
+    "no_results_hint": "Try a different keyword.",
+    "categories": {
+      "all": "All",
+      "infectious": "Infectious",
+      "cardiovascular": "Cardiovascular",
+      "respiratory": "Respiratory",
+      "digestive": "Digestive",
+      "neurological": "Neurological",
+      "injury": "Injury",
+      "other": "Other"
+    }
   },
   "firstaid": {
     "reported_symptoms": "Symptoms you described",
