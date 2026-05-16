@@ -5,7 +5,7 @@ import Dropdown from '@/src/shared/ui/Dropdown';
 import { LanguageSwitcher } from '@/src/widgets/bottomNavigateBar/ui/LanguageSwitcher';
 import Image from 'next/image';
 import Link from 'next/link';
-import { TiThMenu } from '@/src/shared/ui/icons';
+import { MdGTranslate, TiThMenu } from '@/src/shared/ui/icons';
 import { MENU_ITEMS } from '../data/BottomNavigateBarData';
 
 const linkClassName =
@@ -61,6 +61,16 @@ export const MenuDropdown = ({
                 />
                 {t('menu.mypage')}
               </button>
+            </li>
+            <li className='w-full'>
+              <Link
+                href='/translate'
+                className='mb-2 flex w-full items-center justify-center gap-2 rounded-md p-2 transition-all duration-200 hover:bg-gray-100 hover:text-red-500'
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <MdGTranslate size={18} />
+                {t('menu.translate')}
+              </Link>
             </li>
             {MENU_ITEMS.map((item) => (
               <li key={item.code} className='w-full'>
