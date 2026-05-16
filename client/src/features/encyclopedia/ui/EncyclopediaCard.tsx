@@ -1,4 +1,10 @@
-import { CATEGORY_BORDER, CATEGORY_COLORS, CATEGORY_ICONS, EncyclopediaItem, getCategory } from '../types';
+import {
+  CATEGORY_BORDER,
+  CATEGORY_COLORS,
+  CATEGORY_ICONS,
+  EncyclopediaItem,
+  getCategory,
+} from '../types';
 
 interface Props {
   item: EncyclopediaItem;
@@ -18,13 +24,13 @@ export function EncyclopediaCard({ item, categoryLabel }: Props) {
         href={item.url}
         target='_blank'
         rel='noopener noreferrer'
-        className={`block rounded-xl border border-gray-100 border-l-4 ${borderClass} bg-white px-5 py-4 shadow-sm transition-all duration-200 hover:border-gray-200 hover:shadow-md`}
+        className={`block rounded-xl border border-l-4 border-gray-100 ${borderClass} bg-white px-5 py-4 shadow-sm transition-all duration-200 hover:border-gray-200 hover:shadow-md`}
       >
         <div className='flex items-start justify-between gap-4'>
           <div className='min-w-0 flex-1'>
-            <p className='font-semibold leading-snug text-gray-900'>{item.title}</p>
+            <p className='leading-snug font-semibold text-gray-900'>{item.title}</p>
             {visibleAltTitles.length > 0 && (
-              <p className='mt-0.5 truncate text-sm italic text-gray-400'>
+              <p className='mt-0.5 truncate text-sm text-gray-400 italic'>
                 {visibleAltTitles.join(' · ')}
               </p>
             )}

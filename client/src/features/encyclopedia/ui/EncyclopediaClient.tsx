@@ -188,9 +188,7 @@ export function EncyclopediaClient({ initialItems, total: initialTotal }: Props)
             <div ref={listRef} style={{ height: virtualizer.getTotalSize(), position: 'relative' }}>
               {virtualizer.getVirtualItems().map((virtualItem) => {
                 const item = filtered[virtualItem.index];
-                const categoryLabel = t(
-                  `encyclopedia.categories.${getCategory(item.categories)}`,
-                );
+                const categoryLabel = t(`encyclopedia.categories.${getCategory(item.categories)}`);
                 return (
                   <div
                     key={virtualItem.key}
