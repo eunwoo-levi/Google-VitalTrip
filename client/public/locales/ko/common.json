@@ -15,7 +15,7 @@
   "navbar": {
     "home": "홈",
     "about": "소개",
-    "news": "응급처치 백과사전",
+    "news": "응급 사전",
     "translate": "AI 번역",
     "first_aid": "AI 응급처치",
     "hospital_pharmacy_nearby": "병원 & 약국 찾기"
@@ -121,6 +121,27 @@
     "total_countries": "전체 {{count}}개국",
     "no_results": "검색 결과가 없어요",
     "source": "출처: 외교부 해외안전여행"
+  },
+  "encyclopedia": {
+    "title": "응급 사전",
+    "subtitle": "{{count}}개 의료 질환 · 증상별 응급처치 가이드",
+    "search_placeholder": "질환명, 증상, ICD 코드로 검색...",
+    "clear_search": "검색어 지우기",
+    "results": "{{count}}개 결과",
+    "total": "전체 {{count}}개",
+    "dom_counter": "DOM: {{rendered}} / {{total}}",
+    "no_results": "검색 결과가 없습니다.",
+    "no_results_hint": "다른 키워드로 시도해 보세요.",
+    "categories": {
+      "all": "전체",
+      "infectious": "감염",
+      "cardiovascular": "심혈관",
+      "respiratory": "호흡기",
+      "digestive": "소화기",
+      "neurological": "신경계",
+      "injury": "외상",
+      "other": "기타"
+    }
   },
   "firstaid": {
     "reported_symptoms": "설명하신 증상",
