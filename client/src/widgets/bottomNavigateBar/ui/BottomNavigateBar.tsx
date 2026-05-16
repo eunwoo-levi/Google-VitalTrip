@@ -10,7 +10,7 @@ import { useRouter } from 'next/navigation';
 import {
   FaMapMarkedAlt,
   FaRegHospital,
-  MdGTranslate,
+  HiOutlineDocumentText,
   MdOutlineWarningAmber,
 } from '@/src/shared/ui/icons';
 import { useBottonNavigateBarModals } from '../hooks/useBottonNavigateBarModals';
@@ -55,13 +55,13 @@ export default function BottomNavigateBar() {
 
   return (
     <>
-      <div className='fixed bottom-2 left-1/2 z-10 flex h-[60px] w-[98%] -translate-x-1/2 items-center justify-evenly gap-2 rounded-t-xl bg-white shadow-xl will-change-transform'>
+      <div className='fixed bottom-4 left-1/2 z-10 flex h-[60px] w-[98%] -translate-x-1/2 items-center justify-evenly gap-2 rounded-t-xl bg-white shadow-xl will-change-transform'>
         <Link href='/' aria-label='홈으로 이동' className={linkClassName}>
           <FaMapMarkedAlt size={25} className='text-red-500' />
         </Link>
 
-        <Link href='/translate' aria-label='의료 번역 페이지로 이동' className={linkClassName}>
-          <MdGTranslate size={25} className='text-red-500' />
+        <Link href='/encyclopedia' aria-label='응급 사전 페이지로 이동' className={linkClassName}>
+          <HiOutlineDocumentText size={25} className='text-red-500' />
         </Link>
 
         <button
