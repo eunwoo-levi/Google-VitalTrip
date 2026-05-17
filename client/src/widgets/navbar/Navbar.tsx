@@ -42,7 +42,9 @@ const LanguageDropdown = () => {
   const handleLanguageChange = async (langCode: string) => {
     setIsOpen(false);
     if (pathname.startsWith('/about')) {
-      toast.success(langCode === 'ko' ? '한국어로 변경되었습니다.' : 'Language changed to English.');
+      toast.success(
+        langCode === 'ko' ? '한국어로 변경되었습니다.' : 'Language changed to English.',
+      );
       router.push(`/about/${langCode}`);
       return;
     }

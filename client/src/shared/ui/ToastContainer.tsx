@@ -21,12 +21,12 @@ export function ToastContainer() {
   if (toasts.length === 0) return null;
 
   return (
-    <div className='fixed right-4 top-20 z-[9999] flex flex-col gap-2'>
+    <div className='fixed top-20 right-4 z-[9999] flex flex-col gap-2'>
       {toasts.map((t) => (
         <div
           key={t.id}
           role='alert'
-          className={`flex min-w-64 max-w-80 items-start gap-3 rounded-xl px-4 py-3 text-sm font-medium text-white shadow-xl ${TYPE_STYLES[t.type]}`}
+          className={`flex max-w-80 min-w-64 items-start gap-3 rounded-xl px-4 py-3 text-sm font-medium text-white shadow-xl ${TYPE_STYLES[t.type]}`}
           onClick={() => toastStore.remove(t.id)}
         >
           <span className='mt-0.5 text-base'>{ICONS[t.type]}</span>

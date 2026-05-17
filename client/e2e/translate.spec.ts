@@ -36,9 +36,7 @@ test.describe('AI 번역 (Translate)', () => {
     await expect(translateBtn).toBeEnabled({ timeout: 5_000 });
 
     const [request] = await Promise.all([
-      page.waitForRequest(
-        (req) => req.url().includes('/api/translate') && req.method() === 'POST',
-      ),
+      page.waitForRequest((req) => req.url().includes('/api/translate') && req.method() === 'POST'),
       translateBtn.click(),
     ]);
     expect(request.postDataJSON()).toMatchObject({ text: 'I have a headache' });
