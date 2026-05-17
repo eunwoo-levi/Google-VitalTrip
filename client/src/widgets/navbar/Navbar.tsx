@@ -132,8 +132,7 @@ export default function Navbar({ navTranslations }: { navTranslations?: NavTrans
               <Image
                 src='/VitalTrip.svg'
                 alt='VitalTrip Logo'
-                className='h-12 w-auto'
-                style={{ width: 'auto' }}
+                style={{ height: '3rem', width: 'auto' }}
                 width={48}
                 height={48}
               />
