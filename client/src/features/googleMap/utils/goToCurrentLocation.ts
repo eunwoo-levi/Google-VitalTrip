@@ -1,3 +1,4 @@
+import { toast } from '@/src/shared/lib/toast/toastStore';
 import { findNearbyPlaces } from './findNearbyPlaces';
 type GoToCurrentLocationParams = {
   mapInstance: google.maps.Map | null;
@@ -8,7 +9,7 @@ export const goToCurrentLocation = ({ mapInstance, service }: GoToCurrentLocatio
   if (!mapInstance || !service) return;
 
   if (!navigator.geolocation) {
-    alert('Geolocation is not supported by this browser.');
+    toast.error('Geolocation is not supported by this browser.');
     return;
   }
 
@@ -16,13 +17,9 @@ export const goToCurrentLocation = ({ mapInstance, service }: GoToCurrentLocatio
     ?.query({ name: 'geolocation' })
     .then((result) => {
       if (result.state === 'denied') {
-        alert(
+        toast.error(
           'Location access is denied. Please enable location permissions in your browser settings to use this feature.',
         );
-        return;
-      }
-      if (result.state === 'prompt') {
-        // Permission will be requested when getCurrentPosition is called
       }
     })
     .catch(() => {
@@ -58,7 +55,7 @@ export const goToCurrentLocation = ({ mapInstance, service }: GoToCurrentLocatio
           message += 'An unknown error occurred.';
           break;
       }
-      alert(message);
+      toast.error(message);
     },
     {
       enableHighAccuracy: true,
