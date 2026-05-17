@@ -27,7 +27,7 @@ test.describe('응급 사전 (Encyclopedia)', () => {
 
     const [request] = await Promise.all([
       page.waitForRequest('**/api/encyclopedia**'),
-      searchInput.fill('fever'),
+      searchInput.pressSequentially('fever'),
     ]);
 
     expect(request.url()).toContain('search=fever');
@@ -36,7 +36,10 @@ test.describe('응급 사전 (Encyclopedia)', () => {
   test('검색 결과로 mock 데이터 렌더링', async ({ page }) => {
     const searchInput = page.locator('input').first();
 
-    await Promise.all([page.waitForResponse('**/api/encyclopedia**'), searchInput.fill('fever')]);
+    await Promise.all([
+      page.waitForResponse('**/api/encyclopedia**'),
+      searchInput.pressSequentially('fever'),
+    ]);
 
     await expect(page.getByText(MOCK_ENCYCLOPEDIA_ITEMS[0].title)).toBeVisible({ timeout: 5_000 });
   });
@@ -58,7 +61,10 @@ test.describe('응급 사전 (Encyclopedia)', () => {
   test('검색 후 여러 mock 아이템 표시', async ({ page }) => {
     const searchInput = page.locator('input').first();
 
-    await Promise.all([page.waitForResponse('**/api/encyclopedia**'), searchInput.fill('a')]);
+    await Promise.all([
+      page.waitForResponse('**/api/encyclopedia**'),
+      searchInput.pressSequentially('a'),
+    ]);
 
     // mock 응답의 모든 아이템이 표시됨
     for (const item of MOCK_ENCYCLOPEDIA_ITEMS) {

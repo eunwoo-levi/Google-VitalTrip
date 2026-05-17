@@ -25,7 +25,7 @@ test.describe('AI 번역 (Translate)', () => {
 
   test('번역 버튼 클릭 시 /api/translate POST 호출', async ({ page }) => {
     const textarea = page.locator('textarea').first();
-    await textarea.fill('I have a headache');
+    await textarea.pressSequentially('I have a headache');
 
     const translateBtn = page
       .locator('button')
@@ -44,7 +44,7 @@ test.describe('AI 번역 (Translate)', () => {
 
   test('번역 결과 표시 (mock 응답)', async ({ page }) => {
     const textarea = page.locator('textarea').first();
-    await textarea.fill('I have a headache');
+    await textarea.pressSequentially('I have a headache');
 
     const translateBtn = page
       .locator('button')
