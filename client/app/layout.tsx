@@ -10,6 +10,7 @@ import StructuredData, {
   organizationStructuredData,
   websiteStructuredData,
 } from '@/src/shared/ui/StructuredData';
+import { ToastContainer } from '@/src/shared/ui/ToastContainer';
 import ConditionalBottomNavigateBar from '@/src/widgets/bottomNavigateBar/ui/ConditionalBottomNavigateBar';
 import localFont from 'next/font/local';
 import { Suspense } from 'react';
@@ -174,6 +175,7 @@ export default function RootLayout({
             <StructuredData data={medicalWebsiteStructuredData} />
             {children}
             <ConditionalBottomNavigateBar />
+            <ToastContainer />
             <LanguageSelectionModal />
             <Suspense fallback={null}>
               <Analytics />
