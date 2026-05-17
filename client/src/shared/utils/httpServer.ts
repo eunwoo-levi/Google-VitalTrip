@@ -7,7 +7,8 @@ async function request<T = unknown>(url: string, config: FetchConfig = {}): Prom
   const { method = 'GET', headers = {}, body, next } = config;
 
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 10000);
+  const timeoutMs = process.env.CI ? 2000 : 10000;
+  const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
 
   try {
     const response = await fetch(`${BASE_URL}${url}`, {
