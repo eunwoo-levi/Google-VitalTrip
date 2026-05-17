@@ -6,6 +6,7 @@ import { useProfileQuery } from '@/src/features/profile/api/useProfileQuery';
 
 import { useHydration } from '@/src/shared/hooks/useHydration';
 import { useTranslation } from '@/src/shared/lib/i18n';
+import { toast } from '@/src/shared/lib/toast/toastStore';
 import Dropdown from '@/src/shared/ui/Dropdown';
 import { FaBars, FaChevronDown, FaTimes } from '@/src/shared/ui/icons';
 import { AnimatePresence, motion } from 'motion/react';
@@ -41,11 +42,15 @@ const LanguageDropdown = () => {
   const handleLanguageChange = async (langCode: string) => {
     setIsOpen(false);
     if (pathname.startsWith('/about')) {
+      toast.success(
+        langCode === 'ko' ? '한국어로 변경되었습니다.' : 'Language changed to English.',
+      );
       router.push(`/about/${langCode}`);
       return;
     }
     await i18n.loadLanguages(langCode);
     await i18n.changeLanguage(langCode);
+    toast.success(langCode === 'ko' ? '한국어로 변경되었습니다.' : 'Language changed to English.');
   };
 
   const displayLanguage = isHydrated ? currentLanguage : languages[0];
@@ -127,7 +132,7 @@ export default function Navbar({ navTranslations }: { navTranslations?: NavTrans
               <Image
                 src='/VitalTrip.svg'
                 alt='VitalTrip Logo'
-                className='h-12 w-auto'
+                style={{ height: '3rem', width: 'auto' }}
                 width={48}
                 height={48}
               />

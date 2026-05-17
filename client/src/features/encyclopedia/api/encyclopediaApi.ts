@@ -35,8 +35,7 @@ export async function fetchEncyclopedia(): Promise<{ total: number; items: Encyc
       next: { revalidate: 86400 },
     });
     return { total: res.data.total, items: mapItems(res.data.items) };
-  } catch (e) {
-    console.error('[encyclopedia] SSR fetch failed:', e);
+  } catch {
     return { total: 0, items: [] };
   }
 }

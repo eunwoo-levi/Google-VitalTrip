@@ -44,8 +44,8 @@ export const useLogin = () => {
 
     try {
       await loginUser(loginForm);
-    } catch (error) {
-      console.error('Login failed:', error);
+    } catch {
+      // onError에서 toast로 처리됨
     }
   };
 

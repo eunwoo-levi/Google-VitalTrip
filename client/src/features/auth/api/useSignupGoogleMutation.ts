@@ -1,3 +1,4 @@
+import { toast } from '@/src/shared/lib/toast/toastStore';
 import { APIError } from '@/src/shared/utils/apiError';
 import { httpClient } from '@/src/shared/utils/httpClient';
 import { useMutation } from '@tanstack/react-query';
@@ -15,11 +16,12 @@ export const useSignupGoogleMutation = () => {
   return useMutation({
     mutationFn: signupGoogleUser,
     onSuccess: () => {
+      toast.success('Account created successfully.');
       router.push('/');
     },
     onError: (error) => {
       if (error instanceof APIError) {
-        console.error('Signup failed:', error.message);
+        toast.error(error.message);
       }
     },
   });

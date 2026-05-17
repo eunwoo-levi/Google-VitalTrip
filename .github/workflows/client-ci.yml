@@ -54,6 +54,63 @@ jobs:
       - name: Build application
         run: pnpm --filter client build
 
+  e2e:
+    runs-on: ubuntu-latest
+    name: E2E Tests
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Generate Prisma Client
+        run: pnpm --filter client run generate
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/vitaltrip
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        id: playwright-cache
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-chromium-${{ hashFiles('**/pnpm-lock.yaml') }}
+
+      - name: Install Playwright Chromium
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: pnpm --filter client exec playwright install chromium --with-deps
+
+      - name: Install Chromium system deps (cache hit)
+        if: steps.playwright-cache.outputs.cache-hit == 'true'
+        run: pnpm --filter client exec playwright install-deps chromium
+
+      - name: Run E2E tests
+        run: pnpm --filter client test:e2e
+        env:
+          CI: true
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/vitaltrip
+          NEXT_PUBLIC_GOOGLE_MAPS_API_KEY: dummy_maps_key_for_ci
+
+      - name: Upload Playwright report
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report
+          path: client/playwright-report/
+          retention-days: 7
+
   security-check:
     runs-on: ubuntu-latest
     name: Security Check

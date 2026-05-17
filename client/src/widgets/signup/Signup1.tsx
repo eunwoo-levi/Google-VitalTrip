@@ -3,6 +3,7 @@
 import { useCheckEmail } from '@/src/features/auth/hooks/useCheckEmail';
 import type { SignupErrors } from '@/src/features/auth/types/signup';
 import { CheckEmailButton } from '@/src/features/auth/ui/CheckEmailButton';
+import { toast } from '@/src/shared/lib/toast/toastStore';
 
 interface FormData {
   email: string;
@@ -35,7 +36,7 @@ export default function Signup1({
     e.preventDefault();
 
     if (formData.password !== formData.passwordConfirm) {
-      alert('Passwords do not match.');
+      toast.error('Passwords do not match.');
       return;
     }
 
