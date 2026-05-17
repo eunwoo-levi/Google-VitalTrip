@@ -33,7 +33,7 @@ export function EncyclopediaClient({ initialItems, total: initialTotal }: Props)
   const [offset, setOffset] = useState(initialItems.length);
   const [isLoading, setIsLoading] = useState(false);
   const listRef = useRef<HTMLDivElement>(null);
-  const isFirstRender = useRef(true);
+  const skipInitialFetch = useRef(true);
 
   useEffect(() => {
     const timer = setTimeout(() => setDebouncedQuery(query.trim()), 300);
@@ -41,9 +41,11 @@ export function EncyclopediaClient({ initialItems, total: initialTotal }: Props)
   }, [query]);
 
   useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      return;
+    // debouncedQuery가 빈 문자열인 채로 첫 실행되면 SSR initialItems를 그대로 사용
+    // debouncedQuery가 이미 non-empty로 첫 실행되면(레이스) 건너뛰지 않고 바로 검색
+    if (skipInitialFetch.current) {
+      skipInitialFetch.current = false;
+      if (debouncedQuery === '') return;
     }
     let cancelled = false;
     setIsLoading(true);
