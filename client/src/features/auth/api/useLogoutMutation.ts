@@ -1,3 +1,4 @@
+import { toast } from '@/src/shared/lib/toast/toastStore';
 import { APIError } from '@/src/shared/utils/apiError';
 import { httpClient } from '@/src/shared/utils/httpClient';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -10,13 +11,14 @@ export const useLogoutMutation = () => {
   return useMutation({
     mutationFn: logoutUser,
     onSuccess: () => {
+      toast.success('Logged out successfully.');
       queryClient.removeQueries({ queryKey: ['auth', 'isLoggedIn'] });
       queryClient.removeQueries({ queryKey: ['profile'] });
       router.push('/');
     },
     onError: (error) => {
       if (error instanceof APIError) {
-        console.error('Logout failed:', error.message);
+        toast.error(error.message);
       }
     },
   });

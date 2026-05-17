@@ -1,6 +1,7 @@
 'use client';
 
 import { oAuthCallback } from '@/src/features/auth/api/oAuthCallback';
+import { toast } from '@/src/shared/lib/toast/toastStore';
 import { APIError } from '@/src/shared/utils/apiError';
 import { setToSessionStorage } from '@/src/shared/utils/sessionService';
 import { useRouter } from 'next/navigation';
@@ -47,6 +48,7 @@ export default function OAuthCallbackPage() {
           const googleProfile = await oAuthCallback();
           setToSessionStorage('google-profile', JSON.stringify(googleProfile));
           window.history.replaceState({}, document.title, window.location.pathname);
+          toast.success('Logged in with Google successfully.');
           router.push('/');
           return;
         }
