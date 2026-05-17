@@ -1,13 +1,10 @@
 'use client';
 
-import { useIsWebView } from '@/src/shared/hooks/useIsWebView';
 import { APIError } from '@/src/shared/utils/apiError';
 import Image from 'next/image';
 import { loginGoogle } from '../api/loginGoogle';
 
 export const GoogleAuthButton = () => {
-  const isWebView = useIsWebView();
-
   const handleGoogleAuthClick = async () => {
     try {
       await loginGoogle();
@@ -17,8 +14,6 @@ export const GoogleAuthButton = () => {
       }
     }
   };
-
-  if (!isWebView) return null;
 
   return (
     <button
