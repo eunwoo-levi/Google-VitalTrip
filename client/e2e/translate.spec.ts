@@ -25,7 +25,7 @@ test.describe('AI 번역 (Translate)', () => {
 
   test('번역 버튼 클릭 시 /api/translate POST 호출', async ({ page }) => {
     const textarea = page.locator('textarea').first();
-    await textarea.fill('I have a headache');
+    await textarea.pressSequentially('I have a headache');
 
     const translateBtn = page
       .locator('button')
@@ -36,9 +36,7 @@ test.describe('AI 번역 (Translate)', () => {
     await expect(translateBtn).toBeEnabled({ timeout: 5_000 });
 
     const [request] = await Promise.all([
-      page.waitForRequest(
-        (req) => req.url().includes('/api/translate') && req.method() === 'POST',
-      ),
+      page.waitForRequest((req) => req.url().includes('/api/translate') && req.method() === 'POST'),
       translateBtn.click(),
     ]);
     expect(request.postDataJSON()).toMatchObject({ text: 'I have a headache' });
@@ -46,7 +44,7 @@ test.describe('AI 번역 (Translate)', () => {
 
   test('번역 결과 표시 (mock 응답)', async ({ page }) => {
     const textarea = page.locator('textarea').first();
-    await textarea.fill('I have a headache');
+    await textarea.pressSequentially('I have a headache');
 
     const translateBtn = page
       .locator('button')

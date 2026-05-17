@@ -1,7 +1,8 @@
 'use client';
 
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { useWindowVirtualizer } from '@tanstack/react-virtual';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from '@/src/shared/lib/i18n';
 import { CATEGORY_ICONS, CategoryKey, EncyclopediaItem, getCategory } from '../types';
 import { EncyclopediaCard } from './EncyclopediaCard';
@@ -28,52 +29,34 @@ export function EncyclopediaClient({ initialItems, total: initialTotal }: Props)
   const [query, setQuery] = useState('');
   const [debouncedQuery, setDebouncedQuery] = useState('');
   const [category, setCategory] = useState<CategoryKey>('all');
-  const [items, setItems] = useState(initialItems);
-  const [total, setTotal] = useState(initialTotal);
-  const [offset, setOffset] = useState(initialItems.length);
-  const [isLoading, setIsLoading] = useState(false);
   const listRef = useRef<HTMLDivElement>(null);
-  const isFirstRender = useRef(true);
 
   useEffect(() => {
     const timer = setTimeout(() => setDebouncedQuery(query.trim()), 300);
     return () => clearTimeout(timer);
   }, [query]);
 
-  useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      return;
-    }
-    let cancelled = false;
-    setIsLoading(true);
-    window.scrollTo(0, 0);
-    fetchEncyclopediaPage({ search: debouncedQuery || undefined }).then((result) => {
-      if (cancelled) return;
-      setItems(result.items);
-      setTotal(result.total);
-      setOffset(result.items.length);
-      setIsLoading(false);
-    });
-    return () => {
-      cancelled = true;
-    };
-  }, [debouncedQuery]);
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isPending } = useInfiniteQuery({
+    queryKey: ['encyclopedia', debouncedQuery],
+    queryFn: ({ pageParam }) =>
+      fetchEncyclopediaPage({
+        search: debouncedQuery || undefined,
+        offset: pageParam,
+      }),
+    initialPageParam: 0,
+    getNextPageParam: (lastPage, allPages) => {
+      const loaded = allPages.flatMap((p) => p.items).length;
+      return loaded < lastPage.total ? loaded : undefined;
+    },
+    initialData:
+      debouncedQuery === ''
+        ? { pages: [{ total: initialTotal, items: initialItems }], pageParams: [0] }
+        : undefined,
+    staleTime: 1000 * 60 * 5,
+  });
 
-  const loadMore = useCallback(async () => {
-    if (isLoading || offset >= total) return;
-    setIsLoading(true);
-    const result = await fetchEncyclopediaPage({
-      search: debouncedQuery || undefined,
-      offset,
-    });
-    setItems((prev) => {
-      const existingIds = new Set(prev.map((item) => item.id));
-      return [...prev, ...result.items.filter((item) => !existingIds.has(item.id))];
-    });
-    setOffset((prev) => prev + result.items.length);
-    setIsLoading(false);
-  }, [isLoading, offset, total, debouncedQuery]);
+  const items = data?.pages.flatMap((p) => p.items) ?? [];
+  const total = data?.pages[0]?.total ?? initialTotal;
 
   const filtered = useMemo(() => {
     if (category === 'all') return items;
@@ -89,16 +72,20 @@ export function EncyclopediaClient({ initialItems, total: initialTotal }: Props)
   });
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [debouncedQuery]);
+
+  useEffect(() => {
     const handleScroll = () => {
-      if (isLoading || offset >= total) return;
+      if (isFetchingNextPage || !hasNextPage) return;
       const scrollY = window.scrollY;
       const windowHeight = window.innerHeight;
       const docHeight = document.documentElement.scrollHeight;
-      if (docHeight - scrollY - windowHeight < 400) loadMore();
+      if (docHeight - scrollY - windowHeight < 400) fetchNextPage();
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [isLoading, offset, total, loadMore]);
+  }, [isFetchingNextPage, hasNextPage, fetchNextPage]);
 
   return (
     <div className='bg-slate-50'>
@@ -173,7 +160,7 @@ export function EncyclopediaClient({ initialItems, total: initialTotal }: Props)
 
       {/* 가상화 리스트 */}
       <div className='mx-auto w-full max-w-3xl px-2 pb-4'>
-        {isLoading && items.length === 0 ? (
+        {isPending ? (
           <div className='flex h-64 items-center justify-center text-gray-400'>
             <span className='text-3xl'>⏳</span>
           </div>
@@ -207,7 +194,7 @@ export function EncyclopediaClient({ initialItems, total: initialTotal }: Props)
                 );
               })}
             </div>
-            {isLoading && (
+            {isFetchingNextPage && (
               <div className='py-3 text-center text-sm text-gray-400'>불러오는 중...</div>
             )}
           </>

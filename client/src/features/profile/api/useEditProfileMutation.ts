@@ -1,3 +1,4 @@
+import { toast } from '@/src/shared/lib/toast/toastStore';
 import { APIError } from '@/src/shared/utils/apiError';
 import { httpClient } from '@/src/shared/utils/httpClient';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -13,8 +14,7 @@ export const useEditProfileMutation = () => {
       }
     },
     onSuccess: () => {
-      // TODO: 토스트로 변경 필요
-      alert('Profile updated successfully');
+      toast.success('Profile updated successfully');
       queryClient.invalidateQueries({ queryKey: ['profile'] });
     },
   });
